@@ -58,6 +58,16 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>eu.michael-simons</groupId>
+			<artifactId>wro4j-spring-boot-starter</artifactId>
+			<version>0.5.2</version>
+		</dependency>
 	</dependencies>
 
 	<dependencyManagement>
