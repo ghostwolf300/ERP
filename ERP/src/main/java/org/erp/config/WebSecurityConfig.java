@@ -2,6 +2,7 @@ package org.erp.config;
 
 
 
+import org.erp.component.ERPAuthFailureHandler;
 import org.erp.component.ERPAuthSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -31,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	private ERPAuthSuccessHandler successHandler;
 	
 	@Autowired
+	private ERPAuthFailureHandler failureHandler;
+	
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
 	@Override
@@ -45,14 +49,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 		"/img/**").permitAll()
                 .antMatchers("/users").hasRole("ADMIN")
                 .anyRequest().authenticated()
-                .and()
-            .formLogin()
+            .and()
+            	.formLogin()
                 .loginPage("/login")
                 .permitAll()
                 .failureUrl("/login")
                 .successHandler(successHandler)
-                .and()
-            .logout()
+                .failureHandler(failureHandler)
+            .and()
+            	.logout()
                 .permitAll();
     }
 	
