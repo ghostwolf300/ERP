@@ -14,4 +14,6 @@ public class MVCConfig implements WebMvcConfigurer {
 		registry.addViewController("/hello").setViewName("hello");
 	}
 	
+	
+	
 }
