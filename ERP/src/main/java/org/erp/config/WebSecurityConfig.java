@@ -21,9 +21,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
-	/*
-	 * @Autowired private DataSource dataSource;
-	 */
 	
 	@Autowired
 	private UserDetailsService userService;
@@ -46,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 		"/home",
                 		"/css/**",
                 		"/js/**",
-                		"/img/**").permitAll()
+                		"/img/**",
+                		"/wro/**").permitAll()
                 .antMatchers("/users").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()

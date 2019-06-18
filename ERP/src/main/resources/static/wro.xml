@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <groups xmlns="http://www.isdc.ro/wro">
-	<group name="erp">
-		<css>classpath:static/css/erp-common.css</css>
+	<group name="login">
+		<css>/css/erp-common.css</css>
+		<css>/css/erp-login.css</css>
 	</group>
 </groups>

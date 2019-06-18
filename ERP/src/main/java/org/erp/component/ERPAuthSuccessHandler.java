@@ -33,7 +33,7 @@ public class ERPAuthSuccessHandler implements AuthenticationSuccessHandler {
 	}
 	
 	protected String determineTargetUrl(Authentication auth){
-		return "/hello";
+		return "/home";
 	}
 	
 	protected void clearAuthenticationAttributes(HttpServletRequest request) {
