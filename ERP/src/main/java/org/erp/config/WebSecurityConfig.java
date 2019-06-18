@@ -39,8 +39,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
                 .antMatchers(
-                		"/",
-                		"/home",
                 		"/css/**",
                 		"/js/**",
                 		"/img/**",
@@ -51,9 +49,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             	.formLogin()
                 .loginPage("/login")
                 .permitAll()
-                .failureUrl("/login")
+                .failureUrl("/login?error=true")
                 .successHandler(successHandler)
-                .failureHandler(failureHandler)
+                //.failureHandler(failureHandler)
             .and()
             	.logout()
                 .permitAll();
