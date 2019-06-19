@@ -1,0 +1,7 @@
+@charset "ISO-8859-1";
+div#container.home{
+	width:100%;
+	min-width:800px;
+	background: beige;
+	border: 2px solid black;
+}

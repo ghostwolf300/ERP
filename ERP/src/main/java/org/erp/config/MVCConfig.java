@@ -37,15 +37,14 @@ public class MVCConfig implements WebMvcConfigurer {
 		 SpringTemplateEngine templateEngine = new SpringTemplateEngine();
 	     templateEngine.setTemplateResolver(templateResolver());
 	     //-----------To use Thymeleaf Layouts------------
-	     //templateEngine.addDialect(new LayoutDialect());
+	     templateEngine.addDialect(new LayoutDialect());
 	     //-----------------------------------------------
 	     return templateEngine;
 	 }
 	 
-	 @Bean
-	 public LayoutDialect layoutDialect() {
-		 return new LayoutDialect();
-	 }
+	/*
+	 * @Bean public LayoutDialect layoutDialect() { return new LayoutDialect(); }
+	 */
 	 
 	 @Bean
 	 @Description("Thymeleaf view resolver")
