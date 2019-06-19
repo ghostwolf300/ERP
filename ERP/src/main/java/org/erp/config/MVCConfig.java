@@ -12,7 +12,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
-@Configuration
+//@Configuration
 public class MVCConfig implements WebMvcConfigurer {
 	
 	@Bean
