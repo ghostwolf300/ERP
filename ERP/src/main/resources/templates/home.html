@@ -10,10 +10,14 @@
 	</div>
 	<div>
 		<div th:replace="fragments/tiles :: tile_users"></div>
+		<div th:replace="fragments/tiles :: tile_separator"></div>
 		<div th:replace="fragments/tiles :: tile_materials"></div>
+		<div th:replace="fragments/tiles :: tile_separator"></div>
 		<div th:replace="fragments/tiles :: tile_customers"></div>
+		<div th:replace="fragments/tiles :: tile_separator"></div>
 		<div th:replace="fragments/tiles :: tile_suppliers"></div>
 	</div>
+	<div class="row_clear"></div>
 	<div>
 		<span th:text="${myMessage}"></span>
 	</div>

@@ -5,6 +5,7 @@ div#container.header{
 	height:60px;
 	background: lightgray;
 	border: 2px solid black;
+	box-sizing:border-box;
 }
 
 div#info.header{
