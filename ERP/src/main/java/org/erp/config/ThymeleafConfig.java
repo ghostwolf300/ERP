@@ -82,6 +82,8 @@ public class ThymeleafConfig implements WebMvcConfigurer, ApplicationContextAwar
 		registry.addViewController("/home").setViewName("home");
 		registry.addViewController("/login").setViewName("login");
 		registry.addViewController("/hello").setViewName("hello");
+		registry.addViewController("/new_user").setViewName("new_user");
+		registry.addViewController("/change_user").setViewName("change_user");
 	}
          
 

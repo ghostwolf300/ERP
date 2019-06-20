@@ -5,11 +5,16 @@
 	height: 100px;
 	min-height: 100px;
 	border: 1px solid black;
-	background: DodgerBlue;
+	background: DeepSkyBlue;
 	text-align: center;
 	margin: auto;
 	box-sizing: border-box;
 	float:left;
+}
+
+.tile:hover{
+	border: 2px solid red;
+	box-shadow: 5px 5px;
 }
 
 .tile_separator{
