@@ -6,6 +6,22 @@ html, body{
 	margin-left: 10px;	
 }
 
-div#container.content{
+div#top_container.content{
 	margin-top: 10px;
+}
+
+.content_container{
+	width:100%;
+	min-width:800px;
+	height: 800px;
+	min-height: 800px;
+	background: beige;
+	border: 2px solid black;
+	box-sizing: border-box;
+	padding: 10px;
+	overflow: auto;
+}
+
+.row_clear{
+	clear:both;
 }

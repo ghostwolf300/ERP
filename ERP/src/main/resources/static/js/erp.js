@@ -52,8 +52,54 @@ var Home=(function(){
 })();
  
 var NewUser=(function(){
+	
+	var fields={
+			userId : '#user_id'
+	}
+	var controls={
+			createUser :'#btn_create'
+	}
+	
  	function init(){
  		console.log('TEST: initialize NewUser');
+ 		_bindEventHandlers();
+ 	}
+ 	
+ 	function _bindEventHandlers(){
+		$(controls.createUser).click(_createUser);
+	}
+ 	
+ 	function _createUser(){
+ 		console.log('TEST: trying to create new user...');
+ 		//test if user id exists
+ 		var userId=$(fields.userId).val();
+ 		var user;
+ 		if(userId!=null){
+	 		var url='/user/findById?userId='+userId;
+	 		$.getJSON(url,function(u,statusText,jqxhr){
+				
+			}).done(function(u,statusText,jqxhr){
+				if(jqxhr.status==200){
+					//if exists then display error
+					user=u;
+					console.log(user);
+				}
+				else if(jqxhr.status==204){
+					console.log('Status: NA');
+				}
+				else{
+					console.log('Status: UNKNOWN');
+				}
+				
+			}).fail(function(){
+				//Show error message
+				console.log('Status: FAIL');
+			}).always(function(){
+				
+			});
+	 		
+	 		
+ 		}
  	}
  	
  	return{

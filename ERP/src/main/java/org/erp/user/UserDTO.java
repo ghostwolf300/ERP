@@ -20,6 +20,15 @@ public class UserDTO implements Serializable {
 	public UserDTO() {
 		
 	}
+	
+	public UserDTO(User user) {
+		this.username=user.getId();
+		this.firstName=user.getFirstName();
+		this.lastName=user.getLastName();
+		this.email=user.getEmail();
+		this.password=user.getPassword();
+		this.enabled=user.isEnabled();
+	}
 
 
 	public String getUsername() {

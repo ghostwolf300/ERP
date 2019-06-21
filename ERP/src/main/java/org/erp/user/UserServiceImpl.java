@@ -57,4 +57,10 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 		return authorities;
 	}
 
+	@Override
+	public User findUser(String userId) {
+		User user=userRepository.findById(userId);
+		return user;
+	}
+
 }

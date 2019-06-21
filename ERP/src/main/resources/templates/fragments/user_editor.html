@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="nz.net.ultraq.thymeleaf">
+<div id="user_editor" class="editor" th:fragment="user_editor_1">
+	<div id="general">
+		<label for="user_id">User ID</label>
+		<input id="user_id" type="text" name="user_id" disabled/>
+		<label for="first_name">First name</label>
+		<input id="first_name" type="text"/>
+		<label for="last_name">Last name</label>
+		<input id="last_name" type="text"/>
+		<label for="email">Email</label>
+		<input id="email" type="text"/>	
+	</div>
+</div>
+<div id="user_editor_2" class="editor" th:fragment="user_editor_2">
+	<div id="password">
+		<label for="password1">Password</label>
+		<input id="password1" type="password"/>
+		<label for="password2">Re-enter password</label>
+		<input id="password2" type="password"/>
+	</div>
+</div>
+<div id="user_editor_control" class="editor" th:fragment="user_editor_control">
+	<div id="control">
+		<input id="btn_save_user" type="button" value="Save">
+	</div>
+</div>
+</html>
