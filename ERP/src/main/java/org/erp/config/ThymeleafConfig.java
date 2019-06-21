@@ -16,10 +16,13 @@ import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ITemplateResolver;
 
+import com.vaadin.flow.spring.annotation.EnableVaadin;
+
 import nz.net.ultraq.thymeleaf.LayoutDialect;
 
 @Configuration
 @EnableWebMvc
+@EnableVaadin
 public class ThymeleafConfig implements WebMvcConfigurer, ApplicationContextAware {
 	
 	private ApplicationContext applicationContext;
