@@ -3,7 +3,7 @@
  */
  $(document).ready(initPage);
  
- function initPage(){
+function initPage(){
  	console.log('TEST: initializing page');
  	var view=$('meta[name="viewId"]').attr('content');
  	if(view=='HOME'){
@@ -15,8 +15,48 @@
  	else if(view=='CHANGE_USER'){
  		ChangeUser.init();
  	}
- 	
- }
+}
+
+var DAO=(function(){
+	var STATUS={
+		DONE : 'done',
+		NA : 'na',
+		UNKNOWN : 'unknown',
+		FAIL : 'fail'
+	}
+	
+	function findUserById(userId,_callback){
+		
+		var url='/user/findById?userId='+userId;
+		var user;
+		
+		$.getJSON(url,function(u,statusText,jqxhr){
+
+		}).done(function(u,statusText,jqxhr){
+			if(jqxhr.status==200){
+				user=u;
+				_callback(STATUS.DONE,user);
+			}
+			else if(jqxhr.status==204){
+				_callback(STATUS.NA);
+			}
+			else{
+				_callback(STATUS.UNKNOWN);
+			}
+
+		}).fail(function(jqxhr, textStatus, error){
+			_callback(STATUS.FAIL);
+		}).always(function(){
+
+		});
+	}
+	
+	return{
+		STATUS : STATUS,
+		findUserById : findUserById
+	}
+	
+})();
  
 var Home=(function(){
 	
@@ -54,7 +94,8 @@ var Home=(function(){
 var NewUser=(function(){
 	
 	var fields={
-			userId : '#user_id'
+			userId : '#user_id',
+			errorMsg : '#error_msg'
 	}
 	var controls={
 			createUser :'#btn_create'
@@ -70,36 +111,27 @@ var NewUser=(function(){
 	}
  	
  	function _createUser(){
+ 		$(fields.errorMsg).text('');
  		console.log('TEST: trying to create new user...');
  		//test if user id exists
  		var userId=$(fields.userId).val();
- 		var user;
- 		if(userId!=null){
-	 		var url='/user/findById?userId='+userId;
-	 		$.getJSON(url,function(u,statusText,jqxhr){
-				
-			}).done(function(u,statusText,jqxhr){
-				if(jqxhr.status==200){
-					//if exists then display error
-					user=u;
-					console.log(user);
-				}
-				else if(jqxhr.status==204){
-					console.log('Status: NA');
-				}
-				else{
-					console.log('Status: UNKNOWN');
-				}
-				
-			}).fail(function(){
-				//Show error message
-				console.log('Status: FAIL');
-			}).always(function(){
-				
-			});
-	 		
-	 		
- 		}
+ 		DAO.findUserById(userId,function(status,user){
+			if(status==DAO.STATUS.DONE){
+				//user already exists. display error message
+				console.log(user);
+				$(fields.errorMsg).text('User '+userId+' already exists!');
+			}
+			else if(status==DAO.STATUS.NA){
+				//no user found. can be created.
+				_showUserEditor();
+			}
+		});
+ 		
+ 	}
+ 	
+ 	function _showUserEditor(){
+ 		console.log('show user editor...');
+ 		window.location.assign('/new_user/edit');
  	}
  	
  	return{

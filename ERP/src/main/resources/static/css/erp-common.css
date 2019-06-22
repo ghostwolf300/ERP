@@ -25,3 +25,8 @@ div#top_container.content{
 .row_clear{
 	clear:both;
 }
+
+.error_message{
+	font-weight: bold;
+	color: red;
+}

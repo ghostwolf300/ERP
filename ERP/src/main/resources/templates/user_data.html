@@ -3,13 +3,28 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
-<div id="user_data" class="content_container">
+<div id="user_data" class="content_container" layout:fragment="content">
 	<div>
 		<label for="user_id">User ID</label>
 		<input id="user_id" type="text" name="user_id" disabled/>
 	</div>
-	<div th:replace="fragments/user_editor :: user_editor_1"></div>
-	<div th:replace="fragments/user_editor :: user_editor_2"></div>
+	<script>
+		$(function() {
+	    	$("#tabs").tabs();
+	  	});
+ 	</script>
+	<div id="tabs">
+		<ul>
+			<li><a href = "#tab_general">General</a></li>
+			<li><a href = "#tab_login">Login</a></li>
+		</ul>
+		<div id="tab_general">
+			<div th:replace="fragments/user_editor :: user_editor_1"></div>
+		</div>
+		<div id="tab_login">
+			<div th:replace="fragments/user_editor :: user_editor_2"></div>
+		</div>
+	</div>
 	<div th:replace="fragments/user_editor :: user_editor_control"></div>
 </div>
 </html>
