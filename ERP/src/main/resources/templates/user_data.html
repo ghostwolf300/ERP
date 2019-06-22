@@ -13,16 +13,22 @@
 	    	$("#tabs").tabs();
 	  	});
  	</script>
-	<div id="tabs">
-		<ul>
-			<li><a href = "#tab_general">General</a></li>
-			<li><a href = "#tab_login">Login</a></li>
-		</ul>
-		<div id="tab_general">
-			<div th:replace="fragments/user_editor :: user_editor_1"></div>
-		</div>
-		<div id="tab_login">
-			<div th:replace="fragments/user_editor :: user_editor_2"></div>
+ 	<div id="user_editor_content" class="editor">
+		<div id="tabs">
+			<ul class="tabs">
+				<li><a href = "#tab_general">General</a></li>
+				<li><a href = "#tab_login">Login</a></li>
+				<li><a href = "#tab_auth">Auth.</a></li>
+			</ul>
+			<div id="tab_general">
+				<div th:replace="fragments/user_editor :: user_editor_1"></div>
+			</div>
+			<div id="tab_login">
+				<div th:replace="fragments/user_editor :: user_editor_2"></div>
+			</div>
+			<div id="tab_auth">
+				<div th:replace="fragments/user_editor :: user_editor_3"></div>
+			</div>
 		</div>
 	</div>
 	<div th:replace="fragments/user_editor :: user_editor_control"></div>
