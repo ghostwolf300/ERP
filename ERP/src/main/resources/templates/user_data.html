@@ -6,7 +6,7 @@
 <div id="user_data" class="content_container" layout:fragment="content">
 	<div>
 		<label for="user_id">User ID</label>
-		<input id="user_id" type="text" name="user_id" disabled/>
+		<input id="user_id" type="text" name="user_id" th:field="${user.username}" disabled/>
 	</div>
 	<script>
 		$(function() {

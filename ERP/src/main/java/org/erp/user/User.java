@@ -1,5 +1,7 @@
 package org.erp.user;
 
+import java.sql.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -15,6 +17,10 @@ public class User {
 	private String password;
 	private String email;
 	private boolean enabled;
+	private boolean initialPw;
+	private boolean locked;
+	private Date validFrom;
+	private Date validTo;
 	
 	public User() {
 		
@@ -59,6 +65,38 @@ public class User {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public boolean isInitialPw() {
+		return initialPw;
+	}
+
+	public void setInitialPw(boolean initialPw) {
+		this.initialPw = initialPw;
+	}
+
+	public boolean isLocked() {
+		return locked;
+	}
+
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
+
+	public Date getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(Date validFrom) {
+		this.validFrom = validFrom;
+	}
+
+	public Date getValidTo() {
+		return validTo;
+	}
+
+	public void setValidTo(Date validTo) {
+		this.validTo = validTo;
 	}
 
 }

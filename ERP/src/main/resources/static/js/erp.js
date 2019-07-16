@@ -123,15 +123,15 @@ var NewUser=(function(){
 			}
 			else if(status==DAO.STATUS.NA){
 				//no user found. can be created.
-				_showUserEditor();
+				_showUserEditor(userId);
 			}
 		});
  		
  	}
  	
- 	function _showUserEditor(){
+ 	function _showUserEditor(userId){
  		console.log('show user editor...');
- 		window.location.assign('/new_user/edit');
+ 		window.location.assign('/user/edit/'+userId+'/true');
  	}
  	
  	return{
