@@ -2,6 +2,7 @@ package org.erp.user;
 
 import java.sql.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -11,19 +12,41 @@ import javax.persistence.Table;
 public class User {
 
 	@Id
+	@Column(name="id")
 	private String id;
+	@Column(name="first_name")
 	private String firstName;
+	@Column(name="last_name")
 	private String lastName;
+	@Column(name="password")
 	private String password;
+	@Column(name="email")
 	private String email;
+	@Column(name="enabled")
 	private boolean enabled;
+	@Column(name="initial_pw")
 	private boolean initialPw;
+	@Column(name="locked")
 	private boolean locked;
+	@Column(name="valid_from")
 	private Date validFrom;
+	@Column(name="valid_to")
 	private Date validTo;
 	
 	public User() {
 		
+	}
+	
+	public User(UserDTO user) {
+		this.id=user.getUsername();
+		this.firstName=user.getFirstName();
+		this.lastName=user.getLastName();
+		this.email=user.getEmail();
+		this.enabled=true;
+		this.initialPw=user.isInitialPw();
+		this.locked=user.isLocked();
+		this.validFrom=user.getValidFrom();
+		this.validTo=user.getValidTo();
 	}
 	
 	public String getId() {

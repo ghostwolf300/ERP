@@ -30,3 +30,13 @@ div#top_container.content{
 	font-weight: bold;
 	color: red;
 }
+
+/*--------JQuery UI checkbox bug-----------------*/
+label.ui-checkboxradio-label span.ui-icon-check {
+  background-position: -64px -144px;
+}
+
+label.ui-checkboxradio-label span.ui-icon-blank {
+  background-position: 16px 16px;
+}
+/*--------------------------------------------- */

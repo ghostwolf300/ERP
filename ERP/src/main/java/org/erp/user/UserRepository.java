@@ -9,8 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface UserRepository extends JpaRepository<User,Integer>,UserRepositoryCustom {
 	
 	public User findById(String id);
-	//public User findByUsername(String username);
-	//public User findByUsernameAndEnabled(String username,boolean enabled);
 	public User findByIdAndEnabled(String id,boolean enabled);
 	
 	@SuppressWarnings("unchecked")

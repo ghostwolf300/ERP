@@ -21,20 +21,6 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 	
-	@Override
-	public User createNewUser(UserDTO account) {
-		if(usernameExists(account.getUsername())){
-			//TODO: add logic here
-		}
-		User user=new User();
-		user.setId(account.getUsername());
-		user.setFirstName(account.getFirstName());
-		user.setLastName(account.getLastName());
-		user.setEmail(account.getEmail());
-		user.setPassword(passwordEncoder.encode(account.getPassword()));
-	
-		return user;
-	}
 	
 	private boolean usernameExists(String username) {
 		//TODO: add logic here
@@ -61,6 +47,30 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 	public User findUser(String userId) {
 		User user=userRepository.findById(userId);
 		return user;
+	}
+	
+	@Override
+	public User createUser(UserDTO user) {
+		if(usernameExists(user.getUsername())){
+			//TODO: add logic here
+		}
+		User u=new User(user);
+		u.setPassword(passwordEncoder.encode(user.getPassword()));
+		System.out.println("New user id: "+u.getId());
+		u=userRepository.save(u);
+		return u;
+	}
+
+	@Override
+	public User saveUser(UserDTO user) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public User deleteUser(UserDTO user) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

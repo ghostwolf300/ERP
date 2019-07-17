@@ -44,20 +44,20 @@
 					<div class="tableCell"></div>
 					<div class="tableCell">
 						<label for="chkInitialPw">Initial password</label>
-						<input id="chkInitialPw" type="checkbox"/>
+						<input id="chkInitialPw" type="checkbox" th:checked="${user.initialPw}"/>
 					</div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell"></div>
 					<div class="tableCell">
 						<label for="chkLocked">Locked</label>
-						<input id="chkLocked" type="checkbox"/>
+						<input id="chkLocked" type="checkbox" th:checked="${user.locked}"/>
 					</div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell">Validity (from-to)</div>
 					<div class="tableCell">
-						<input id="dateValidFrom" type="text" class="erpDatePicker"/>-<input id="dateValidTo" type="text" class="erpDatePicker"/>
+						<input id="dateValidFrom" type="text" class="erpDatePicker" th:field="${user.validFrom}"/>-<input id="dateValidTo" type="text" class="erpDatePicker" th:field="${user.validTo}"/>
 					</div>
 					
 				</div>
@@ -71,7 +71,7 @@
 <div id="user_editor_control" class="editor" th:fragment="user_editor_control">
 	<div id="control">
 		<input id="btn_cancel" type="button" class="ui-button ui-widget ui-corner-all" value="Cancel">
-		<input id="btn_save_user" type="button" class="ui-button ui-widget ui-corner-all" value="Save">
+		<input id="btn_save" type="button" class="ui-button ui-widget ui-corner-all" value="Save">
 	</div>
 </div>
 </html>

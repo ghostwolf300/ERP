@@ -58,7 +58,7 @@ public class UserEditor extends VerticalLayout implements KeyNotifier {
 	}
 	
 	void save() {
-		service.createNewUser(user);
+		service.createUser(user);
 		changeHandler.onChange();
 	}
 }
