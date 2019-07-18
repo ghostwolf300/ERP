@@ -1,5 +1,10 @@
 package org.erp.user;
 
+import java.sql.Timestamp;
+
+import org.erp.message.MessageDTO;
+import org.erp.message.MessageService;
+import org.erp.message.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +21,9 @@ public class UserRestController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private MessageService messageService;
 	
 	@RequestMapping("/findById")
 	public ResponseEntity<UserDTO> getUser(
@@ -43,8 +51,31 @@ public class UserRestController {
 			System.out.println("Update existing user");
 			u=userService.saveUser(user);
 		}
-		UserDTO usr=new UserDTO(u);
-		return new ResponseEntity<UserDTO>(usr,HttpStatus.OK);
+		if(u!=null) {
+			UserDTO usr=new UserDTO(u);
+			createSuccessMessage(usr);
+			return new ResponseEntity<UserDTO>(usr,HttpStatus.OK);
+		}
+		else {
+			createFailureMessage(user);
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+		}
+	}
+	
+	private void createSuccessMessage(UserDTO user) {
+		MessageDTO message=new MessageDTO();
+		message.setTs(new Timestamp(System.currentTimeMillis()));
+		message.setType(MessageDTO.Type.SUCCESS);
+		message.setMessageText("User "+user.getUsername()+" created.");
+		messageService.addMessage(message);
+	}
+	
+	private void createFailureMessage(UserDTO user) {
+		MessageDTO message=new MessageDTO();
+		message.setTs(new Timestamp(System.currentTimeMillis()));
+		message.setType(MessageDTO.Type.FAILURE);
+		message.setMessageText("Failed to create user "+user.getUsername());
+		messageService.addMessage(message);
 	}
 	
 }

@@ -1,0 +1,10 @@
+@charset "ISO-8859-1";
+div#container.messages{
+	width:100%;
+	min-width:800px;
+	height:40px;
+	background: lightgray;
+	border: 2px solid black;
+	box-sizing:border-box;
+	margin-top:10px;
+}
