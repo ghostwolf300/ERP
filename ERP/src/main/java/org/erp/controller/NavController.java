@@ -39,22 +39,18 @@ public class NavController {
 	
 	//Vaadin page handled through Vaadin Flow "@Route". Uncomment to return to thymeleaf
 	
-	@RequestMapping("/user/new_user") 
-	public String newUser(Model m) {
-		System.out.println("Create new user"); 
-		m.addAttribute("viewName","New user"); 
-		m.addAttribute("viewId",Views.NEW_USER); 
-		return VIEW_MAP.get(Views.NEW_USER); 
-	}
-	 
-	
-	@RequestMapping("/user/change_user")
-	public String changeUser(Model m) {
-		System.out.println("Change user");
-		m.addAttribute("viewName", "Change user");
-		m.addAttribute("viewId",Views.CHANGE_USER);
-		return VIEW_MAP.get(Views.CHANGE_USER);
-	}
+	/*
+	 * @RequestMapping("/user/new_user") public String newUser(Model m) {
+	 * System.out.println("Create new user"); m.addAttribute("viewName","New user");
+	 * m.addAttribute("viewId",Views.NEW_USER); return VIEW_MAP.get(Views.NEW_USER);
+	 * }
+	 * 
+	 * 
+	 * @RequestMapping("/user/change_user") public String changeUser(Model m) {
+	 * System.out.println("Change user"); m.addAttribute("viewName", "Change user");
+	 * m.addAttribute("viewId",Views.CHANGE_USER); return
+	 * VIEW_MAP.get(Views.CHANGE_USER); }
+	 */
 	
 	
 }

@@ -6,15 +6,15 @@
 			<div class="tableBody">
 				<div class="tableRow">
 					<div class="tableCell">First name</div>
-					<div class="tableCell"><input id="first_name" type="text"/></div>
+					<div class="tableCell"><input id="firstName" name="firstName" type="text"/></div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell">Last name</div>
-					<div class="tableCell"><input id="last_name" type="text"/></div>
+					<div class="tableCell"><input id="lastName" name="lastName" type="text"/></div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell">Email</div>
-					<div class="tableCell"><input id="email" type="text"/></div>
+					<div class="tableCell"><input id="email" name="email" type="text"/></div>
 				</div>
 			</div>
 		</div>
@@ -34,11 +34,11 @@
 			<div class="tableBody">
 				<div class="tableRow">
 					<div class="tableCell">Password</div>
-					<div class="tableCell"><input id="password1" type="password"/></div>
+					<div class="tableCell"><input id="password1" name="password1" type="password"/></div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell">Re-enter password</div>
-					<div class="tableCell"><input id="password2" type="password"/></div>
+					<div class="tableCell"><input id="password2" name="password2" type="password"/></div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell"></div>
@@ -57,7 +57,7 @@
 				<div class="tableRow">
 					<div class="tableCell">Validity (from-to)</div>
 					<div class="tableCell">
-						<input id="dateValidFrom" type="text" class="erpDatePicker" th:field="${user.validFrom}"/>-<input id="dateValidTo" type="text" class="erpDatePicker" th:field="${user.validTo}"/>
+						<input id="dateValidFrom" name="dateValidFrom" type="text" class="erpDatePicker" th:field="${user.validFrom}"/>-<input id="dateValidTo" name="dateValidTo" type="text" class="erpDatePicker" th:field="${user.validTo}"/>
 					</div>
 					
 				</div>
@@ -72,6 +72,7 @@
 	<div id="control">
 		<input id="btn_cancel" type="button" class="ui-button ui-widget ui-corner-all" value="Cancel">
 		<input id="btn_save" type="button" class="ui-button ui-widget ui-corner-all" value="Save">
+		<input id="btn_submit" type="submit" style="visibility:hidden;">
 	</div>
 </div>
 </html>

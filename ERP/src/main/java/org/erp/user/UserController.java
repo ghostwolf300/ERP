@@ -12,12 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/user")
 public class UserController {
 	
 	@Autowired
 	private UserService userService;
 	
-	@RequestMapping("/user/edit/{userId}/{isNewUser}")
+	@RequestMapping("/edit/{userId}/{isNewUser}")
 	public ModelAndView editUser(
 			@PathVariable String userId,
 			@PathVariable boolean isNewUser) {
@@ -44,6 +45,16 @@ public class UserController {
 		modelAndView.addObject("user", user);
 		modelAndView.setViewName("/user_data");
 		System.out.println("UserController.editUser");
+		return modelAndView;
+	}
+	
+	@RequestMapping("/new_user") 
+	public ModelAndView newUser() {
+		ModelAndView modelAndView =new ModelAndView();
+		modelAndView.addObject("viewName","New user");
+		modelAndView.addObject("viewId", Views.NEW_USER);
+		modelAndView.setViewName("new_user");
+		System.out.println("UserController.newUser");
 		return modelAndView;
 	}
 	

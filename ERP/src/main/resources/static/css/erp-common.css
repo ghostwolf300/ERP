@@ -33,10 +33,16 @@ div#top_container.content{
 
 /*--------JQuery UI checkbox bug-----------------*/
 label.ui-checkboxradio-label span.ui-icon-check {
-  background-position: -64px -144px;
+ 	background-position: -64px -144px;
 }
 
 label.ui-checkboxradio-label span.ui-icon-blank {
-  background-position: 16px 16px;
+ 	background-position: 16px 16px;
+}
+/*--------------------------------------------- */
+
+/*----JQuery Validation Plugin----------------- */
+form .error{
+	color: #ff0000;
 }
 /*--------------------------------------------- */

@@ -198,17 +198,19 @@ var ChangeUser=(function(){
 
 var EditUser=(function(){
 	
+	var form='#user_editor_form';
+	
 	var fields={
-			userId 		:'#user_id',
-			firstName 	:'#first_name',
-			lastName 	:'#last_name',
-			email 		:'#email',
-			password1 	:'#password1',
-			password2 	:'#password2',
-			initialPw 	:'#chkInitialPw',
-			locked 		:'#chkLocked',
-			validFrom 	:'#dateValidFrom',
-			validTo 	:'#dateValidTo'
+			userId 		:'user_id',
+			firstName 	:'firstName',
+			lastName 	:'lastName',
+			email 		:'email',
+			password1 	:'password1',
+			password2 	:'password2',
+			initialPw 	:'chkInitialPw',
+			locked 		:'chkLocked',
+			validFrom 	:'dateValidFrom',
+			validTo 	:'dateValidTo'
 	}
 	var controls={
 			save 	:'#btn_save',
@@ -217,31 +219,95 @@ var EditUser=(function(){
 	
 	function init(){
 		console.log('TEST: initialize EditUser');
+		//JQuery UI tabs cause problem with validation (hidden elements). This fixes that.
+		$.validator.setDefaults({
+			ignore:""
+		});
+		_initFormValidation();
 		_bindEventHandlers();
 	}
 	
+	function _initFormValidation(){
+		$(form).validate({
+			rules:{
+				firstName	:{
+					required	:true
+				},
+				lastName	:{
+					required	:true
+				},
+				email		:{
+					required	:true,
+					email		:true,
+					maxlength	:255
+				},
+				password1	:{
+					required	:true,
+					minlength	:5
+				},
+				password2	:{
+					required	:true,
+					minlength	:5,
+					equalTo		:password1
+					
+				},
+				validFrom	:{
+					required:	true
+				}
+			},
+			messages:{
+				firstName	:'First name is required',
+				lastName	:'Last name is required',
+				email		:'Enter valid email',
+				validFrom	:'Start date is required',
+				password1	:{
+					required	:'Please provide password',
+					minlength	:'Password must be atleast 5 characters long'
+				},
+				password2	:{
+					required	:'Please confirm password',
+					equalTo		:'Passwords are not matching'
+				}
+			},
+			submitHandler	:function(form){
+				$(controls.save).prop('disabled',false);
+				$(controls.save).focus();
+			},
+			invalidHandler	:function(form,validator){
+				var errors=validator.numberOfInvalids();
+				if(errors){
+					$(controls.save).prop('disabled',true);
+				}
+			}
+		});
+	}
+	
 	function _bindEventHandlers(){
+		$(form).submit(_noAutoSubmit);
 		$(controls.save).click(_saveUser);
 		$(controls.cancel).click(_cancelEdit);
 	}
 	
+	function _noAutoSubmit(e){
+		e.preventDefault();
+		return false;
+	}
+	
 	function _saveUser(){
-		if(_passwordOk){
+		var isValid=$(form).valid();
+		if(isValid){
 			var user=_getJSON();
 			//jos uusi käyttäjä...
 			console.log(user);
 			create=true;
 			DAO.saveUser(user,create,function(status,usr){
 				if(status==DAO.STATUS.DONE){
-					//display success message
+					window.location.assign('/user/new_user?status=user_created');
 				}
 				else if(status==DAO.STATUS.FAIL){
 					//display error message
 				}
 			});
-		}
-		else{
-			//display error message
 		}
 	}
 	
@@ -249,26 +315,21 @@ var EditUser=(function(){
 		window.location.assign('/user/new_user');
 	}
 	
-	function _passwordOk(){
-		if($(fields.password1).val()==$(fields.password2).val()){
-			return true;
-		}
-		else{
-			return false;
-		}
+	function _validate(){
+		
 	}
 	
 	function _getJSON(){
 		var user={
-				username	:$(fields.userId).val(),
-				firstName	:$(fields.firstName).val(),
-				lastName	:$(fields.lastName).val(),
-				email		:$(fields.email).val(),
-				password	:$(fields.password1).val(),
-				initialPw	:$(fields.initialPw).prop('checked'),
-				locked		:$(fields.locked).prop('checked'),
-				validFrom	:$(fields.validFrom).val(),
-				validTo		:$(fields.validTo).val()
+				username	:$('#'+fields.userId).val(),
+				firstName	:$('#'+fields.firstName).val(),
+				lastName	:$('#'+fields.lastName).val(),
+				email		:$('#'+fields.email).val(),
+				password	:$('#'+fields.password1).val(),
+				initialPw	:$('#'+fields.initialPw).prop('checked'),
+				locked		:$('#'+fields.locked).prop('checked'),
+				validFrom	:$('#'+fields.validFrom).val(),
+				validTo		:$('#'+fields.validTo).val()
 		}
 		return user;
 	}
