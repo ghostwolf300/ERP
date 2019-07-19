@@ -95,10 +95,37 @@ var DAO=(function(){
 		
 	}
 	
+	function getLastMessage(_callback){
+		var url='/messages/getLast';
+		var message;
+		
+		$.getJSON(url,function(u,statusText,jqxhr){
+
+		}).done(function(msg,statusText,jqxhr){
+			if(jqxhr.status==200){
+				message=msg;
+				_callback(STATUS.DONE,message);
+			}
+			else if(jqxhr.status==204){
+				_callback(STATUS.NA);
+			}
+			else{
+				_callback(STATUS.UNKNOWN);
+			}
+
+		}).fail(function(jqxhr, textStatus, error){
+			_callback(STATUS.FAIL);
+		}).always(function(){
+
+		});
+		
+	}
+	
 	return{
 		STATUS			:STATUS,
 		findUserById	:findUserById,
-		saveUser		:saveUser
+		saveUser		:saveUser,
+		getLastMessage	:getLastMessage
 	}
 	
 })();
@@ -149,6 +176,7 @@ var NewUser=(function(){
  	function init(){
  		console.log('TEST: initialize NewUser');
  		_bindEventHandlers();
+ 		MessageHandler.refreshMessageBox();
  	}
  	
  	function _bindEventHandlers(){
@@ -336,6 +364,31 @@ var EditUser=(function(){
 	
 	return{
 		init : init
+	}
+	
+})();
+
+var MessageHandler=(function(){
+	
+	function refreshMessageBox(){
+		DAO.getLastMessage(function(status,message){
+			if(status==DAO.STATUS.DONE){
+				//display message
+				_displayMessage(message);
+			}
+			else if(status==DAO.STATUS.NA){
+				//no message found
+				console.log('No messages');
+			}
+		});
+	}
+	
+	function _displayMessage(message){
+		console.log(message);
+	}
+	
+	return{
+		refreshMessageBox : refreshMessageBox
 	}
 	
 })();
