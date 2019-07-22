@@ -20,7 +20,7 @@ public class UserDTO implements Serializable {
 	private boolean locked;
 	private Date validFrom;
 	private Date validTo;
-	
+	private boolean pwFlag;
 	
 	public UserDTO() {
 		
@@ -31,12 +31,17 @@ public class UserDTO implements Serializable {
 		this.firstName=user.getFirstName();
 		this.lastName=user.getLastName();
 		this.email=user.getEmail();
-		this.password=user.getPassword();
 		this.enabled=user.isEnabled();
 		this.locked=user.isLocked();
 		this.initialPw=user.isInitialPw();
 		this.validFrom=user.getValidFrom();
 		this.validTo=user.getValidTo();
+		if(user.getPassword()!=null) {
+			this.setPwFlag(true);
+		}
+		else {
+			this.setPwFlag(false);
+		}
 	}
 
 
@@ -129,6 +134,14 @@ public class UserDTO implements Serializable {
 
 	public void setValidTo(Date validTo) {
 		this.validTo = validTo;
+	}
+
+	public boolean getPwFlag() {
+		return pwFlag;
+	}
+
+	public void setPwFlag(boolean pwFlag) {
+		this.pwFlag = pwFlag;
 	}
 	
 

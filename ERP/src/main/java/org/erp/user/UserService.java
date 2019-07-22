@@ -2,9 +2,9 @@ package org.erp.user;
 
 public interface UserService {
 	
-	public User findUser(String userId);
-	public User createUser(UserDTO user);
-	public User saveUser(UserDTO user);
-	public User deleteUser(UserDTO user);
+	public UserDTO findUser(String userId);
+	public UserDTO createUser(UserDTO user);
+	public UserDTO saveUser(UserDTO user);
+	public UserDTO deleteUser(UserDTO user);
 	
 }

@@ -27,3 +27,7 @@ div#user_editor_control.editor{
 .erpDatePicker{
 	width: 100px;	
 }
+
+.hiddenRow{
+	display:none;
+}

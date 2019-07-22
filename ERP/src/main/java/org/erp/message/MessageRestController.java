@@ -27,10 +27,10 @@ public class MessageRestController {
 	}
 	
 	@RequestMapping("/getLast")
-	public ResponseEntity<List<MessageDTO>> getLast(){
-		List<MessageDTO> messages=messageService.getMessages();
-		if(messages!=null && messages.size()>0) {
-			return new ResponseEntity<List<MessageDTO>>(messages,HttpStatus.OK);
+	public ResponseEntity<MessageDTO> getLast(){
+		MessageDTO message=messageService.getLastMessage();
+		if(message!=null) {
+			return new ResponseEntity<MessageDTO>(message,HttpStatus.OK);
 		}
 		else {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);

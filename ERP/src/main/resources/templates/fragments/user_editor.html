@@ -6,15 +6,15 @@
 			<div class="tableBody">
 				<div class="tableRow">
 					<div class="tableCell">First name</div>
-					<div class="tableCell"><input id="firstName" name="firstName" type="text"/></div>
+					<div class="tableCell"><input id="firstName" name="firstName" type="text" th:field="${user.firstName}"/></div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell">Last name</div>
-					<div class="tableCell"><input id="lastName" name="lastName" type="text"/></div>
+					<div class="tableCell"><input id="lastName" name="lastName" type="text" th:field="${user.lastName}"/></div>
 				</div>
 				<div class="tableRow">
 					<div class="tableCell">Email</div>
-					<div class="tableCell"><input id="email" name="email" type="text"/></div>
+					<div class="tableCell"><input id="email" name="email" type="text" th:field="${user.email}"/></div>
 				</div>
 			</div>
 		</div>
@@ -32,11 +32,16 @@
 	<div id="password" class="editor">
 		<div class="table">
 			<div class="tableBody">
-				<div class="tableRow">
+				
+				<div id="resetPw" class="tableRow">
+					<div class="tableCell"></div>
+					<div class="tableCell"><input id="btn_reset_pw" type="button" class="ui-button ui-widget ui-corner-all" value="Reset password"></div>
+				</div>
+				<div id="pw1" class="hiddenRow">
 					<div class="tableCell">Password</div>
 					<div class="tableCell"><input id="password1" name="password1" type="password"/></div>
 				</div>
-				<div class="tableRow">
+				<div id="pw2" class="hiddenRow">
 					<div class="tableCell">Re-enter password</div>
 					<div class="tableCell"><input id="password2" name="password2" type="password"/></div>
 				</div>

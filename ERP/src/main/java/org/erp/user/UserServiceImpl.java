@@ -44,13 +44,18 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 	}
 
 	@Override
-	public User findUser(String userId) {
+	public UserDTO findUser(String userId) {
+		UserDTO u=null;
 		User user=userRepository.findById(userId);
-		return user;
+		if(user!=null) {
+			u=new UserDTO(user);
+		}
+		return u;
+		
 	}
 	
 	@Override
-	public User createUser(UserDTO user) {
+	public UserDTO createUser(UserDTO user) {
 		if(usernameExists(user.getUsername())){
 			//TODO: add logic here
 		}
@@ -58,17 +63,22 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 		u.setPassword(passwordEncoder.encode(user.getPassword()));
 		System.out.println("New user id: "+u.getId());
 		u=userRepository.save(u);
-		return u;
+		return new UserDTO(u);
 	}
 
 	@Override
-	public User saveUser(UserDTO user) {
-		// TODO Auto-generated method stub
-		return null;
+	public UserDTO saveUser(UserDTO user) {
+		User u=new User(user);
+		u=userRepository.updateUser(u);
+		if(user.getPassword()!=null) {
+			String pw=passwordEncoder.encode(user.getPassword());
+			userRepository.updatePassword(user.getUsername(), pw);
+		}
+		return new UserDTO(u);
 	}
 
 	@Override
-	public User deleteUser(UserDTO user) {
+	public UserDTO deleteUser(UserDTO user) {
 		// TODO Auto-generated method stub
 		return null;
 	}

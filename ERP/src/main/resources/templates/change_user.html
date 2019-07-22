@@ -3,11 +3,19 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
-
-<div class="change_user" id="container" layout:fragment="content">
+      
+<div class="content_container" id="change_user" layout:fragment="content">
 	<div>
 		<h2>Change user</h2>
 	</div>
-	
+	<div>
+		<label for="user_id">User ID</label>
+		<input id="user_id" type="text" name="user_id">
+		<input id="btn_change" type="button" value="Change"/>
+		<p id="error_msg" class="error_message"></p>
+	</div>
+	<div>
+		<input id="btn_back" type="button" value="Back" class="ui-button ui-widget ui-corner-all"/>
+	</div>
 </div>
 </html>

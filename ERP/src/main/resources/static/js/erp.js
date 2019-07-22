@@ -78,7 +78,6 @@ var DAO=(function(){
 	function saveUser(user,create,_callback){
 		var url='/user/edit/save?create='+create;
 		data=JSON.stringify(user);
-		
 		$.ajax({
 			url : url,
 			method : "POST",
@@ -166,11 +165,12 @@ var Home=(function(){
 var NewUser=(function(){
 	
 	var fields={
-			userId : '#user_id',
-			errorMsg : '#error_msg'
+			userId		:'#user_id',
+			errorMsg	:'#error_msg'
 	}
 	var controls={
-			createUser :'#btn_create'
+			createUser 	:'#btn_create',
+			back		:'#btn_back'
 	}
 	
  	function init(){
@@ -181,6 +181,7 @@ var NewUser=(function(){
  	
  	function _bindEventHandlers(){
 		$(controls.createUser).click(_createUser);
+		$(controls.back).click(_back);
 	}
  	
  	function _createUser(){
@@ -198,8 +199,11 @@ var NewUser=(function(){
 				//no user found. can be created.
 				_showUserEditor(userId);
 			}
-		});
- 		
+		});	
+ 	}
+ 	
+ 	function _back(){
+ 		window.location.assign('/home');
  	}
  	
  	function _showUserEditor(userId){
@@ -214,8 +218,53 @@ var NewUser=(function(){
 })();
  
 var ChangeUser=(function(){
+	
+	var fields={
+		userId		:'#user_id',
+		errorMsg	:'#error_msg'
+	}
+	
+	var controls={
+			changeUser 	:'#btn_change',
+			back		:'#btn_back'
+	}
+	
  	function init(){
  		console.log('TEST: initialize ChangeUser');
+ 		_bindEventHandlers();
+ 		MessageHandler.refreshMessageBox();
+ 	}
+	
+	function _bindEventHandlers(){
+		$(controls.changeUser).click(_changeUser);
+		$(controls.back).click(_back);
+	}
+ 	
+ 	function _changeUser(){
+ 		$(fields.errorMsg).text('');
+ 		console.log('TEST: trying to change user...');
+ 		//test if user id exists
+ 		var userId=$(fields.userId).val();
+ 		DAO.findUserById(userId,function(status,user){
+			if(status==DAO.STATUS.DONE){
+				//user exists
+				console.log(user);
+				_showUserEditor(userId);
+			}
+			else if(status==DAO.STATUS.NA){
+				//no user found. display error message.
+				$(fields.errorMsg).text('User '+userId+' not found!');
+			}
+		});	
+ 	}
+ 	
+ 	function _showUserEditor(userId){
+ 		console.log('show user editor...');
+ 		window.location.assign('/user/edit/'+userId+'/false');
+ 	}
+ 	
+ 	function _back(){
+ 		window.location.assign('/home');
  	}
  	
  	return{
@@ -226,6 +275,7 @@ var ChangeUser=(function(){
 
 var EditUser=(function(){
 	
+	var mode;
 	var form='#user_editor_form';
 	
 	var fields={
@@ -242,17 +292,27 @@ var EditUser=(function(){
 	}
 	var controls={
 			save 	:'#btn_save',
-			cancel 	:'#btn_cancel'
+			cancel 	:'#btn_cancel',
+			resetPw	:'#resetPw'
 	}
 	
 	function init(){
-		console.log('TEST: initialize EditUser');
+		mode=$('#edit_mode').val();
+		console.log('TEST: initialize EditUser. edit_mode='+mode);
 		//JQuery UI tabs cause problem with validation (hidden elements). This fixes that.
 		$.validator.setDefaults({
 			ignore:""
 		});
+		
 		_initFormValidation();
 		_bindEventHandlers();
+		
+		if(mode=='new'){
+			_resetPw();
+		}
+		else if(mode=='change'){
+			_setPwMandatory(false);
+		}
 	}
 	
 	function _initFormValidation(){
@@ -269,7 +329,7 @@ var EditUser=(function(){
 					email		:true,
 					maxlength	:255
 				},
-				password1	:{
+				/*password1	:{
 					required	:true,
 					minlength	:5
 				},
@@ -277,8 +337,7 @@ var EditUser=(function(){
 					required	:true,
 					minlength	:5,
 					equalTo		:password1
-					
-				},
+				},*/
 				validFrom	:{
 					required:	true
 				}
@@ -310,10 +369,29 @@ var EditUser=(function(){
 		});
 	}
 	
+	function _setPwMandatory(isMandatory){
+		if(isMandatory){
+			$(password1).rules('add',{
+				required	:true,
+				minlength	:5
+			});
+			$(password2).rules('add',{
+				required	:true,
+				minlength	:5,
+				equalTo:	password1
+			});
+		}
+		else{
+			$(password1).rules('remove');
+			$(password2).rules('remove');
+		}
+	}
+	
 	function _bindEventHandlers(){
 		$(form).submit(_noAutoSubmit);
 		$(controls.save).click(_saveUser);
 		$(controls.cancel).click(_cancelEdit);
+		$(controls.resetPw).click(_resetPw);
 	}
 	
 	function _noAutoSubmit(e){
@@ -321,16 +399,31 @@ var EditUser=(function(){
 		return false;
 	}
 	
+	function _resetPw(){
+		$('#pw1').attr('class','tableRow');
+		$('#pw2').attr('class','tableRow');
+		$('#resetPw').attr('class','hiddenRow');
+		_setPwMandatory(true);
+	}
+	
 	function _saveUser(){
 		var isValid=$(form).valid();
 		if(isValid){
 			var user=_getJSON();
-			//jos uusi käyttäjä...
+			var create=false;
 			console.log(user);
-			create=true;
+			//jos uusi käyttäjä...
+			if(edit_mode=='new'){
+				create=true;
+			}
 			DAO.saveUser(user,create,function(status,usr){
 				if(status==DAO.STATUS.DONE){
-					window.location.assign('/user/new_user?status=user_created');
+					if(mode='new'){
+						window.location.assign('/user/new_user?status=user_created');
+					}
+					else{
+						window.location.assign('/user/change_user?status=user_changed');
+					}
 				}
 				else if(status==DAO.STATUS.FAIL){
 					//display error message
@@ -340,7 +433,7 @@ var EditUser=(function(){
 	}
 	
 	function _cancelEdit(){
-		window.location.assign('/user/new_user');
+		window.location.assign('/user/new_user?status=cancel');
 	}
 	
 	function _validate(){
@@ -370,6 +463,9 @@ var EditUser=(function(){
 
 var MessageHandler=(function(){
 	
+	var messageBox='#message_container';
+	var messageText='#message_text';
+	
 	function refreshMessageBox(){
 		DAO.getLastMessage(function(status,message){
 			if(status==DAO.STATUS.DONE){
@@ -378,13 +474,33 @@ var MessageHandler=(function(){
 			}
 			else if(status==DAO.STATUS.NA){
 				//no message found
-				console.log('No messages');
+				_hideMessages();
 			}
 		});
 	}
 	
 	function _displayMessage(message){
 		console.log(message);
+		if(message.type=='SUCCESS'){
+			$(messageBox).attr('class','success');
+		}
+		else if(message.type=='FAILURE'){
+			$(messageBox).attr('class','failure');
+		}
+		else if(message.type=='WARNING'){
+			$(messageBox).attr('class','warning');
+		}
+		else if(message.type=='INFO'){
+			$(messageBox).attr('class','info');
+		}
+		$(messageText).text(message.messageText);
+		
+	}
+	
+	function _hideMessages(){
+		console.log('No messages');
+		$(messageBox).attr('class','hidden');
+		$(messageText).text('');
 	}
 	
 	return{

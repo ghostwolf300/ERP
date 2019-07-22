@@ -6,5 +6,6 @@ public interface MessageService {
 	
 	public void addMessage(MessageDTO message);
 	public List<MessageDTO> getMessages();
+	public MessageDTO getLastMessage();
 	
 }

@@ -28,11 +28,7 @@ public class UserRestController {
 	@RequestMapping("/findById")
 	public ResponseEntity<UserDTO> getUser(
 			@RequestParam(value="userId") String userId){
-		UserDTO user=null;
-		User u=userService.findUser(userId);
-		if(u!=null) {
-			user=new UserDTO(u);
-		}
+		UserDTO user=userService.findUser(userId);
 		if(user==null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 		}
@@ -41,28 +37,35 @@ public class UserRestController {
 	
 	@RequestMapping(value="/edit/save", method=RequestMethod.POST)
 	public ResponseEntity<UserDTO> saveUser(@RequestParam("create") boolean create,@RequestBody UserDTO user){
-		User u=null;
+		UserDTO u=null;
 		if(create) {
 			System.out.println("Create new user");
 			System.out.println(user.getUsername());
 			u=userService.createUser(user);
+			if(u!=null) {
+				createSuccessMessageNew(u);
+				return new ResponseEntity<UserDTO>(u,HttpStatus.OK);
+			}
+			else {
+				createFailureMessageNew(u);
+				return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 		}
 		else {
 			System.out.println("Update existing user");
 			u=userService.saveUser(user);
-		}
-		if(u!=null) {
-			UserDTO usr=new UserDTO(u);
-			createSuccessMessage(usr);
-			return new ResponseEntity<UserDTO>(usr,HttpStatus.OK);
-		}
-		else {
-			createFailureMessage(user);
-			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+			if(u!=null) {
+				createSuccessMessageChange(u);
+				return new ResponseEntity<UserDTO>(u,HttpStatus.OK);
+			}
+			else {
+				createFailureMessageChange(u);
+				return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+			}
 		}
 	}
 	
-	private void createSuccessMessage(UserDTO user) {
+	private void createSuccessMessageNew(UserDTO user) {
 		MessageDTO message=new MessageDTO();
 		message.setTs(new Timestamp(System.currentTimeMillis()));
 		message.setType(MessageDTO.Type.SUCCESS);
@@ -70,11 +73,27 @@ public class UserRestController {
 		messageService.addMessage(message);
 	}
 	
-	private void createFailureMessage(UserDTO user) {
+	private void createSuccessMessageChange(UserDTO user) {
+		MessageDTO message=new MessageDTO();
+		message.setTs(new Timestamp(System.currentTimeMillis()));
+		message.setType(MessageDTO.Type.SUCCESS);
+		message.setMessageText("User "+user.getUsername()+" updated.");
+		messageService.addMessage(message);
+	}
+	
+	private void createFailureMessageNew(UserDTO user) {
 		MessageDTO message=new MessageDTO();
 		message.setTs(new Timestamp(System.currentTimeMillis()));
 		message.setType(MessageDTO.Type.FAILURE);
 		message.setMessageText("Failed to create user "+user.getUsername());
+		messageService.addMessage(message);
+	}
+	
+	private void createFailureMessageChange(UserDTO user) {
+		MessageDTO message=new MessageDTO();
+		message.setTs(new Timestamp(System.currentTimeMillis()));
+		message.setType(MessageDTO.Type.FAILURE);
+		message.setMessageText("Failed to update user "+user.getUsername());
 		messageService.addMessage(message);
 	}
 	
