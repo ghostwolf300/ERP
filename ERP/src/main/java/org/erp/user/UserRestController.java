@@ -1,5 +1,6 @@
 package org.erp.user;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.erp.message.MessageDTO;
@@ -53,6 +54,7 @@ public class UserRestController {
 		}
 		else {
 			System.out.println("Update existing user");
+			
 			u=userService.saveUser(user);
 			if(u!=null) {
 				createSuccessMessageChange(u);

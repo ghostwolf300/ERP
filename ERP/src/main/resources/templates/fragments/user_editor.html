@@ -73,6 +73,18 @@
 <div id="user_editor_3" class="editor" th:fragment="user_editor_3">
 	<h2>Authorisations & access</h2>
 </div>
+<div id="user_editor_4" class="editor" th:fragment="user_editor_4">
+	<div class="table">
+		<div class="tableBody">
+			<div class="tableRow">
+				<div class="tableCell">Record created [[${user.createdTs}]] by [[${user.createdBy}]]</div>
+			</div>
+			<div class="tableRow">
+				<div class="tableCell">Record last changed [[${user.changedTs}]] by [[${user.changedBy}]]</div>
+			</div>
+		</div>
+	</div>
+</div>
 <div id="user_editor_control" class="editor" th:fragment="user_editor_control">
 	<div id="control">
 		<input id="btn_cancel" type="button" class="ui-button ui-widget ui-corner-all" value="Cancel">

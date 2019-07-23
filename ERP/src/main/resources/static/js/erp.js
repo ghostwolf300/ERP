@@ -413,12 +413,12 @@ var EditUser=(function(){
 			var create=false;
 			console.log(user);
 			//jos uusi käyttäjä...
-			if(edit_mode=='new'){
+			if(mode=='new'){
 				create=true;
 			}
 			DAO.saveUser(user,create,function(status,usr){
 				if(status==DAO.STATUS.DONE){
-					if(mode='new'){
+					if(mode=='new'){
 						window.location.assign('/user/new_user?status=user_created');
 					}
 					else{
@@ -433,7 +433,12 @@ var EditUser=(function(){
 	}
 	
 	function _cancelEdit(){
-		window.location.assign('/user/new_user?status=cancel');
+		if(mode=='new'){
+			window.location.assign('/user/new_user?status=cancel');
+		}
+		else{
+			window.location.assign('/user/change_user?status=cancel');
+		}
 	}
 	
 	function _validate(){

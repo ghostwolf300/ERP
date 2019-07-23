@@ -1,6 +1,7 @@
 package org.erp.user;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -32,6 +33,17 @@ public class User {
 	private Date validFrom;
 	@Column(name="valid_to")
 	private Date validTo;
+	@Column(name="pw_changed")
+	private Date pwChanged;
+	@Column(name="created_ts")
+	private Timestamp createdTs;
+	@Column(name="created_by")
+	private String createdBy;
+	@Column(name="changed_ts")
+	private Timestamp changedTs;
+	@Column(name="changedBy")
+	private String changedBy;
+	
 	
 	public User() {
 		
@@ -47,6 +59,11 @@ public class User {
 		this.locked=user.isLocked();
 		this.validFrom=user.getValidFrom();
 		this.validTo=user.getValidTo();
+		this.pwChanged=user.getPwChanged();
+		this.createdTs=user.getCreatedTs();
+		this.createdBy=user.getCreatedBy();
+		this.changedTs=user.getChangedTs();
+		this.changedBy=user.getChangedBy();
 	}
 	
 	public String getId() {
@@ -120,6 +137,46 @@ public class User {
 
 	public void setValidTo(Date validTo) {
 		this.validTo = validTo;
+	}
+
+	public Date getPwChanged() {
+		return pwChanged;
+	}
+
+	public void setPwChanged(Date pwChanged) {
+		this.pwChanged = pwChanged;
+	}
+
+	public Timestamp getCreatedTs() {
+		return createdTs;
+	}
+
+	public void setCreatedTs(Timestamp createdTs) {
+		this.createdTs = createdTs;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getChangedTs() {
+		return changedTs;
+	}
+
+	public void setChangedTs(Timestamp changedTs) {
+		this.changedTs = changedTs;
+	}
+
+	public String getChangedBy() {
+		return changedBy;
+	}
+
+	public void setChangedBy(String changedBy) {
+		this.changedBy = changedBy;
 	}
 
 }

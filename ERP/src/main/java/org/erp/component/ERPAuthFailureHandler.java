@@ -6,8 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -25,13 +27,34 @@ public class ERPAuthFailureHandler implements AuthenticationFailureHandler {
 
 	}
 	
-	protected void handle(HttpServletRequest request,HttpServletResponse response,AuthenticationException exception) throws IOException{
-		String targetUrl=determineTargetUrl(exception);
-		redirectStrategy.sendRedirect(request, response, targetUrl);
+	protected void handle(HttpServletRequest request,HttpServletResponse response,AuthenticationException exception) throws IOException, ServletException{
+		
+		System.out.println("Failure handler");
+		
+		
+		String failureMessage=exception.getMessage();
+		String username=request.getParameter("username");
+		String targetUrl;
+			
+		if(failureMessage.equals("initial_pw")) {
+			//Redirect to change password
+			//targetUrl="/login/changePassword?username="+username;
+			targetUrl="/login?error=true";
+			System.out.println("Initial pw redirecting...");
+		}
+		else if(failureMessage.equals("locked")) {
+			//display error message on login screen
+			targetUrl="/login?error=true";
+		}
+		else {
+			//other error. display error message.
+			targetUrl="/login?error=true";
+		}
+		
+		//response.sendRedirect("/login?error=true");
+		request.getRequestDispatcher(targetUrl).forward(request, response);
+		//redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 	
-	protected String determineTargetUrl(AuthenticationException exception){
-		return "/login?error=true";
-	}
 
 }

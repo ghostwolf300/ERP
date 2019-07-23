@@ -2,6 +2,7 @@ package org.erp.user;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.sql.Timestamp;
 
 public class UserDTO implements Serializable {
 
@@ -21,6 +22,11 @@ public class UserDTO implements Serializable {
 	private Date validFrom;
 	private Date validTo;
 	private boolean pwFlag;
+	private Date pwChanged;
+	private Timestamp createdTs;
+	private String createdBy;
+	private Timestamp changedTs;
+	private String changedBy;
 	
 	public UserDTO() {
 		
@@ -42,6 +48,11 @@ public class UserDTO implements Serializable {
 		else {
 			this.setPwFlag(false);
 		}
+		this.pwChanged=user.getPwChanged();
+		this.createdTs=user.getCreatedTs();
+		this.createdBy=user.getCreatedBy();
+		this.changedTs=user.getChangedTs();
+		this.changedBy=user.getChangedBy();
 	}
 
 
@@ -142,6 +153,46 @@ public class UserDTO implements Serializable {
 
 	public void setPwFlag(boolean pwFlag) {
 		this.pwFlag = pwFlag;
+	}
+
+	public Date getPwChanged() {
+		return pwChanged;
+	}
+
+	public void setPwChanged(Date pwChanged) {
+		this.pwChanged = pwChanged;
+	}
+
+	public Timestamp getCreatedTs() {
+		return createdTs;
+	}
+
+	public void setCreatedTs(Timestamp createdTs) {
+		this.createdTs = createdTs;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Timestamp getChangedTs() {
+		return changedTs;
+	}
+
+	public void setChangedTs(Timestamp changedTs) {
+		this.changedTs = changedTs;
+	}
+
+	public String getChangedBy() {
+		return changedBy;
+	}
+
+	public void setChangedBy(String changedBy) {
+		this.changedBy = changedBy;
 	}
 	
 

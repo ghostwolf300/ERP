@@ -1,5 +1,8 @@
 package org.erp.user;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -19,15 +22,20 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		u.setLocked(user.isLocked());
 		u.setValidFrom(user.getValidFrom());
 		u.setValidTo(user.getValidTo());
+		u.setChangedTs(user.getChangedTs());
+		u.setChangedBy(user.getChangedBy());
 		em.flush();
 		return u;
 	}
 
 	@Override
-	public int updatePassword(String userId, String password) {
+	public int updatePassword(String userId, String password,Date pwChanged,Timestamp changedTs,String changedBy) {
 		System.out.println("DB "+userId+" Updating password");
 		User u=(User)em.find(User.class,userId);
 		u.setPassword(password);
+		u.setPwChanged(pwChanged);
+		u.setChangedTs(changedTs);
+		u.setChangedBy(changedBy);
 		em.flush();
 		return -1;
 	}

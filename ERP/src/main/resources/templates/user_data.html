@@ -21,6 +21,7 @@
 					<li><a href = "#tab_general">General</a></li>
 					<li><a href = "#tab_login">Login</a></li>
 					<li><a href = "#tab_auth">Auth.</a></li>
+					<li><a href = "#tab_info">Info</a></li>
 				</ul>
 				<div id="tab_general">
 					<div th:replace="fragments/user_editor :: user_editor_1"></div>
@@ -30,6 +31,9 @@
 				</div>
 				<div id="tab_auth">
 					<div th:replace="fragments/user_editor :: user_editor_3"></div>
+				</div>
+				<div id="tab_info">
+					<div th:replace="fragments/user_editor :: user_editor_4"></div>
 				</div>
 			</div>
 			<div th:replace="fragments/user_editor :: user_editor_control"></div>
