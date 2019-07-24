@@ -7,7 +7,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.erp.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
@@ -16,6 +19,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ERPAuthSuccessHandler implements AuthenticationSuccessHandler {
+	
+	
+	@Autowired
+	private UserService userService;
 	
 	private RedirectStrategy redirectStrategy=new DefaultRedirectStrategy();
 	
@@ -27,8 +34,20 @@ public class ERPAuthSuccessHandler implements AuthenticationSuccessHandler {
 
 	}
 	
-	protected void handle(HttpServletRequest request,HttpServletResponse response,Authentication auth) throws IOException{
-		String targetUrl=determineTargetUrl(auth);
+	protected void handle(HttpServletRequest request,HttpServletResponse response,Authentication auth) throws IOException, ServletException{
+		String targetUrl=null;
+		//if user has flag "initial password"
+		if(isInitialPassword(auth)) {
+			//remove all authorities/privileges
+			//redirect to password change page
+			targetUrl="/changePassword";
+		}
+		//else
+		else {
+			//redirect to "home"
+			targetUrl="/home";
+		}
+		
 		redirectStrategy.sendRedirect(request, response, targetUrl);
 	}
 	
@@ -43,6 +62,11 @@ public class ERPAuthSuccessHandler implements AuthenticationSuccessHandler {
         }
         session.removeAttribute(WebAttributes.AUTHENTICATION_EXCEPTION);
     }
+	
+	protected boolean isInitialPassword(Authentication auth) {
+		String username=auth.getName();
+		return userService.isInitialPassword(username);
+	}
 
 	public RedirectStrategy getRedirectStrategy() {
 		return redirectStrategy;

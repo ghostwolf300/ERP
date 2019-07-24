@@ -7,7 +7,7 @@
     <body class="centered-wrapper">
     	<div id="login-box" class="centered-content">
 	        <div id="login-error-box" th:if="${error}">
-	            Invalid username and/or password.
+	            <span id="login-error-message" th:text="${errorMessage}"></span>
 	        </div>
 	        <div th:if="${param.logout}">
 	            You have been logged out.

@@ -7,7 +7,9 @@ import java.util.List;
 
 import org.erp.component.IAuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
@@ -17,6 +19,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.erp.exception.InitialPasswordException;
 
 @Service("userService")
 public class UserServiceImpl implements UserService,UserDetailsService {
@@ -39,24 +43,31 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException,AuthenticationException {
 		User user=userRepository.findById(username);
-		
 		if(user==null) {
 			//TODO:add logic here
 			throw new UsernameNotFoundException(username);
 		}
+		else if(!user.isEnabled()) {
+			throw new DisabledException(username);
+		}
+		else if(accountExpired(user)) {
+			throw new AccountExpiredException(username);
+		}
 		else if(user.isLocked()) {
 			System.out.println("locked");
+			throw new LockedException(username);
 			
 		}
-		else if(user.isInitialPw()) {
-			System.out.println("initial_pw");
-			throw new DisabledException("initial_pw");
-		}
-		return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(), user.isEnabled(),true,true,true,getAuthorities());
+		return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(), user.isEnabled(),true,true,true,getAuthorities(username));
 	}
 	
-	private List<GrantedAuthority> getAuthorities(){
+	private boolean accountExpired(User user) {
+		return false;
+	}
+	
+	private List<GrantedAuthority> getAuthorities(String username){
 		List<GrantedAuthority> authorities=new ArrayList<GrantedAuthority>();
+		//authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		return authorities;
 	}
@@ -66,6 +77,7 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 		UserDTO u=null;
 		User user=userRepository.findById(userId);
 		if(user!=null) {
+			System.out.println("test: "+user.getUserRoles().size());
 			u=new UserDTO(user);
 		}
 		return u;
@@ -120,6 +132,42 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 	public UserDTO deleteUser(UserDTO user) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public int changeOwnPassword(String password) {
+		Authentication auth=authFacade.getAuthentication();
+		String username=auth.getName();
+		Timestamp changedTs=new Timestamp(System.currentTimeMillis());
+		String changedBy=auth.getName();
+		Date pwChanged=new Date(System.currentTimeMillis());
+		String pw=passwordEncoder.encode(password);
+		userRepository.updatePassword(username, pw,false, pwChanged, changedTs, changedBy);
+		return 0;
+	}
+
+	@Override
+	public boolean isInitialPassword(String username) {
+		User u=userRepository.findById(username);
+		if(u.isInitialPw()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	@Override
+	public int logout() {
+		authFacade.getAuthentication().setAuthenticated(false);
+		return 0;
+	}
+
+	@Override
+	public int allowPasswordChangeOnly() {
+		Authentication auth=authFacade.getAuthentication();
+		
+		return 0;
 	}
 
 }

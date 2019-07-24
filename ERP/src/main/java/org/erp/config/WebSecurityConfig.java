@@ -43,13 +43,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 		"/js/**",
                 		"/img/**",
                 		"/wro/**").permitAll()
-                .antMatchers("/users").hasRole("ADMIN")
+                .antMatchers("/user/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
             .and()
             	.formLogin()
                 .loginPage("/login")
                 .permitAll()
-                //.failureUrl("/login?error=true")
                 .successHandler(successHandler)
                 .failureHandler(failureHandler)
             .and()

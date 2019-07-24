@@ -39,6 +39,20 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		em.flush();
 		return -1;
 	}
+
+	@Override
+	public int updatePassword(String userId, String password, boolean initial, Date pwChanged, Timestamp changedTs,
+			String changedBy) {
+		System.out.println("DB "+userId+" Updating password");
+		User u=(User)em.find(User.class,userId);
+		u.setPassword(password);
+		u.setPwChanged(pwChanged);
+		u.setInitialPw(initial);
+		u.setChangedTs(changedTs);
+		u.setChangedBy(changedBy);
+		em.flush();
+		return -1;
+	}
 	
 
 }

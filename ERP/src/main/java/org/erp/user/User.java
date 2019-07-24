@@ -2,11 +2,17 @@ package org.erp.user;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.persistence.JoinColumn;
+
+import com.erp.role.Role;
 
 @Entity
 @Table(name="t_user")
@@ -44,6 +50,12 @@ public class User {
 	@Column(name="changedBy")
 	private String changedBy;
 	
+	@ManyToMany
+	@JoinTable(
+			name="t_user_roles",
+			joinColumns=@JoinColumn(name="user_id"),
+			inverseJoinColumns=@JoinColumn(name="role_id"))
+	Set<Role> userRoles;
 	
 	public User() {
 		
@@ -165,6 +177,14 @@ public class User {
 
 	public Timestamp getChangedTs() {
 		return changedTs;
+	}
+
+	public Set<Role> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Set<Role> roles) {
+		this.userRoles = roles;
 	}
 
 	public void setChangedTs(Timestamp changedTs) {

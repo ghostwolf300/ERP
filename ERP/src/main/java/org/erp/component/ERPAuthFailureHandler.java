@@ -6,7 +6,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.security.authentication.AccountExpiredException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -15,8 +18,18 @@ import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
+import com.erp.exception.InitialPasswordException;
+
 @Component
 public class ERPAuthFailureHandler implements AuthenticationFailureHandler {
+	
+	
+	public static final int BAD_CREDENTIALS=1;
+	public static final int ACCOUNT_DISABLED=2;
+	public static final int ACCOUNT_EXPIRED=3;
+	public static final int ACCOUNT_LOCKED=4;
+	public static final int INITIAL_PASSWORD=5;
+	public static final int OTHER_ERROR=99;
 	
 	private RedirectStrategy redirectStrategy=new DefaultRedirectStrategy();
 	
@@ -29,26 +42,33 @@ public class ERPAuthFailureHandler implements AuthenticationFailureHandler {
 	
 	protected void handle(HttpServletRequest request,HttpServletResponse response,AuthenticationException exception) throws IOException, ServletException{
 		
-		System.out.println("Failure handler");
-		
-		
 		String failureMessage=exception.getMessage();
-		String username=request.getParameter("username");
+		String username;
 		String targetUrl;
-			
-		if(failureMessage.equals("initial_pw")) {
-			//Redirect to change password
-			//targetUrl="/login/changePassword?username="+username;
-			targetUrl="/login?error=true";
-			System.out.println("Initial pw redirecting...");
+		
+		if(exception instanceof BadCredentialsException) {
+			username=exception.getMessage();
+			targetUrl="/login?error=true&type="+BAD_CREDENTIALS;
 		}
-		else if(failureMessage.equals("locked")) {
-			//display error message on login screen
-			targetUrl="/login?error=true";
+		else if(exception.getCause()!=null && exception.getCause() instanceof DisabledException) {
+			username=exception.getCause().getMessage();
+			targetUrl="/login?error=true&type="+ACCOUNT_DISABLED;
+		}
+		else if(exception.getCause()!=null && exception.getCause() instanceof AccountExpiredException) {
+			username=exception.getCause().getMessage();
+			targetUrl="/login?error=true&type="+ACCOUNT_EXPIRED;
+		}
+		else if(exception.getCause()!=null && exception.getCause() instanceof LockedException) {
+			username=exception.getCause().getMessage();
+			targetUrl="/login?error=true&type="+ACCOUNT_LOCKED;
+		}
+		else if(exception.getCause()!=null && exception.getCause() instanceof InitialPasswordException) {
+			System.out.println("Failure Handler: Initial Password");
+			username=exception.getCause().getMessage();
+			targetUrl="/changePassword";
 		}
 		else {
-			//other error. display error message.
-			targetUrl="/login?error=true";
+			targetUrl="/login?error=true&type="+OTHER_ERROR;
 		}
 		
 		//response.sendRedirect("/login?error=true");
