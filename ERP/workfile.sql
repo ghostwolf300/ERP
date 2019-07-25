@@ -24,3 +24,7 @@ insert into t_role (id,name,description) values(30,'ROLE_INITIAL_PW','Temporary 
 
 insert into t_user_role (user_id,role_id) values('ville.susi',10);
 insert into t_user_role (user_id,role_id) values('aku.ankka',20);
+
+select t_role.id from t_role left join t_user_role on t_role.id=t_user_role.role_id;
+select t_role.id from t_role left join t_user_role on t_role.id=t_user_role.role_id where user_id<>'aku.ankka' or user_id is null group by t_role.id;
+select t_role.id from t_role left join t_user_role on t_role.id=t_user_role.role_id where user_id='aku.ankka' group by t_role.id;

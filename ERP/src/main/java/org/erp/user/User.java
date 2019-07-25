@@ -9,10 +9,13 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.JoinColumn;
 
-import com.erp.role.Role;
+import org.erp.role.Role;
+import org.erp.userrole.UserRole;
+
+import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name="t_user")
@@ -50,12 +53,19 @@ public class User {
 	@Column(name="changedBy")
 	private String changedBy;
 	
-	@ManyToMany
-	@JoinTable(
-			name="t_user_roles",
-			joinColumns=@JoinColumn(name="user_id"),
-			inverseJoinColumns=@JoinColumn(name="role_id"))
-	Set<Role> userRoles;
+//	@ManyToMany
+//	@JoinTable(
+//			name="t_user_role",
+//			joinColumns= {
+//					@JoinColumn(name="user_id")
+//			},
+//			inverseJoinColumns= {
+//					@JoinColumn(name="role_id")
+//			})
+//	Set<Role> userRoles;
+	
+	@OneToMany(mappedBy="user")
+	Set<UserRole> userRoles;
 	
 	public User() {
 		
@@ -159,6 +169,14 @@ public class User {
 		this.pwChanged = pwChanged;
 	}
 
+	public Set<UserRole> getUserRoles() {
+		return userRoles;
+	}
+
+	public void setUserRoles(Set<UserRole> userRoles) {
+		this.userRoles = userRoles;
+	}
+
 	public Timestamp getCreatedTs() {
 		return createdTs;
 	}
@@ -179,13 +197,11 @@ public class User {
 		return changedTs;
 	}
 
-	public Set<Role> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(Set<Role> roles) {
-		this.userRoles = roles;
-	}
+	/*
+	 * public Set<Role> getUserRoles() { return userRoles; }
+	 * 
+	 * public void setUserRoles(Set<Role> roles) { this.userRoles = roles; }
+	 */
 
 	public void setChangedTs(Timestamp changedTs) {
 		this.changedTs = changedTs;

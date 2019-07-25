@@ -1,4 +1,4 @@
-package com.erp.exception;
+package org.erp.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

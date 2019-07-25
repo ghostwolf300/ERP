@@ -6,6 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.erp.component.IAuthenticationFacade;
+import org.erp.exception.InitialPasswordException;
+import org.erp.role.Role;
+import org.erp.role.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
@@ -20,13 +23,14 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.erp.exception.InitialPasswordException;
-
 @Service("userService")
 public class UserServiceImpl implements UserService,UserDetailsService {
 	
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired 
+	private RoleRepository roleRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -78,6 +82,8 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 		User user=userRepository.findById(userId);
 		if(user!=null) {
 			System.out.println("test: "+user.getUserRoles().size());
+			List<Role> roles=roleRepository.findRolesNotAssigned(userId);
+			System.out.println(roles.size());
 			u=new UserDTO(user);
 		}
 		return u;

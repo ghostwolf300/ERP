@@ -3,6 +3,12 @@ package org.erp.user;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.erp.role.Role;
+import org.erp.role.RoleDTO;
+import org.erp.userrole.UserRole;
 
 public class UserDTO implements Serializable {
 
@@ -23,6 +29,7 @@ public class UserDTO implements Serializable {
 	private Date validTo;
 	private boolean pwFlag;
 	private Date pwChanged;
+	private Set<RoleDTO> roles;
 	private Timestamp createdTs;
 	private String createdBy;
 	private Timestamp changedTs;
@@ -47,6 +54,10 @@ public class UserDTO implements Serializable {
 		}
 		else {
 			this.setPwFlag(false);
+		}
+		this.roles=new HashSet<RoleDTO>();
+		for(UserRole ur : user.getUserRoles()) {
+			this.roles.add(new RoleDTO(ur));
 		}
 		this.pwChanged=user.getPwChanged();
 		this.createdTs=user.getCreatedTs();
@@ -129,6 +140,14 @@ public class UserDTO implements Serializable {
 
 	public void setLocked(boolean locked) {
 		this.locked = locked;
+	}
+
+	public Set<RoleDTO> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<RoleDTO> roles) {
+		this.roles = roles;
 	}
 
 	public Date getValidFrom() {
