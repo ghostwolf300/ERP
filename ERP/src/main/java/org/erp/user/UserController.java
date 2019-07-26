@@ -2,12 +2,15 @@ package org.erp.user;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.erp.controller.NavController;
 import org.erp.controller.NavController.Views;
 import org.erp.message.MessageDTO;
 import org.erp.message.MessageDTO.Type;
 import org.erp.message.MessageService;
+import org.erp.role.Role;
+import org.erp.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,6 +27,9 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
+	private RoleService roleService;
+	
+	@Autowired
 	private MessageService messageService;
 	
 	@RequestMapping("/edit/{userId}/{isNewUser}")
@@ -32,6 +38,7 @@ public class UserController {
 			@PathVariable boolean isNewUser) {
 		
 		UserDTO user=null;
+		List<Role> unassignedRoles=null;
 		
 		if(isNewUser) {
 			user=new UserDTO();
@@ -39,11 +46,12 @@ public class UserController {
 			user.setLocked(false);
 			user.setInitialPw(true);
 			user.setValidFrom(new Date(System.currentTimeMillis()));
+			unassignedRoles=roleService.findAllRoles();
 		}
 		else {
 			//find user data
 			user=userService.findUser(userId);
-			System.out.println("Found user "+user.getFirstName()+" "+user.getLastName());
+			unassignedRoles=roleService.findUnassignedRoles(userId);
 		}
 		
 		ModelAndView modelAndView =new ModelAndView();
@@ -53,6 +61,8 @@ public class UserController {
 		modelAndView.addObject("viewId",NavController.Views.EDIT_USER);
 		
 		modelAndView.addObject("user", user);
+		modelAndView.addObject("unassignedRoles", unassignedRoles);
+		
 		if(isNewUser) {
 			modelAndView.addObject("mode","new");
 		}

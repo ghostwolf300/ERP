@@ -2,6 +2,8 @@ package org.erp.user;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -13,7 +15,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.erp.role.Role;
+import org.erp.role.RoleDTO;
 import org.erp.userrole.UserRole;
+import org.erp.userrole.UserRoleKey;
 
 import javax.persistence.JoinColumn;
 
@@ -86,6 +90,12 @@ public class User {
 		this.createdBy=user.getCreatedBy();
 		this.changedTs=user.getChangedTs();
 		this.changedBy=user.getChangedBy();
+		if(user.getRoles()!=null) {
+			this.userRoles=new HashSet<UserRole>();
+			for(RoleDTO r : user.getRoles()) {
+				this.userRoles.add(new UserRole(new UserRoleKey(user.getUsername(),r.getId())));
+			}
+		}
 	}
 	
 	public String getId() {

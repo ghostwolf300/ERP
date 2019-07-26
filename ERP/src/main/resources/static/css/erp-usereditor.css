@@ -32,14 +32,19 @@ div#user_editor_control.editor{
 	display:none;
 }
 
+#list_roles_assigned_wrapper,#list_roles_available_wrapper{
+	overflow-y:auto;
+	width: 360px;
+ 	min-width: 360px;
+ 	min-height: 300px;
+ 	max-height: 400px;
+}
+
 /*Selectabe list */
 #list_roles_assigned,#list_roles_available{ 
  	list-style-type: none; 
  	margin: 0; 
- 	padding: 0; 
- 	width: 200px;
- 	min-width: 200px;
- 	height: 400px;
+ 	padding: 0;
  	background: #f6f6f6;
  	border: 1px solid #c5c5c5;
 }
@@ -69,7 +74,22 @@ div#user_editor_control.editor{
 }
 
 #roles_buttons{
-	width:80px;
-	min-width:80px;	
+	width:100px;
+	min-width:100px;
+	margin-left:5px;
+	margin-right:5px;	
+}
+
+#button_wrapper{
+	margin-top:100px;
+}
+
+.role_add_or_remove{
+	width:100px;
+	min-width:100px;
+}
+
+#btn_remove_role{
+	margin-top: 5px;
 }
 

@@ -75,26 +75,36 @@
   	$(function(){
     	$("#list_roles_assigned").selectable();
     	$("#list_roles_available").selectable();
+    	$("#btn_add_role").button();
+    	$("#btn_remove_role").button();
   	});
   	</script>
   	<div id="roles_container">
 		<div id="roles_assigned">
 			<h3>Roles assigned</h3>
-			<ol id="list_roles_assigned">
-				<th:block th:each="role : ${user.roles}">
-					<li class="ui-widget-content" th:text="${role.name}"></li>
-				</th:block>
-			</ol>
+			<div id="list_roles_assigned_wrapper">
+				<ol id="list_roles_assigned">
+					<th:block th:each="role : ${user.roles}">
+						<li th:attr="data-id=${role.id}" class="ui-widget-content" th:text="${role.name}"></li>
+					</th:block>
+				</ol>
+			</div>
 		</div>
 		<div id="roles_buttons">
+			<div id="button_wrapper">
+				<input id="btn_add_role" type="button" value="Add" class="role_add_or_remove ui-button ui-widget ui-corner-all"/>
+				<input id="btn_remove_role" type="button" value="Remove" class="role_add_or_remove ui-button ui-widget ui-corner-all"/>
+			</div>
 		</div>
 		<div id="roles_available">
 			<h3>Roles available</h3>
-			<ol id="list_roles_available">
-				<li class="ui-widget-content">Item 4</li>
-				<li class="ui-widget-content">Item 5</li>
-				<li class="ui-widget-content">Item 6</li>
-			</ol>
+			<div id="list_roles_available_wrapper">
+				<ol id="list_roles_available">
+					<th:block th:each="role : ${unassignedRoles}">
+						<li th:attr="data-id=${role.id}" class="ui-widget-content" th:text="${role.name}"></li>
+					</th:block>
+				</ol>
+			</div>
 		</div>
 	</div>
 </div>

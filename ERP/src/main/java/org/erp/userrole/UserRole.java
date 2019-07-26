@@ -34,7 +34,11 @@ public class UserRole {
 		this.user=u;
 		this.role=r;
 	}
-
+	
+	public UserRole(UserRoleKey id) {
+		this.id=id;
+	}
+	
 	public UserRoleKey getId() {
 		return id;
 	}

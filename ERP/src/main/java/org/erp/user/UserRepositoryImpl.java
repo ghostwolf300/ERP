@@ -6,6 +6,8 @@ import java.sql.Timestamp;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.erp.userrole.UserRole;
+
 public class UserRepositoryImpl implements UserRepositoryCustom {
 	
 	@PersistenceContext

@@ -277,6 +277,8 @@ var EditUser=(function(){
 	
 	var mode;
 	var form='#user_editor_form';
+	var listRolesAssigned='#list_roles_assigned';
+	var listRolesAvailable='#list_roles_available';
 	
 	var fields={
 			userId 		:'user_id',
@@ -291,9 +293,12 @@ var EditUser=(function(){
 			validTo 	:'dateValidTo'
 	}
 	var controls={
-			save 	:'#btn_save',
-			cancel 	:'#btn_cancel',
-			resetPw	:'#resetPw'
+			save 		:'#btn_save',
+			cancel 		:'#btn_cancel',
+			resetPw		:'#resetPw',
+			addRole 	:'#btn_add_role',
+			removeRole	:'#btn_remove_role'
+				
 	}
 	
 	function init(){
@@ -392,6 +397,8 @@ var EditUser=(function(){
 		$(controls.save).click(_saveUser);
 		$(controls.cancel).click(_cancelEdit);
 		$(controls.resetPw).click(_resetPw);
+		$(controls.addRole).click(_addRole);
+		$(controls.removeRole).click(_removeRole);
 	}
 	
 	function _noAutoSubmit(e){
@@ -404,6 +411,44 @@ var EditUser=(function(){
 		$('#pw2').attr('class','tableRow');
 		$('#resetPw').attr('class','hiddenRow');
 		_setPwMandatory(true);
+	}
+	
+	function _addRole(){
+		var selectedRoles=$(listRolesAvailable).find(".ui-selected");
+		Array.from(selectedRoles).forEach(function(item){
+			console.log(item);
+			$(listRolesAssigned).append(item);
+		});
+		var roles=_getAssignedRoles();
+		roles.forEach(function(role){
+			console.log(role);
+		});
+		
+	}
+	
+	function _removeRole(){
+		var selectedRoles=$(listRolesAssigned).find(".ui-selected");
+		Array.from(selectedRoles).forEach(function(item){
+			console.log(item);
+			$(listRolesAvailable).append(item);
+		});
+	}
+	
+	function _getAssignedRoles(){
+		var elements=$(listRolesAssigned).find("li");
+		var roles=[];
+		var role;
+		Array.from(elements).forEach(function(el){
+			role={
+					id			: parseInt($(el).attr("data-id")),
+					name		:$(el).text(),
+					description	:""
+			}
+			roles.push(role);
+		});
+		
+		return roles;
+		
 	}
 	
 	function _saveUser(){
@@ -455,7 +500,8 @@ var EditUser=(function(){
 				initialPw	:$('#'+fields.initialPw).prop('checked'),
 				locked		:$('#'+fields.locked).prop('checked'),
 				validFrom	:$('#'+fields.validFrom).val(),
-				validTo		:$('#'+fields.validTo).val()
+				validTo		:$('#'+fields.validTo).val(),
+				roles		:_getAssignedRoles()
 		}
 		return user;
 	}

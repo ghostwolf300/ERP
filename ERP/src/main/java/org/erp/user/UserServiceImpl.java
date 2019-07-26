@@ -3,12 +3,17 @@ package org.erp.user;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.erp.component.IAuthenticationFacade;
 import org.erp.exception.InitialPasswordException;
 import org.erp.role.Role;
+import org.erp.role.RoleDTO;
 import org.erp.role.RoleRepository;
+import org.erp.userrole.UserRole;
+import org.erp.userrole.UserRoleKey;
+import org.erp.userrole.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AccountExpiredException;
 import org.springframework.security.authentication.DisabledException;
@@ -30,7 +35,7 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 	private UserRepository userRepository;
 	
 	@Autowired 
-	private RoleRepository roleRepository;
+	private UserRoleRepository userRoleRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -81,9 +86,6 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 		UserDTO u=null;
 		User user=userRepository.findById(userId);
 		if(user!=null) {
-			System.out.println("test: "+user.getUserRoles().size());
-			List<Role> roles=roleRepository.findRolesNotAssigned(userId);
-			System.out.println(roles.size());
 			u=new UserDTO(user);
 		}
 		return u;
@@ -96,6 +98,13 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 			//TODO: add logic here
 		}
 		User u=new User(user);
+		List<UserRole> userRoles=new ArrayList<UserRole>();
+		for(RoleDTO r : user.getRoles()) {
+			UserRole role=new UserRole(new UserRoleKey(user.getUsername(),r.getId()));
+			role.setRole(new Role(r.getId(),r.getName(),r.getDescription()));
+			userRoles.add(role);
+		}
+		
 		u.setPassword(passwordEncoder.encode(user.getPassword()));
 		System.out.println("New user id: "+u.getId());
 		
@@ -111,20 +120,37 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 		u.setPwChanged(pwChanged);
 		
 		u=userRepository.save(u);
+		//List<UserRole> savedRoles=userRoleRepository.saveAll(userRoles);
+		//u.setUserRoles(new HashSet<UserRole>(savedRoles));
+		
 		return new UserDTO(u);
 	}
 
 	@Override
 	public UserDTO saveUser(UserDTO user) {
+		//TODO: this is a mess. do something about it.
 		User u=new User(user);
-	
+		List<UserRole> userRoles=new ArrayList<UserRole>();
+		for(RoleDTO r : user.getRoles()) {
+			UserRole role=new UserRole(new UserRoleKey(user.getUsername(),r.getId()));
+			role.setRole(new Role(r.getId(),r.getName(),r.getDescription()));
+			userRoles.add(role);
+		}
+		
 		Authentication auth=authFacade.getAuthentication();
 		Timestamp changedTs=new Timestamp(System.currentTimeMillis());
 		String changedBy=auth.getName();
 		u.setChangedTs(changedTs);
 		u.setChangedBy(changedBy);
-		u=userRepository.updateUser(u);
 		
+		System.out.println("updating basic data...");
+		u=userRepository.updateUser(u);
+		System.out.println("updating user roles...");
+		int d=userRoleRepository.removeByUserId(user.getUsername());
+		List<UserRole> savedRoles=userRoleRepository.saveAll(userRoles);
+		u.setUserRoles(new HashSet<UserRole>(savedRoles));
+		
+		System.out.println("updating password...");
 		if(user.getPassword()!=null && !user.getPassword().isEmpty()) {
 			System.out.println("Updating password...");
 			Date pwChanged=new Date(System.currentTimeMillis());
