@@ -13,4 +13,6 @@ public interface UserRepositoryCustom {
 	public int updatePassword(String userId,String password,Date pwChange,Timestamp changedTs,String changedBy);
 	@Transactional
 	public int updatePassword(String userId,String password,boolean initial,Date pwChange,Timestamp changedTs,String changedBy);
+	@Transactional
+	public User mergeUser(User user);
 }

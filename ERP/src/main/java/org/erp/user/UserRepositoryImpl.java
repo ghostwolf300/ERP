@@ -17,16 +17,25 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 	public User updateUser(User user) {
 		System.out.println("DB "+user.getId()+" Updating basic data");
 		User u=(User)em.find(User.class,user.getId());
-		u.setFirstName(user.getFirstName());
+		//User u=em.merge(user);
+		u.setFirstName(user.getFirstName()); 
 		u.setLastName(user.getLastName());
-		u.setEmail(user.getEmail());
+		u.setEmail(user.getEmail()); 
 		u.setInitialPw(user.isInitialPw());
-		u.setLocked(user.isLocked());
+		u.setLocked(user.isLocked()); 
 		u.setValidFrom(user.getValidFrom());
-		u.setValidTo(user.getValidTo());
+		u.setValidTo(user.getValidTo()); 
 		u.setChangedTs(user.getChangedTs());
-		u.setChangedBy(user.getChangedBy());
+		u.setChangedBy(user.getChangedBy()); 
+		u.setUserRoles(user.getUserRoles());
+		
 		em.flush();
+		return u;
+	}
+	
+	@Override
+	public User mergeUser(User user) {
+		User u=em.merge(user);
 		return u;
 	}
 
@@ -55,6 +64,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		em.flush();
 		return -1;
 	}
+
+	
 	
 
 }

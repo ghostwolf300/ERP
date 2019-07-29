@@ -1,7 +1,9 @@
 package org.erp.userrole;
 
+import javax.persistence.CascadeType;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
@@ -17,11 +19,15 @@ public class UserRole {
 	@EmbeddedId
 	private UserRoleKey id;
 	
-	@ManyToOne
+	@ManyToOne(
+			fetch=FetchType.LAZY
+	)
 	@MapsId("user_id")
 	@JoinColumn(name="user_id")
 	private User user;
-	@ManyToOne
+	@ManyToOne(
+			fetch=FetchType.LAZY
+	)
 	@MapsId("role_id")
 	@JoinColumn(name="role_id")
 	private Role role;
@@ -30,13 +36,14 @@ public class UserRole {
 	
 	}
 	
-	public UserRole(User u,Role r) {
-		this.user=u;
-		this.role=r;
-	}
-	
 	public UserRole(UserRoleKey id) {
 		this.id=id;
+	}
+	
+	public UserRole(UserRoleKey id,User user,Role role) {
+		this.id=id;
+		this.user=user;
+		this.role=role;
 	}
 	
 	public UserRoleKey getId() {
@@ -46,7 +53,7 @@ public class UserRole {
 	public void setId(UserRoleKey id) {
 		this.id = id;
 	}
-
+	
 	public User getUser() {
 		return user;
 	}

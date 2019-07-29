@@ -26,7 +26,7 @@ public class RoleDTO implements Serializable{
 	}
 	
 	public RoleDTO(UserRole ur) {
-		this.id=ur.getRole().getId();
+		this.id=ur.getId().getRoleId();
 		this.name=ur.getRole().getName();
 		this.description=ur.getRole().getDescription();
 	}

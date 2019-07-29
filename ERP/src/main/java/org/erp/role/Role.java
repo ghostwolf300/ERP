@@ -2,9 +2,11 @@ package org.erp.role;
 
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityResult;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
@@ -67,7 +69,12 @@ public class Role {
 	@Column(name="description")
 	private String description;
 	
-	@OneToMany(mappedBy="role")
+	@OneToMany(
+			mappedBy="role",
+			fetch=FetchType.LAZY,
+			cascade=CascadeType.ALL,
+			orphanRemoval=true
+	)
 	private Set<UserRole> userRoles;
 	
 	

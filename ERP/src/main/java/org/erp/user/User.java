@@ -2,12 +2,15 @@ package org.erp.user;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -48,9 +51,9 @@ public class User {
 	private Date validTo;
 	@Column(name="pw_changed")
 	private Date pwChanged;
-	@Column(name="created_ts")
+	@Column(name="created_ts", nullable=false,updatable=false)
 	private Timestamp createdTs;
-	@Column(name="created_by")
+	@Column(name="created_by", nullable=false, updatable=false)
 	private String createdBy;
 	@Column(name="changed_ts")
 	private Timestamp changedTs;
@@ -68,7 +71,12 @@ public class User {
 //			})
 //	Set<Role> userRoles;
 	
-	@OneToMany(mappedBy="user")
+	@OneToMany(
+			mappedBy="user",
+			fetch=FetchType.LAZY,
+			cascade=CascadeType.ALL,
+			orphanRemoval=true
+	)
 	Set<UserRole> userRoles;
 	
 	public User() {
@@ -90,12 +98,11 @@ public class User {
 		this.createdBy=user.getCreatedBy();
 		this.changedTs=user.getChangedTs();
 		this.changedBy=user.getChangedBy();
-		if(user.getRoles()!=null) {
-			this.userRoles=new HashSet<UserRole>();
-			for(RoleDTO r : user.getRoles()) {
-				this.userRoles.add(new UserRole(new UserRoleKey(user.getUsername(),r.getId())));
-			}
-		}
+		/*
+		 * if(user.getRoles()!=null) { this.userRoles=new HashSet<UserRole>();
+		 * for(RoleDTO r : user.getRoles()) { this.userRoles.add(new UserRole(new
+		 * UserRoleKey(user.getUsername(),r.getId()))); } }
+		 */
 	}
 	
 	public String getId() {
@@ -207,12 +214,6 @@ public class User {
 		return changedTs;
 	}
 
-	/*
-	 * public Set<Role> getUserRoles() { return userRoles; }
-	 * 
-	 * public void setUserRoles(Set<Role> roles) { this.userRoles = roles; }
-	 */
-
 	public void setChangedTs(Timestamp changedTs) {
 		this.changedTs = changedTs;
 	}
@@ -223,6 +224,59 @@ public class User {
 
 	public void setChangedBy(String changedBy) {
 		this.changedBy = changedBy;
+	}
+	
+	public void addUserRole(UserRole role) {
+		if(userRoles==null) {
+			userRoles=new HashSet<UserRole>();
+		}
+		role.setUser(this);
+		userRoles.add(role);
+	}
+	
+	public void removeUserRole(UserRole role) {
+		if(userRoles!=null) {
+			userRoles.remove(role);
+		}
+	}
+	
+	public boolean roleExists(int roleId) {
+		boolean found=false;
+		if(userRoles!=null && userRoles.size()>0) {
+			for(UserRole r : userRoles) {
+				if(r.getId().getRoleId()==roleId) {
+					found=true;
+				}
+			}
+		}
+		else {
+			found=false;
+		}
+		
+		if(found) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public List<UserRole> getUnassignedRoles(Set<RoleDTO> roles) {
+		boolean remove=true;
+		List<UserRole> removeList=new ArrayList<UserRole>();
+		if(userRoles!=null && userRoles.size()>0) {
+			for(UserRole ur : userRoles) {
+				for(RoleDTO r : roles) {
+					if(r.getId()==ur.getRole().getId()) {
+						remove=false;
+					}
+				}
+				if(remove) {
+					removeList.add(ur);
+				}
+			}
+		}
+		return removeList;
 	}
 
 }
