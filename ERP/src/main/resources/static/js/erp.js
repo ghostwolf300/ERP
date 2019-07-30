@@ -132,6 +132,7 @@ var DAO=(function(){
 var Home=(function(){
 	
 	var tiles={
+		users		: '#users',
 		newUser 	: '#new_user',
 		changeUser 	: '#change_user',
 		roles		: '#roles'
@@ -143,11 +144,17 @@ var Home=(function(){
  	}
  	
  	function _bindEventHandlers(){
+ 		$(tiles.users).click(_reqUsers);
 		$(tiles.newUser).click(_reqNewUser);
 		$(tiles.changeUser).click(_reqChangeUser);
 		$(tiles.roles).click(_reqRoles);
 	}
 	
+ 	function _reqUsers(){
+ 		console.log('Show users...');
+ 		window.location.assign('/user/view_users');
+ 	}
+ 	
  	function _reqNewUser(){
  		console.log('Create new user...');
  		window.location.assign('/user/new_user');
