@@ -1,6 +1,7 @@
 select * from t_user;
 select * from t_role;
 select * from t_user_role;
+select * from t_auth_object;
 
 delete from t_user where id='hannu.hanhi';
 
@@ -48,5 +49,16 @@ select t_role.id from t_role left join t_user_role on t_role.id=t_user_role.role
 
 delete from t_user_role where user_id='aku.ankka';
 
+insert into t_auth_object (name) values ('OBJ_USER');
+insert into t_auth_object (name) values ('OBJ_MATERIAL');
+insert into t_auth_object (name) values ('OBJ_BUSINESS_PARTNER');
+insert into t_auth_object (name) values ('OBJ_CUSTOMER');
+insert into t_auth_object (name) values ('OBJ_SUPPLIER');
+
+insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,1,true,true);
+insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,2,true,true);
+insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,3,true,true);
+insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,4,true,true);
+insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,5,true,true);
 
 

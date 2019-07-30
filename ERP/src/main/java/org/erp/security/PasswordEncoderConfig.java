@@ -1,4 +1,4 @@
-package org.erp.config;
+package org.erp.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

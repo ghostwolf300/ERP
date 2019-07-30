@@ -1,15 +1,13 @@
 package org.erp.user;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 import org.erp.message.MessageDTO;
 import org.erp.message.MessageService;
-import org.erp.message.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserRestController {
 	
 	@Autowired

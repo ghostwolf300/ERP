@@ -261,22 +261,54 @@ public class User {
 		}
 	}
 	
-	public List<UserRole> getUnassignedRoles(Set<RoleDTO> roles) {
-		boolean remove=true;
-		List<UserRole> removeList=new ArrayList<UserRole>();
-		if(userRoles!=null && userRoles.size()>0) {
+	public void handleAssignedRoles(Set<RoleDTO> assignedRoles) {
+		removeUnassignedRoles(assignedRoles);
+		addAssignedRoles(assignedRoles);
+	}
+	
+	public int addAssignedRoles(Set<RoleDTO> assignedRoles) {
+		int addCount=0;
+		for(RoleDTO r : assignedRoles) {
+			if(!roleExists(r.getId())) {
+				Role role=new Role(r.getId(),r.getName(),r.getDescription());
+				UserRoleKey userRoleKey=new UserRoleKey(this.getId(),r.getId());
+				UserRole userRole=new UserRole(userRoleKey,this,role);
+				addUserRole(userRole);
+				addCount++;
+			}
+		}
+		return addCount;
+	}
+	
+	public int removeUnassignedRoles(Set<RoleDTO> assignedRoles) {
+		int removeCount=0;
+		Set<UserRole> unassignedRoles=null;
+		
+		if(userRoles==null) {
+			return 0;
+		}
+		if(assignedRoles==null || assignedRoles.size()==0) {
+			unassignedRoles=new HashSet<UserRole>(userRoles);
+		}
+		else {
+			unassignedRoles=new HashSet<UserRole>();
+			boolean found=false;
 			for(UserRole ur : userRoles) {
-				for(RoleDTO r : roles) {
-					if(r.getId()==ur.getRole().getId()) {
-						remove=false;
+				found=false;
+				for(RoleDTO r : assignedRoles) {
+					if(ur.getId().getRoleId()==r.getId()) {
+						found=true;
 					}
 				}
-				if(remove) {
-					removeList.add(ur);
+				if(!found) {
+					unassignedRoles.add(ur);
 				}
 			}
 		}
-		return removeList;
+		removeCount=unassignedRoles.size();
+		userRoles.removeAll(unassignedRoles);
+		
+		return removeCount;
 	}
 
 }

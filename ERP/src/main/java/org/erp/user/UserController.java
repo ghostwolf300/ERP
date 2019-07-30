@@ -12,6 +12,7 @@ import org.erp.message.MessageService;
 import org.erp.role.Role;
 import org.erp.role.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/user")
+@PreAuthorize("hasViewAccess('OBJ_USER')")
 public class UserController {
 	
 	@Autowired
@@ -32,6 +34,7 @@ public class UserController {
 	@Autowired
 	private MessageService messageService;
 	
+	@PreAuthorize("hasWriteAccess('OBJ_USER')")
 	@RequestMapping("/edit/{userId}/{isNewUser}")
 	public ModelAndView editUser(
 			@PathVariable String userId,
@@ -74,6 +77,7 @@ public class UserController {
 		return modelAndView;
 	}
 	
+	@PreAuthorize("hasWriteAccess('OBJ_USER')")
 	@RequestMapping("/new_user") 
 	public ModelAndView newUser(@RequestParam(value="status",required=false) String status) {
 		ModelAndView modelAndView =new ModelAndView();
@@ -87,6 +91,7 @@ public class UserController {
 		return modelAndView;
 	}
 	
+	@PreAuthorize("hasWriteAccess('OBJ_USER')")
 	@RequestMapping("/change_user") 
 	public ModelAndView changeUser(@RequestParam(value="status",required=false) String status) {
 		ModelAndView modelAndView =new ModelAndView();

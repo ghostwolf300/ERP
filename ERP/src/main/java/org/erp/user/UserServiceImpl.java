@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.erp.component.IAuthenticationFacade;
 import org.erp.exception.InitialPasswordException;
@@ -29,13 +30,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service("userService")
-public class UserServiceImpl implements UserService,UserDetailsService {
+public class UserServiceImpl implements UserService {
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-	@Autowired 
-	private UserRoleRepository userRoleRepository;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -47,38 +45,6 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 	private boolean usernameExists(String username) {
 		//TODO: add logic here
 		return false;
-	}
-
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException,AuthenticationException {
-		User user=userRepository.findById(username);
-		if(user==null) {
-			//TODO:add logic here
-			throw new UsernameNotFoundException(username);
-		}
-		else if(!user.isEnabled()) {
-			throw new DisabledException(username);
-		}
-		else if(accountExpired(user)) {
-			throw new AccountExpiredException(username);
-		}
-		else if(user.isLocked()) {
-			System.out.println("locked");
-			throw new LockedException(username);
-			
-		}
-		return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(), user.isEnabled(),true,true,true,getAuthorities(username));
-	}
-	
-	private boolean accountExpired(User user) {
-		return false;
-	}
-	
-	private List<GrantedAuthority> getAuthorities(String username){
-		List<GrantedAuthority> authorities=new ArrayList<GrantedAuthority>();
-		//authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-		authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-		return authorities;
 	}
 
 	@Override
@@ -138,9 +104,7 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 
 	@Override
 	public UserDTO saveUser(UserDTO user) {
-		//TODO: this is a mess. do something about it.
-		//User u=new User(user);
-		//try this... fetch user entity (instead of creating new
+		//fetch user entity (instead of creating new)
 		User u=userRepository.findById(user.getUsername());
 		
 		u.setFirstName(user.getFirstName());
@@ -158,26 +122,16 @@ public class UserServiceImpl implements UserService,UserDetailsService {
 		u.setChangedTs(changedTs);
 		u.setChangedBy(changedBy);
 		
-		for(RoleDTO r : user.getRoles()) {
-			if(!u.roleExists(r.getId())) {
-				Role role=new Role(r.getId(),r.getName(),r.getDescription());
-				UserRoleKey userRoleKey=new UserRoleKey(user.getUsername(),r.getId());
-				UserRole userRole=new UserRole(userRoleKey,u,role);
-				u.addUserRole(userRole);
-			}
-		}
+		//Convenience method
+		u.handleAssignedRoles(user.getRoles());
 		
-		
-		//tähän jäätiin...
-		for(UserRole ur : u.getUnassignedRoles(user.getRoles())) {
-			u.getUserRoles().remove(ur);
-		}
-		
-		System.out.println("Role count: "+u.getUserRoles().size());
-		
+		//poista ne roolit, jotka eivät ole listalla
+		//u.removeUnassignedRoles(user.getRoles());
+		//lisää uudet roolit
+		//u.addAssignedRoles(user.getRoles());
+
 		System.out.println("updating basic data & user roles...");
 		u=userRepository.mergeUser(u);
-		
 		
 		System.out.println("updating password...");
 		if(user.getPassword()!=null && !user.getPassword().isEmpty()) {

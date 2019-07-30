@@ -1,4 +1,4 @@
-package org.erp.config;
+package org.erp.security;
 
 
 
@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	
 	@Autowired
-	private UserDetailsService userService;
+	private UserDetailsService authenticationService;
 	
 	@Autowired
 	private ERPAuthSuccessHandler successHandler;
@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 		"/js/**",
                 		"/img/**",
                 		"/wro/**").permitAll()
-                .antMatchers("/user/**").hasRole("ADMIN")
+                //.antMatchers("/user/**").hasRole("ADMIN") //not needed when using MethodSecurity (class/method level authorisation)
                 .anyRequest().authenticated()
             .and()
             	.formLogin()
@@ -64,7 +64,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Bean
 	public DaoAuthenticationProvider authProvider() {
 		DaoAuthenticationProvider authProvider=new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userService);
+		authProvider.setUserDetailsService(authenticationService);
 		authProvider.setPasswordEncoder(passwordEncoder);
 		return authProvider;
 	}

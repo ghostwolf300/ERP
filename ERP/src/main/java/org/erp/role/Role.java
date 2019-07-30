@@ -15,6 +15,7 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.ConstructorResult;
 import javax.persistence.ColumnResult;
 
+import org.erp.roleobject.RoleObject;
 import org.erp.userrole.UserRole;
 
 @Entity
@@ -77,6 +78,14 @@ public class Role {
 	)
 	private Set<UserRole> userRoles;
 	
+	@OneToMany(
+			mappedBy="authRole",
+			fetch=FetchType.LAZY,
+			cascade=CascadeType.ALL,
+			orphanRemoval=true
+	)
+	private Set<RoleObject> roleObjects;
+	
 	
 	public Role() {
 		
@@ -113,6 +122,14 @@ public class Role {
 
 	public void setUserRoles(Set<UserRole> userRoles) {
 		this.userRoles = userRoles;
+	}
+
+	public Set<RoleObject> getRoleObjects() {
+		return roleObjects;
+	}
+
+	public void setRoleObjects(Set<RoleObject> roleObjects) {
+		this.roleObjects = roleObjects;
 	}
 	
 }
