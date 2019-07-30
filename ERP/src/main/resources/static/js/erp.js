@@ -133,7 +133,8 @@ var Home=(function(){
 	
 	var tiles={
 		newUser 	: '#new_user',
-		changeUser 	: '#change_user' 
+		changeUser 	: '#change_user',
+		roles		: '#roles'
 	}
 
  	function init(){
@@ -144,6 +145,7 @@ var Home=(function(){
  	function _bindEventHandlers(){
 		$(tiles.newUser).click(_reqNewUser);
 		$(tiles.changeUser).click(_reqChangeUser);
+		$(tiles.roles).click(_reqRoles);
 	}
 	
  	function _reqNewUser(){
@@ -154,6 +156,12 @@ var Home=(function(){
  	function _reqChangeUser(){
  		console.log('Change user...');
  		window.location.assign('/user/change_user');
+ 	}
+ 	
+ 	function _reqRoles(){
+ 		console.log('Show auth roles...');
+ 		window.location.assign('/role/view_roles');
+ 		
  	}
  	
 	return{

@@ -2,6 +2,7 @@ package org.erp.role;
 
 import java.util.List;
 
+import org.erp.roleobject.RoleObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

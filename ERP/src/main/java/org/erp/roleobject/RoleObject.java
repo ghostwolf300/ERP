@@ -33,10 +33,14 @@ public class RoleObject {
 	@JoinColumn(name="object_id")
 	private AuthObject authObject;
 	
-	@Column(name="read_access")
-	private boolean readAccess;
-	@Column(name="write_access")
-	private boolean writeAccess;
+	@Column(name="read_rights")
+	private boolean readRights;
+	@Column(name="update_rights")
+	private boolean updateRights;
+	@Column(name="create_rights")
+	private boolean createRights;
+	@Column(name="delete_rights")
+	private boolean deleteRights;
 	
 	public RoleObject() {
 		
@@ -44,8 +48,8 @@ public class RoleObject {
 	
 	public RoleObject(RoleObjectKey id,boolean readAccess,boolean writeAccess) {
 		this.id=id;
-		this.readAccess=readAccess;
-		this.writeAccess=writeAccess;
+		this.readRights=readAccess;
+		this.updateRights=writeAccess;
 	}
 	
 	public RoleObjectKey getId() {
@@ -66,17 +70,33 @@ public class RoleObject {
 	public void setAuthObject(AuthObject object) {
 		this.authObject = object;
 	}
-	public boolean isReadAccess() {
-		return readAccess;
+	public boolean isReadRights() {
+		return readRights;
 	}
-	public void setReadAccess(boolean readAccess) {
-		this.readAccess = readAccess;
+	public void setReadRights(boolean readAccess) {
+		this.readRights = readAccess;
 	}
-	public boolean isWriteAccess() {
-		return writeAccess;
+	public boolean isUpdateRights() {
+		return updateRights;
 	}
-	public void setWriteAccess(boolean writeAccess) {
-		this.writeAccess = writeAccess;
+	public void setUpdateRights(boolean writeAccess) {
+		this.updateRights = writeAccess;
+	}
+
+	public boolean isCreateRights() {
+		return createRights;
+	}
+
+	public void setCreateRights(boolean createRights) {
+		this.createRights = createRights;
+	}
+
+	public boolean isDeleteRights() {
+		return deleteRights;
+	}
+
+	public void setDeleteRights(boolean deleteRights) {
+		this.deleteRights = deleteRights;
 	}
 	
 }

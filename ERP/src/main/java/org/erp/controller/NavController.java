@@ -14,7 +14,8 @@ public class NavController {
 		HOME,
 		NEW_USER,
 		CHANGE_USER,
-		EDIT_USER
+		EDIT_USER,
+		ROLES
 		};
 	
 	private static final Map<Views,String> VIEW_MAP=createViewMap();

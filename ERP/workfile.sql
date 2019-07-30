@@ -61,4 +61,11 @@ insert into t_role_auth_object(role_id,object_id,read_access,write_access) value
 insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,4,true,true);
 insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,5,true,true);
 
+alter table t_role_auth_object change read_access read_rights boolean default true;
+alter table t_role_auth_object change write_access update_rights boolean default false;
+alter table t_role_auth_object add column create_rights boolean default false;
+alter table t_role_auth_object add column delete_rights boolean default false;
+
+
+
 
