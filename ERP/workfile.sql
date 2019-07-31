@@ -2,6 +2,7 @@ select * from t_user;
 select * from t_role;
 select * from t_user_role;
 select * from t_auth_object;
+select * from t_role_auth_object;
 
 delete from t_user where id='hannu.hanhi';
 

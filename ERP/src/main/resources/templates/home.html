@@ -9,19 +9,30 @@
 		<h2>Home Menu</h2>
 	</div>
 	<div>
-		<div th:replace="fragments/tiles :: tile_users"></div>
-		<div th:replace="fragments/tiles :: tile_separator"></div>
-		<div th:replace="fragments/tiles :: tile_new_user"></div>
-		<div th:replace="fragments/tiles :: tile_separator"></div>
-		<div th:replace="fragments/tiles :: tile_change_user"></div>
-		<div th:replace="fragments/tiles :: tile_separator"></div>
-		<div th:replace="fragments/tiles :: tile_materials"></div>
-		<div th:replace="fragments/tiles :: tile_separator"></div>
-		<div th:replace="fragments/tiles :: tile_customers"></div>
-		<div th:replace="fragments/tiles :: tile_separator"></div>
-		<div th:replace="fragments/tiles :: tile_suppliers"></div>
-		<div th:replace="fragments/tiles :: tile_separator"></div>
-		<div th:replace="fragments/tiles :: tile_roles"></div>
+		<div>
+			<div th:replace="fragments/tiles :: tile_users"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+			<div th:replace="fragments/tiles :: tile_new_user"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+			<div th:replace="fragments/tiles :: tile_change_user"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+		</div>
+		<div>
+			<div th:replace="fragments/tiles :: tile_roles"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+			<div th:replace="fragments/tiles :: tile_change_role"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+			<div th:replace="fragments/tiles :: tile_create_role"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+		</div>
+		<div>
+			<div th:replace="fragments/tiles :: tile_materials"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+			<div th:replace="fragments/tiles :: tile_customers"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+			<div th:replace="fragments/tiles :: tile_suppliers"></div>
+			<div th:replace="fragments/tiles :: tile_separator"></div>
+		</div>
 	</div>
 	<div class="row_clear"></div>
 	<div>

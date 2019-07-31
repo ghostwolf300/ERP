@@ -26,6 +26,14 @@ public class AuthObjectDTO implements Serializable {
 		name=au.getName();
 	}
 	
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 	public String getName() {
 		return name;
 	}

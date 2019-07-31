@@ -681,24 +681,70 @@ var Roles=(function(){
 	function _insertRoleObjects(roleObjects){
 		roleObjects.forEach(function(ro){
 			console.log(ro);
-			$(objectList).append(_createRoleObjectElement(ro));
+			_createRoleObjectElement(ro);
 		});
+//		$(checkboxes.readRights).checkboxradio();
+//		$(checkboxes.updateRights).checkboxradio();
+//		$(checkboxes.createRights).checkboxradio();
+//		$(checkboxes.deleteRights).checkboxradio();
 	}
 	
 	function _createRoleObjectElement(roleObject){
-		var el='<div class="auth-object-row" data-roleId="'+roleObject.role.id+'" data-objectId="'+roleObject.object.id+'">'
-		+'<div class="auth-object-text">'+roleObject.object.name+'</div>'
+		var ro=roleObject.object;
+		var rl=roleObject.role;
+		var chkRead=_createCheckbox(roleObject,'Read');
+		var chkUpdate=_createCheckbox(roleObject,'Update');
+		var chkCreate=_createCheckbox(roleObject,'Create');
+		var chkDelete=_createCheckbox(roleObject,'Delete');
+		
+		var el='<div class="auth-object-row" data-roleId="'+rl.id+'" data-objectId="'+ro.id+'">'
+		+'<div class="auth-object-text">'+ro.name+'</div>'
 		+'<div class="auth-object-rights">'
-		+'<label for="chk-read-rights-'+roleObject.object.id+'">Read</label>'
-		+'<input id="chk-read-rights-'+roleObject.object.id+'" class="chk-read-rights" type="checkbox"/>'
-		+'<label for="chk-update-rights-'+roleObject.object.id+'">Update</label>'
-		+'<input id="chk-update-rights-'+roleObject.object.id+'" class="chk-update-rights" type="checkbox"/>'
-		+'<label for="chk-create-rights-'+roleObject.object.id+'">Create</label>'
-		+'<input id="chk-create-rights-'+roleObject.object.id+'" class="chk-create-rights" type="checkbox"/>'
-		+'<label for="chk-delete-rights-'+roleObject.object.id+'">Delete</label>'
-		+'<input id="chk-delete-rights-'+roleObject.object.id+'" class="chk-delete-rights" type="checkbox"/>'
+		+_createLabel(roleObject,'Read')
+		+chkRead
+		+_createLabel(roleObject,'Update')
+		+chkUpdate
+		+_createLabel(roleObject,'Create')
+		+chkCreate
+		+_createLabel(roleObject,'Delete')
+		+chkDelete
 		+'</div>'
 		+'</div>';
+		console.log(el);
+		$(objectList).append(el);
+		
+		$('#chk-read-rights-'+roleObject.object.id).checkboxradio();
+		$('#chk-update-rights-'+roleObject.object.id).checkboxradio();
+		$('#chk-create-rights-'+roleObject.object.id).checkboxradio();
+		$('#chk-delete-rights-'+roleObject.object.id).checkboxradio();
+		
+		$('#chk-read-rights-'+roleObject.object.id).prop('checked',roleObject.readRights).checkboxradio('refresh');
+		$('#chk-update-rights-'+roleObject.object.id).prop('checked',roleObject.updateRights).checkboxradio('refresh');
+		$('#chk-create-rights-'+roleObject.object.id).prop('checked',roleObject.createRights).checkboxradio('refresh');
+		$('#chk-delete-rights-'+roleObject.object.id).prop('checked',roleObject.deleteRights).checkboxradio('refresh');
+	}
+	
+	function _createCheckbox(ro,right){
+		var checked=false;
+		if(right.toLowerCase()=='read'){
+			checked=ro.readRights;
+		}
+		else if(right.toLowerCase()=='update'){
+			checked=ro.updateRights;
+		}
+		else if(right.toLowerCase()=='create'){
+			checked=ro.createRights;
+		}
+		else if(right.toLowerCase()=='delete'){
+			checked=ro.deleteRights;
+		}
+		console.log('right: '+right+' checked: '+checked);
+		var el='<input id="chk-'+right.toLowerCase()+'-rights-'+ro.object.id+'" class="chk-'+right.toLowerCase()+'-rights" type="checkbox" checked='+checked+'/>';
+		return el;
+	}
+	
+	function _createLabel(ro,right){
+		var el='<label for="chk-'+right.toLowerCase()+'-rights-'+ro.object.id+'">'+right+'</label>';
 		return el;
 	}
 	
