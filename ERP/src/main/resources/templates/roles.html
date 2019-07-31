@@ -7,5 +7,39 @@
 	<div>
 		<h2>Roles Menu</h2>
 	</div>
+	<div id="role_viewer_container">
+		<div>
+			<h3>Roles</h3>
+			<div id="list_roles_wrapper">
+				<ol id="list_roles" class="erp-selectable-list">
+					<th:block th:each="role : ${roles}">
+						<li th:attr="data-id=${role.id}" class="ui-widget-content" th:text="${role.name}"></li>
+					</th:block>
+				</ol>
+			</div>
+		</div>
+		<div>
+			<h3>Objects</h3>
+			<div id="list_objects_wrapper">
+				<div id="auth-object-list">
+					<div class="auth-object-row">
+						<div class="auth-object-text">
+							<span>Some object</span>
+						</div>
+						<div class="auth-object-rights">
+							<label for="chk-read-rights-1">Read</label>
+							<input id="chk-read-rights-1" class="chk-read-rights" type="checkbox"/>
+							<label for="chk-update-rights-1">Update</label>
+							<input id="chk-update-rights-1" class="chk-update-rights" type="checkbox"/>
+							<label for="chk-create-rights-1">Create</label>
+							<input id="chk-create-rights-1" class="chk-create-rights" type="checkbox"/>
+							<label for="chk-delete-rights-1">Delete</label>
+							<input id="chk-delete-rights-1" class="chk-delete-rights" type="checkbox"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 </html>

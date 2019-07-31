@@ -8,6 +8,8 @@ public interface RoleService {
 	public List<Role> findAssignedRoles(String username);
 	public List<Role> findUnassignedRoles(String username);
 	
+	public List<RoleDTO> findAllRolesDTO();
+	
 	
 	
 }

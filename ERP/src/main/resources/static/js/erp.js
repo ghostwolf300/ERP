@@ -20,6 +20,9 @@ function initPage(){
  	else if(view=='EDIT_USER'){
  		EditUser.init();
  	}
+ 	else if(view=='ROLES'){
+ 		Roles.init();
+ 	}
 }
 
 function globalSetup(){
@@ -120,11 +123,37 @@ var DAO=(function(){
 		
 	}
 	
+	function findRoleObjects(roleId,_callback){
+		var url='/role/getRoleObjects?roleId='+roleId;
+		var objects;
+		
+		$.getJSON(url,function(u,statusText,jqxhr){
+
+		}).done(function(objs,statusText,jqxhr){
+			if(jqxhr.status==200){
+				objects=objs;
+				_callback(STATUS.DONE,objects);
+			}
+			else if(jqxhr.status==204){
+				_callback(STATUS.NA);
+			}
+			else{
+				_callback(STATUS.UNKNOWN);
+			}
+
+		}).fail(function(jqxhr, textStatus, error){
+			_callback(STATUS.FAIL);
+		}).always(function(){
+
+		});
+	}
+	
 	return{
 		STATUS			:STATUS,
 		findUserById	:findUserById,
 		saveUser		:saveUser,
-		getLastMessage	:getLastMessage
+		getLastMessage	:getLastMessage,
+		findRoleObjects	:findRoleObjects
 	}
 	
 })();
@@ -571,6 +600,114 @@ var MessageHandler=(function(){
 	
 	return{
 		refreshMessageBox : refreshMessageBox
+	}
+	
+})();
+
+var Roles=(function(){
+	
+	var lists={
+		roles 	: '#list_roles'
+	}
+	
+	var objectList='#auth-object-list';
+	
+	var checkboxes={
+		readRights	: '.chk-read-rights',
+		updateRights: '.chk-update-rights',
+		createRights: '.chk-create-rights',
+		deleteRights: '.chk-delete-rights'
+	}
+	
+	function init(){
+		console.log('TEST: initialize Roles');
+		_initJQueryUI();
+		_bindEventHandlers();
+	}
+	
+	function _initJQueryUI(){
+		$(lists.roles).selectable({
+			selecting	: _singleSelectOnly,
+			selected	: _roleSelected
+		});
+		$(checkboxes.readRights).checkboxradio();
+		$(checkboxes.updateRights).checkboxradio();
+		$(checkboxes.createRights).checkboxradio();
+		$(checkboxes.deleteRights).checkboxradio();
+	}
+	
+	function _bindEventHandlers(){
+		
+	}
+	
+	function _singleSelectOnly(event,ui){
+		//force single select
+		$(event.target).find('.ui-selectee.ui-selecting').not(ui.selecting).removeClass('ui-selecting');
+        $(event.target).find('.ui-selectee.ui-selected').not(ui.selecting).removeClass('ui-selected');
+	}
+	
+	function _roleSelected(event, ui){
+		console.log('Role selected '+event.target);
+		var roleId=_getSelectedRoleId();
+		console.log('Selected roleId: '+roleId);
+		_loadRoleObjects(roleId);
+	}
+	
+	function _getSelectedRoleId(){
+		var roleId;
+		var selectedRoles=$(lists.roles).find(".ui-selected");
+		Array.from(selectedRoles).forEach(function(item){
+			roleId=parseInt($(item).attr('data-id'));
+		});
+		return roleId;
+	}
+	
+	function _loadRoleObjects(roleId){
+		DAO.findRoleObjects(roleId,function(status,objects){
+			if(status==DAO.STATUS.DONE){
+				_clearRoleObjects();
+				_insertRoleObjects(objects);
+			}
+			else{
+				console.log('No role objects received');
+			}
+		});
+	}
+	
+	function _clearRoleObjects(){
+		$(objectList).empty();
+	}
+	
+	function _insertRoleObjects(roleObjects){
+		roleObjects.forEach(function(ro){
+			console.log(ro);
+			$(objectList).append(_createRoleObjectElement(ro));
+		});
+	}
+	
+	function _createRoleObjectElement(roleObject){
+		var el='<div class="auth-object-row" data-roleId="'+roleObject.role.id+'" data-objectId="'+roleObject.object.id+'">'
+		+'<div class="auth-object-text">'+roleObject.object.name+'</div>'
+		+'<div class="auth-object-rights">'
+		+'<label for="chk-read-rights-'+roleObject.object.id+'">Read</label>'
+		+'<input id="chk-read-rights-'+roleObject.object.id+'" class="chk-read-rights" type="checkbox"/>'
+		+'<label for="chk-update-rights-'+roleObject.object.id+'">Update</label>'
+		+'<input id="chk-update-rights-'+roleObject.object.id+'" class="chk-update-rights" type="checkbox"/>'
+		+'<label for="chk-create-rights-'+roleObject.object.id+'">Create</label>'
+		+'<input id="chk-create-rights-'+roleObject.object.id+'" class="chk-create-rights" type="checkbox"/>'
+		+'<label for="chk-delete-rights-'+roleObject.object.id+'">Delete</label>'
+		+'<input id="chk-delete-rights-'+roleObject.object.id+'" class="chk-delete-rights" type="checkbox"/>'
+		+'</div>'
+		+'</div>';
+		return el;
+	}
+	
+	function _objectSelected(event, ui){
+		console.log('Object selected '+event.target);
+	}
+	
+	return{
+		init	:init
 	}
 	
 })();

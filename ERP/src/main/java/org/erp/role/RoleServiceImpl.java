@@ -1,5 +1,6 @@
 package org.erp.role;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.erp.roleobject.RoleObject;
@@ -28,6 +29,16 @@ public class RoleServiceImpl implements RoleService {
 	public List<Role> findAllRoles() {
 		List<Role> roles=roleRepository.findAll();
 		return roles;
+	}
+
+	@Override
+	public List<RoleDTO> findAllRolesDTO() {
+		List<Role> roles=roleRepository.findAll();
+		List<RoleDTO> dtoList=new ArrayList<RoleDTO>();
+		for(Role r : roles) {
+			dtoList.add(new RoleDTO(r));
+		}
+		return dtoList;
 	}
 
 }
