@@ -1,7 +1,6 @@
 @charset "ISO-8859-1";
 
 #list_objects_wrapper{
-	overflow-y:auto;
 	width: 680px;
  	min-width: 680px;
 }
@@ -13,6 +12,7 @@
  	border: 1px solid #c5c5c5;
  	min-height: 300px;
  	max-height: 400px;
+ 	overflow-y:auto;
 }
 
 .auth-object-row{
@@ -33,5 +33,36 @@
 }
 
 .auth-object.rights{
+	
+}
+
+.auth-object-table{
+	border-collapse:separate;
+}
+
+.auth-object-table tr{
+	height: 52px;	
+ 	font-size: 1.2em;
+ 	background: white;
+}
+
+.auth-object-table tr:hover{
+ 	
+}
+
+.auth-object-table td{
+	
+}
+
+.auth-object-table td.col-object{
+	padding-left:10px;
+	padding-right:10px;
+}
+
+.auth-object-table td.col-rights{
+	
+}
+
+.btn-remove-object{
 	
 }

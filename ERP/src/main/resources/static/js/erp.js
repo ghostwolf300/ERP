@@ -836,6 +836,10 @@ var RoleData=(function(){
 			deleteRights: '.chk-delete-rights'
 	}
 	
+	var buttons={
+		removeObject:'.btn-remove-object'
+	}
+	
 	function init(){
 		_initJQueryUI();
 		_bindEventHandlers();
@@ -848,6 +852,7 @@ var RoleData=(function(){
 		$(checkboxes.updateRights).checkboxradio();
 		$(checkboxes.createRights).checkboxradio();
 		$(checkboxes.deleteRights).checkboxradio();
+		$(buttons.removeObject).button();
 	}
 	
 	function _bindEventHandlers(){
@@ -863,8 +868,13 @@ var RoleData=(function(){
 		
 	}
 	
+	function removeObject(objectId){
+		console.log('Removing object '+objectId);
+	}
+	
 	return{
-		init	:init
+		init			:init,
+		removeObject	:removeObject
 	}
 	
 })();

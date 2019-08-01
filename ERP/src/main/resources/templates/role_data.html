@@ -9,23 +9,46 @@
 		<h3>Objects</h3>
 		<div id="list_objects_wrapper">
 			<div id="auth-object-list">
-				<th:block th:each="ro : ${roleObjects}">
-				<div class="auth-object-row">
-					<div class="auth-object-text">
-						<span th:text="${ro.object.name}"></span>
-					</div>
-					<div class="auth-object-rights">
-						<label th:attr="for='chk-read-rights-'+${ro.object.id}">Read</label>
-						<input th:id="'chk-read-rights-'+${ro.object.id}" class="chk-read-rights" type="checkbox" th:checked="${ro.readRights}"/>
-						<label th:attr="for='chk-update-rights-'+${ro.object.id}">Update</label>
-						<input th:id="'chk-update-rights-'+${ro.object.id}" class="chk-update-rights" type="checkbox" th:checked="${ro.updateRights}"/>
-						<label th:attr="for='chk-create-rights-'+${ro.object.id}">Create</label>
-						<input th:id="'chk-create-rights-'+${ro.object.id}" class="chk-create-rights" type="checkbox" th:checked="${ro.createRights}"/>
-						<label th:attr="for='chk-delete-rights-'+${ro.object.id}">Delete</label>
-						<input th:id="'chk-delete-rights-'+${ro.object.id}" class="chk-delete-rights" type="checkbox" th:checked="${ro.deleteRights}"/>
-					</div>
-				</div>
-				</th:block>
+				<table class="auth-object-table">
+					<thead>
+						<tr>
+							<th>Object name</th>
+							<th>Display</th>
+							<th>Update</th>
+							<th>Create</th>
+							<th>Delete</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block th:each="ro : ${roleObjects}">
+							<tr>
+								<td class="col-object"><span th:text="${ro.object.name}"></span></td>
+								<td>
+									<label th:attr="for='chk-read-rights-'+${ro.object.id}"></label>
+									<input th:id="'chk-read-rights-'+${ro.object.id}" class="chk-read-rights" type="checkbox" th:checked="${ro.readRights}"/>
+								</td>
+								<td class="col-rights">
+									<label th:attr="for='chk-update-rights-'+${ro.object.id}"></label>
+									<input th:id="'chk-update-rights-'+${ro.object.id}" class="chk-update-rights" type="checkbox" th:checked="${ro.updateRights}"/>
+								</td>
+								<td class="col-rights">
+									<label th:attr="for='chk-create-rights-'+${ro.object.id}"></label>
+									<input th:id="'chk-create-rights-'+${ro.object.id}" class="chk-create-rights" type="checkbox" th:checked="${ro.createRights}"/>
+								</td>
+								<td class="col-rights">
+									<label th:attr="for='chk-delete-rights-'+${ro.object.id}"></label>
+									<input th:id="'chk-delete-rights-'+${ro.object.id}" class="chk-delete-rights" type="checkbox" th:checked="${ro.deleteRights}"/>
+								</td>
+								<td>
+									<button th:id="'btn_remove_'+${ro.object.id}" th:onclick="'RoleData.removeObject('+${ro.object.id}+')'" class="ui-button ui-widget ui-corner-all ui-button-icon-only btn-remove-object">
+										<span class="ui-icon  ui-icon-circle-minus"></span>Remove Object
+									</button>
+								</td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>			
 			</div>
 		</div>
 	</div>
