@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<div class="content_container" id="role_main" layout:fragment="content">
+	<div>
+		<h2>Roles</h2>
+	</div>
+	<div>
+		<div id="role_select" class="ui-widget">
+			<label>Role</label>
+			<select id="cmb_roles">
+				<option value="">Select role...</option>
+				<th:block th:each="role : ${roles}">
+					<option th:value="${role.id}" th:text="${role.name}"></option>
+				</th:block>
+			</select>
+		</div>
+		<div id="role_controls">
+			<button id="btn_cancel" class="ui-button ui-widget ui-corner-all">
+				<span class="ui-icon  ui-icon-arrowthick-1-w"></span>Cancel
+			</button>
+			<button id="btn_display" class="ui-button ui-widget ui-corner-all">
+				<span class="ui-icon ui-icon-search"></span>Display
+			</button>
+			<button id="btn_edit" class="ui-button ui-widget ui-corner-all">
+				<span class="ui-icon ui-icon-pencil"></span>Edit
+			</button>
+			<button id="btn_create" class="ui-button ui-widget ui-corner-all">
+				<span class="ui-icon ui-icon-plus"></span>Create
+			</button>
+		</div>
+	</div>
+</div>
+</html>

@@ -9,7 +9,7 @@ public interface RoleService {
 	public List<Role> findUnassignedRoles(String username);
 	
 	public List<RoleDTO> findAllRolesDTO();
-	
+	public RoleDTO findRoleDTO(int roleId);
 	
 	
 }

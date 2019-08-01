@@ -23,6 +23,12 @@ function initPage(){
  	else if(view=='ROLES'){
  		Roles.init();
  	}
+ 	else if(view=='ROLE_SELECT'){
+ 		RoleSelect.init();
+ 	}
+ 	else if(view=='ROLE_DATA'){
+ 		RoleData.init();
+ 	}
 }
 
 function globalSetup(){
@@ -176,7 +182,7 @@ var Home=(function(){
  		$(tiles.users).click(_reqUsers);
 		$(tiles.newUser).click(_reqNewUser);
 		$(tiles.changeUser).click(_reqChangeUser);
-		$(tiles.roles).click(_reqRoles);
+		$(tiles.roles).click(_reqRoleSelect);
 	}
 	
  	function _reqUsers(){
@@ -198,6 +204,11 @@ var Home=(function(){
  		console.log('Show auth roles...');
  		window.location.assign('/role/view_roles');
  		
+ 	}
+ 	
+ 	function _reqRoleSelect(){
+ 		console.log('Role selection');
+ 		window.location.assign('/role/select');
  	}
  	
 	return{
@@ -603,6 +614,261 @@ var MessageHandler=(function(){
 	}
 	
 })();
+
+
+var RoleSelect=(function(){
+	
+	var controls={
+			display		:'#btn_display',
+			edit		:'#btn_edit',
+			create		:'#btn_create',
+			cancel		:'#btn_cancel',
+			roleSelect	:'#cmb_roles'
+	}
+	
+	function init(){
+		console.log("TEST: Initialize RoleSelect");
+		_initJQueryUI();
+		_bindEventHandlers();
+	}
+	
+	function _initJQueryUI(){
+		$(controls.display).button();
+		$(controls.edit).button();
+		$(controls.create).button();
+		$(controls.cancel).button();
+		_initCombobox();
+		
+	}
+	
+	function _initCombobox(){
+		$.widget("custom.combobox", {
+		      _create: function() {
+		        this.wrapper = $( "<span>" )
+		          .addClass("custom-combobox" )
+		          .insertAfter( this.element );
+		 
+		        this.element.hide();
+		        this._createAutocomplete();
+		        this._createShowAllButton();
+		      },
+
+		      _createAutocomplete: function() {
+		        var selected = this.element.children( ":selected" ),
+		          value = selected.val() ? selected.text() : "";
+		 
+		        this.input = $( "<input>" )
+		          .appendTo( this.wrapper )
+		          .val( value )
+		          .attr( "title", "" )
+		          .addClass( "custom-combobox-input ui-widget ui-widget-content ui-state-default ui-corner-left" )
+		          .autocomplete({
+		            delay: 0,
+		            minLength: 0,
+		            source: $.proxy( this, "_source" )
+		          })
+		          .tooltip({
+		            classes: {
+		              "ui-tooltip": "ui-state-highlight"
+		            }
+		          });
+		 
+		        this._on( this.input, {
+		          autocompleteselect: function( event, ui ) {
+		            ui.item.option.selected = true;
+		            this._trigger( "select", event, {
+		              item: ui.item.option
+		            });
+		          },
+		 
+		          autocompletechange: "_removeIfInvalid"
+		        });
+		      },
+		      
+		      _createShowAllButton: function() {
+		        var input = this.input,
+		          wasOpen = false;
+		 
+		        $("<a>")
+		          .attr( "tabIndex", -1 )
+		          .attr( "title", "Show All Items" )
+		          .tooltip()
+		          .appendTo( this.wrapper )
+		          .button({
+		            icons: {
+		              primary: "ui-icon-triangle-1-s"
+		            },
+		            text: false
+		          })
+		          .removeClass("ui-button")
+		          .removeClass("ui-button-icon-only")
+		          .removeClass("ui-corner-all")		 
+		          .addClass("ui-corner-right")
+		          .addClass("custom-combobox-toggle")
+		          .addClass("ui-button")
+		          .addClass("ui-button-icon-only")
+		          .on( "mousedown", function() {
+		            wasOpen = input.autocomplete("widget").is(":visible");
+		          })
+		          .on( "click", function() {
+		            input.trigger( "focus" );
+		 
+		            // Close if already visible
+		            if ( wasOpen ) {
+		              return;
+		            }
+		 
+		            // Pass empty string as value to search for, displaying all results
+		            input.autocomplete( "search", "" );
+		          });
+		      },
+		 
+		      _source: function( request, response ) {
+		        var matcher = new RegExp( $.ui.autocomplete.escapeRegex(request.term), "i" );
+		        response( this.element.children( "option" ).map(function() {
+		          var text = $( this ).text();
+		          if ( this.value && ( !request.term || matcher.test(text) ) )
+		            return {
+		              label: text,
+		              value: text,
+		              option: this
+		            };
+		        }) );
+		      },
+		 
+		      _removeIfInvalid: function( event, ui ) {
+		 
+		        // Selected an item, nothing to do
+		        if ( ui.item ) {
+		          return;
+		        }
+		 
+		        // Search for a match (case-insensitive)
+		        var value = this.input.val(),
+		          valueLowerCase = value.toLowerCase(),
+		          valid = false;
+		        this.element.children( "option" ).each(function() {
+		          if ( $( this ).text().toLowerCase() === valueLowerCase ) {
+		            this.selected = valid = true;
+		            return false;
+		          }
+		        });
+		 
+		        // Found a match, nothing to do
+		        if ( valid ) {
+		          return;
+		        }
+		 
+		        // Remove invalid value
+		        this.input
+		          .val( "" )
+		          .attr( "title", value + " didn't match any item" )
+		          .tooltip( "open" );
+		        this.element.val( "" );
+		        this._delay(function() {
+		          this.input.tooltip( "close" ).attr( "title", "" );
+		        }, 2500 );
+		        this.input.autocomplete( "instance" ).term = "";
+		      },
+		 
+		      _destroy: function() {
+		        this.wrapper.remove();
+		        this.element.show();
+		      }
+		    });
+		    $(controls.roleSelect).combobox(); 
+	}
+	
+	function _bindEventHandlers(){
+		$(controls.cancel).click(_cancel);
+		$(controls.display).click(_display);
+		$(controls.edit).click(_edit);
+		$(controls.create).click(_create);
+	}
+	
+	function _cancel(){
+ 		window.location.assign('/home');
+ 	}
+	
+	function _display(){
+		var roleId=$(controls.roleSelect).val();
+		console.log("selected role id: "+roleId);
+		if(roleId!==""){
+			window.location.assign('/role/display?roleId='+roleId);
+		}
+		else{
+			console.log("no role selected");
+		}
+	}
+	
+	function _edit(){
+		var roleId=$(controls.roleSelect).val();
+		console.log("selected role id: "+roleId);
+		if(roleId!==""){
+			window.location.assign('/role/edit?roleId='+roleId);
+		}
+		else{
+			console.log("no role selected");
+		}
+	}
+	
+	function _create(){
+		
+	}
+	
+	return{
+		init	:init
+	}
+	
+})();
+
+var RoleData=(function(){
+	
+	var controls={
+			cancel	:'#btn_cancel',
+			save	:'#btn_save'
+	}
+	
+	var checkboxes={
+			readRights	: '.chk-read-rights',
+			updateRights: '.chk-update-rights',
+			createRights: '.chk-create-rights',
+			deleteRights: '.chk-delete-rights'
+	}
+	
+	function init(){
+		_initJQueryUI();
+		_bindEventHandlers();
+	}
+	
+	function _initJQueryUI(){
+		$(controls.cancel).button();
+		$(controls.save).button();
+		$(checkboxes.readRights).checkboxradio();
+		$(checkboxes.updateRights).checkboxradio();
+		$(checkboxes.createRights).checkboxradio();
+		$(checkboxes.deleteRights).checkboxradio();
+	}
+	
+	function _bindEventHandlers(){
+		$(controls.cancel).click(_cancel);
+		$(controls.save).click(_save);
+	}
+	
+	function _cancel(){
+		window.location.assign('/role/select');
+	}
+	
+	function _save(){
+		
+	}
+	
+	return{
+		init	:init
+	}
+	
+})();
+
 
 var Roles=(function(){
 	

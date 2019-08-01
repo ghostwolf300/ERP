@@ -41,4 +41,11 @@ public class RoleServiceImpl implements RoleService {
 		return dtoList;
 	}
 
+	@Override
+	public RoleDTO findRoleDTO(int roleId) {
+		Role role=roleRepository.findById(roleId);
+		RoleDTO rdto=new RoleDTO(role);
+		return rdto;
+	}
+
 }

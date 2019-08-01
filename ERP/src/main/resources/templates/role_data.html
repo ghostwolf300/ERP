@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<div class="content_container" id="role_data" layout:fragment="content">
+	<h2 th:text="${role.name}"></h2>
+	<div>
+		<h3>Objects</h3>
+		<div id="list_objects_wrapper">
+			<div id="auth-object-list">
+				<th:block th:each="ro : ${roleObjects}">
+				<div class="auth-object-row">
+					<div class="auth-object-text">
+						<span th:text="${ro.object.name}"></span>
+					</div>
+					<div class="auth-object-rights">
+						<label th:attr="for='chk-read-rights-'+${ro.object.id}">Read</label>
+						<input th:id="'chk-read-rights-'+${ro.object.id}" class="chk-read-rights" type="checkbox" th:checked="${ro.readRights}"/>
+						<label th:attr="for='chk-update-rights-'+${ro.object.id}">Update</label>
+						<input th:id="'chk-update-rights-'+${ro.object.id}" class="chk-update-rights" type="checkbox" th:checked="${ro.updateRights}"/>
+						<label th:attr="for='chk-create-rights-'+${ro.object.id}">Create</label>
+						<input th:id="'chk-create-rights-'+${ro.object.id}" class="chk-create-rights" type="checkbox" th:checked="${ro.createRights}"/>
+						<label th:attr="for='chk-delete-rights-'+${ro.object.id}">Delete</label>
+						<input th:id="'chk-delete-rights-'+${ro.object.id}" class="chk-delete-rights" type="checkbox" th:checked="${ro.deleteRights}"/>
+					</div>
+				</div>
+				</th:block>
+			</div>
+		</div>
+	</div>
+	<div>
+		<button id="btn_cancel" class="ui-button ui-widget ui-corner-all">
+			<span class="ui-icon  ui-icon-arrowthick-1-w"></span>Cancel
+		</button>
+		<button id="btn_save" class="ui-button ui-widget ui-corner-all">
+			<span class="ui-icon  ui-icon-disk"></span>Save
+		</button>
+	</div>
+</div>
+
+</html>

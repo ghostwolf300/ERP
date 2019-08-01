@@ -1,0 +1,37 @@
+@charset "ISO-8859-1";
+
+#list_objects_wrapper{
+	overflow-y:auto;
+	width: 680px;
+ 	min-width: 680px;
+}
+
+#auth-object-list{
+	margin: 0; 
+ 	padding: 0;
+ 	background: #f6f6f6;
+ 	border: 1px solid #c5c5c5;
+ 	min-height: 300px;
+ 	max-height: 400px;
+}
+
+.auth-object-row{
+	display: flex;
+	height: 40px;
+	min-height: 40px;
+	border: 1px solid #c5c5c5;
+	margin: 3px; 
+ 	padding: 0.4em; 
+ 	font-size: 1.2em;
+ 	background: white; 
+}
+
+.auth-object-text{
+	width: 20%;
+	min-width: 20%;	
+	margin: auto;
+}
+
+.auth-object.rights{
+	
+}
