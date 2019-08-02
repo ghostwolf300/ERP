@@ -36,6 +36,12 @@ public class RoleRepositoryImpl implements RoleRepositoryCustom {
 		List<Role> roles=qry.getResultList();
 		return roles;
 	}
+
+	@Override
+	public Role mergeRole(Role role) {
+		Role r=em.merge(role);
+		return r;
+	}
 	
 	/* Another way to do native query
 	 * SQL text here (no Entity @NamedNativeQuery needed)

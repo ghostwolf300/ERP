@@ -52,6 +52,14 @@ public class RoleObject {
 		this.updateRights=writeAccess;
 	}
 	
+	public RoleObject(RoleObjectDTO dto) {
+		this.id=new RoleObjectKey(dto.getRole().getId(),dto.getObject().getId());
+		this.readRights=dto.isReadRights();
+		this.updateRights=dto.isUpdateRights();
+		this.createRights=dto.isCreateRights();
+		this.deleteRights=dto.isDeleteRights();
+	}
+	
 	public RoleObjectKey getId() {
 		return id;
 	}

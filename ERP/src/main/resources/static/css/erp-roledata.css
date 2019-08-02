@@ -1,17 +1,33 @@
 @charset "ISO-8859-1";
 
-#list_objects_wrapper{
-	width: 680px;
- 	min-width: 680px;
+#objects-wrapper{
+	display: flex;
+ 	min-height: 300px;
+ 	max-height: 400px;
 }
 
-#auth-object-list{
+#objects-wrapper>div{
+	flex:0;
+	
+}
+
+#objects-assigned{
 	margin: 0; 
  	padding: 0;
  	background: #f6f6f6;
  	border: 1px solid #c5c5c5;
- 	min-height: 300px;
- 	max-height: 400px;
+ 	width:600px;
+ 	min-width:600px;
+ 	overflow-y:auto;
+}
+
+#objects-available{
+	margin: 0; 
+ 	padding: 0;
+ 	background: #f6f6f6;
+ 	border: 1px solid #c5c5c5;
+ 	width:600px;
+ 	min-width:600px;
  	overflow-y:auto;
 }
 
@@ -36,33 +52,62 @@
 	
 }
 
-.auth-object-table{
+.auth-objects-table{
 	border-collapse:separate;
 }
 
-.auth-object-table tr{
+.auth-objects-table tr{
 	height: 52px;	
  	font-size: 1.2em;
  	background: white;
 }
 
-.auth-object-table tr:hover{
+.auth-objects-table tr:hover{
  	
 }
 
-.auth-object-table td{
+.auth-objects-table td{
 	
 }
 
-.auth-object-table td.col-object{
+.auth-objects-table td.col-object{
 	padding-left:10px;
 	padding-right:10px;
 }
 
-.auth-object-table td.col-rights{
+.auth-objects-table td.col-rights{
 	
 }
 
 .btn-remove-object{
 	
+}
+
+/*Selectabe list */
+#objects-available-list{ 
+ 	list-style-type: none; 
+ 	margin: 0; 
+ 	padding: 0;
+ 	background: #f6f6f6;
+ 	border: 1px solid #c5c5c5;
+}
+
+#objects-available-list li { 
+ 	margin: 3px; 
+ 	padding: 0.4em; 
+ 	font-size: 1.2em; 
+ 	height: 18px;
+}
+
+#objects-available-list .ui-selecting { 
+ 	background: blue;
+}
+#objects-available-list .ui-selected { 
+ 	background: #007fff;
+ 	border: 1px solid #003eff; 
+ 	color: white;
+}
+
+.disabled{
+	pointer-events:none;
 }

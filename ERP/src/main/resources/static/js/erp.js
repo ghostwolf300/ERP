@@ -833,11 +833,22 @@ var RoleData=(function(){
 			readRights	: '.chk-read-rights',
 			updateRights: '.chk-update-rights',
 			createRights: '.chk-create-rights',
-			deleteRights: '.chk-delete-rights'
+			deleteRights: '.chk-delete-rights',
+			rights		: '.chk-rights'
 	}
 	
 	var buttons={
-		removeObject:'.btn-remove-object'
+		removeObject	:'.btn-remove-object',
+		removeObjects	:'#btn_remove_objects',
+		addObjects		:'#btn_add_objects'
+	}
+	
+	var lists={
+			unassignedObjects:'#objects-available-list'
+	}
+	
+	var tables={
+			assignedObjects:'#tbl_assigned_objects'
 	}
 	
 	function init(){
@@ -853,11 +864,78 @@ var RoleData=(function(){
 		$(checkboxes.createRights).checkboxradio();
 		$(checkboxes.deleteRights).checkboxradio();
 		$(buttons.removeObject).button();
+		$(lists.unassignedObjects).selectable();
 	}
 	
 	function _bindEventHandlers(){
 		$(controls.cancel).click(_cancel);
 		$(controls.save).click(_save);
+		$(buttons.addObjects).click(_addObjects);
+		$(buttons.removeObjects).click(_removeObjects);
+		$(tables.assignedObjects+' tbody td.col-object').click(_selectAssignedObject);
+	}
+	
+	function _selectAssignedObject(event){
+		var td=event.target;
+		var tr=$(event.target).parent()[0];
+		var id=$(tr).attr('id');
+		var name=$(td).find('span').text();
+		console.log(id+' '+name);
+		$(tr).addClass('object-selected');
+	}
+	
+	function _addObjects(){
+		var selectedObjects=$(lists.unassignedObjects).find(".ui-selected");
+		Array.from(selectedObjects).forEach(function(item){
+			console.log(item);
+			_createObjectTableRow(item);
+			$(item).remove();
+		});
+	}
+	
+	function _createObjectTableRow(el){
+		var id=$(el).attr('data-id');
+		var text=$(el).text();
+		console.log(id+'\t'+text);
+		var row='<tr id="'+id+'">'
+			+'<td class="col-object"><span id="obj-'+id+'-name" class="disabled">'+text+'</span></td>'
+			+'<td class="col-rights">'
+			+'<label for="chk-read-rights-'+id+'"></label>'
+			+'<input id="chk-read-rights-'+id+'" class="chk-read-rights" type="checkbox" checked="true"/>'
+			+'</td>'
+			+'<td class="col-rights">'
+			+'<label for="chk-update-rights-'+id+'"></label>'
+			+'<input id="chk-update-rights-'+id+'" class="chk-update-rights" type="checkbox" checked="false"/>'
+			+'</td>'
+			+'<td class="col-rights">'
+			+'<label for="chk-create-rights-'+id+'"></label>'
+			+'<input id="chk-create-rights-'+id+'" class="chk-create-rights" type="checkbox" checked="false"/>'
+			+'</td>'
+			+'<td class="col-rights">'
+			+'<label for="chk-delete-rights-'+id+'"></label>'
+			+'<input id="chk-delete-rights-'+id+'" class="chk-delete-rights" type="checkbox" checked="false"/>'
+			+'</td>'
+			+'<td>'
+			+'<button id="btn_remove_'+id+'" onclick=RoleData.removeAssignedObject('+id+') class="ui-button ui-widget ui-corner-all ui-button-icon-only btn-remove-object">'
+			+'<span class="ui-icon  ui-icon-circle-minus"></span>Remove Object'
+			+'</button>'
+			+'</td>'
+			+'</tr>';
+		$(tables.assignedObjects).find('tbody:last').append(row);
+		
+		$('#chk-read-rights-'+id).checkboxradio();
+		$('#chk-read-rights-'+id).prop('checked',true).checkboxradio('refresh');
+		$('#chk-update-rights-'+id).checkboxradio();
+		$('#chk-update-rights-'+id).prop('checked',false).checkboxradio('refresh');
+		$('#chk-create-rights-'+id).checkboxradio();
+		$('#chk-create-rights-'+id).prop('checked',false).checkboxradio('refresh');
+		$('#chk-delete-rights-'+id).checkboxradio();
+		$('#chk-delete-rights-'+id).prop('checked',false).checkboxradio('refresh');
+		
+	}
+	
+	function _removeObjects(){
+		
 	}
 	
 	function _cancel(){
@@ -865,16 +943,64 @@ var RoleData=(function(){
 	}
 	
 	function _save(){
-		
+		console.log(_getAssignedObjects());
 	}
 	
-	function removeObject(objectId){
+	function _getAssignedObjects(){
+		var rows=$(tables.assignedObjects+' tbody').find('tr');
+		var roleId=1;
+		var roleObjects=[];
+		var ro;
+		Array.from(rows).forEach(function(tr){
+			
+			
+			ro={
+					role			:_getRole(),
+					object			:_getAuthObject(tr),
+					readRights		:true,
+					updateRights	:true,
+					createRights	:true,
+					deleteRights	:true
+			}
+			roleObjects.push(ro);
+		});
+		
+		return roleObjects;
+	}
+	
+	function _getRole(){
+		var role={
+				id	:$('#role_id').val(),
+				role:$('#role_name').text()
+		}
+		return role;
+	}
+	
+	function _getAuthObject(tr){
+		var id=$(tr).attr('id');
+		var span=$(tr).find('#obj-'+id+'-name')[0];
+		var name=$(span).text();
+		
+		var object={
+				id		:id,
+				name	:name
+		}
+		return object;
+	}
+	
+	function removeAssignedObject(objectId){
 		console.log('Removing object '+objectId);
+		var span=$(tables.assignedObjects).find('#obj-'+objectId+'-name')[0];
+		var name=$(span).text();
+		console.log(name);
+		var li='<li data-id="'+objectId+'" class="ui-widget-content">'+name+'</li>';
+		$(lists.unassignedObjects).append(li);
+		$(tables.assignedObjects).find('#'+objectId).remove();
 	}
 	
 	return{
-		init			:init,
-		removeObject	:removeObject
+		init					:init,
+		removeAssignedObject	:removeAssignedObject
 	}
 	
 })();

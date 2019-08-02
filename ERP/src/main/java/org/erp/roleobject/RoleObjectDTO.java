@@ -28,14 +28,16 @@ public class RoleObjectDTO implements Serializable {
 		this.object=object;
 	}
 	
-	public RoleObjectDTO(RoleObject ro) {
+	
+	public RoleObjectDTO(RoleObject ro) { 
 		role=new RoleDTO(ro.getAuthRole());
-		object=new AuthObjectDTO(ro.getAuthObject());
+		object=new AuthObjectDTO(ro.getAuthObject()); 
 		readRights=ro.isReadRights();
-		updateRights=ro.isUpdateRights();
+		updateRights=ro.isUpdateRights(); 
 		createRights=ro.isCreateRights();
-		deleteRights=ro.isDeleteRights();
+		deleteRights=ro.isDeleteRights(); 
 	}
+	 
 
 	public RoleDTO getRole() {
 		return role;

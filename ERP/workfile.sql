@@ -56,17 +56,19 @@ insert into t_auth_object (name) values ('OBJ_BUSINESS_PARTNER');
 insert into t_auth_object (name) values ('OBJ_CUSTOMER');
 insert into t_auth_object (name) values ('OBJ_SUPPLIER');
 
-insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,1,true,true);
-insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,2,true,true);
-insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,3,true,true);
-insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,4,true,true);
-insert into t_role_auth_object(role_id,object_id,read_access,write_access) values (10,5,true,true);
+insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (10,1,true,true);
+insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (10,2,true,true);
+insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (20,3,true,true);
+insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (20,4,true,true);
+insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (20,1,true,true);
+insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (35,2,true,true);
+insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (30,5,true,true);
 
 alter table t_role_auth_object change read_access read_rights boolean default true;
 alter table t_role_auth_object change write_access update_rights boolean default false;
 alter table t_role_auth_object add column create_rights boolean default false;
 alter table t_role_auth_object add column delete_rights boolean default false;
 
-
+select o.id,o.name from t_auth_object o where o.id not in (select object_id from t_role_auth_object where role_id=10);
 
 

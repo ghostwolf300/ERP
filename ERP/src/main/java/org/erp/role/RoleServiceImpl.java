@@ -48,4 +48,20 @@ public class RoleServiceImpl implements RoleService {
 		return rdto;
 	}
 
+	@Override
+	public RoleDTO saveRole(RoleDTO role) {
+		Role r=roleRepository.findById(role.getId());
+		//do changes
+		r.setDescription(role.getDescription());
+	
+		roleRepository.mergeRole(r);
+		return role;
+	}
+
+	@Override
+	public RoleDTO removeRole(RoleDTO role) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

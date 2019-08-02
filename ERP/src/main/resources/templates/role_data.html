@@ -4,12 +4,13 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 <div class="content_container" id="role_data" layout:fragment="content">
-	<h2 th:text="${role.name}"></h2>
+	<input id="role_id" type="hidden" th:value="${role.id}">
+	<h2 id="role_name" th:text="${role.name}"></h2>
 	<div>
-		<h3>Objects</h3>
-		<div id="list_objects_wrapper">
-			<div id="auth-object-list">
-				<table class="auth-object-table">
+		<div id="objects-wrapper">
+			<div id="objects-assigned">
+				<h3>Assigned objects</h3>
+				<table id="tbl_assigned_objects" class="auth-objects-table">
 					<thead>
 						<tr>
 							<th>Object name</th>
@@ -21,9 +22,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<th:block th:each="ro : ${roleObjects}">
-							<tr>
-								<td class="col-object"><span th:text="${ro.object.name}"></span></td>
+						<th:block th:each="ro : ${role.roleObjects}">
+							<tr th:id="${ro.object.id}">
+								<td class="col-object">
+									<span th:id="'obj-'+${ro.object.id}+'-name'" class="disabled" th:text="${ro.object.name}"></span>
+								</td>
 								<td>
 									<label th:attr="for='chk-read-rights-'+${ro.object.id}"></label>
 									<input th:id="'chk-read-rights-'+${ro.object.id}" class="chk-read-rights" type="checkbox" th:checked="${ro.readRights}"/>
@@ -41,7 +44,7 @@
 									<input th:id="'chk-delete-rights-'+${ro.object.id}" class="chk-delete-rights" type="checkbox" th:checked="${ro.deleteRights}"/>
 								</td>
 								<td>
-									<button th:id="'btn_remove_'+${ro.object.id}" th:onclick="'RoleData.removeObject('+${ro.object.id}+')'" class="ui-button ui-widget ui-corner-all ui-button-icon-only btn-remove-object">
+									<button th:id="'btn_remove_'+${ro.object.id}" th:onclick="'RoleData.removeAssignedObject('+${ro.object.id}+')'" class="ui-button ui-widget ui-corner-all ui-button-icon-only btn-remove-object">
 										<span class="ui-icon  ui-icon-circle-minus"></span>Remove Object
 									</button>
 								</td>
@@ -49,6 +52,24 @@
 						</th:block>
 					</tbody>
 				</table>			
+			</div>
+			<div id="objects-move">
+				<button id="btn_add_objects" class="ui-button ui-widget ui-corner-all ui-button-icon-only">
+					<span class="ui-icon ui-icon-arrowthick-1-w"></span>Add object
+				</button>
+				<button id="btn_remove_objects" class="ui-button ui-widget ui-corner-all ui-button-icon-only">
+					<span class="ui-icon ui-icon-arrowthick-1-e"></span>Remove object
+				</button>
+			</div>
+			<div id="objects-available">
+				<h3>Available objects</h3>
+				<div id="objects-available-list-wrapper">
+					<ol id="objects-available-list">
+					<th:block th:each="object : ${unassignedObjects}">
+						<li th:attr="data-id=${object.id}" class="ui-widget-content" th:text="${object.name}"></li>
+					</th:block>
+					</ol>
+				</div>
 			</div>
 		</div>
 	</div>

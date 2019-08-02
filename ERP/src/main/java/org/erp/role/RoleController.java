@@ -2,6 +2,8 @@ package org.erp.role;
 
 import java.util.List;
 
+import org.erp.authobject.AuthObjectDTO;
+import org.erp.authobject.AuthObjectService;
 import org.erp.controller.NavController;
 import org.erp.roleobject.RoleObjectDTO;
 import org.erp.roleobject.RoleObjectService;
@@ -20,6 +22,9 @@ public class RoleController {
 	
 	@Autowired
 	private RoleObjectService roleObjectService;
+	
+	@Autowired
+	private AuthObjectService authObjectService;
 	
 	@RequestMapping("/view_roles")
 	public ModelAndView viewRoles() {
@@ -57,13 +62,15 @@ public class RoleController {
 	
 	private ModelAndView createModelAndView(int roleId,boolean edit) {
 		RoleDTO role=roleService.findRoleDTO(roleId);
-		List<RoleObjectDTO> roleObjects=roleObjectService.findRoleObjects(roleId);
+		//List<RoleObjectDTO> roleObjects=roleObjectService.findRoleObjects(roleId);
+		List<AuthObjectDTO> unassignedObjects=authObjectService.findUnassignedObjects(roleId);
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("viewName", "Role data");
 		mv.addObject("viewId", NavController.Views.ROLE_DATA);
 		mv.setViewName("role_data");
 		mv.addObject("role", role);
-		mv.addObject("roleObjects",roleObjects);
+		//mv.addObject("roleObjects",roleObjects);
+		mv.addObject("unassignedObjects", unassignedObjects);
 		mv.addObject("canEdit", edit);
 		return mv;
 	}

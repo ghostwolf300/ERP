@@ -1,5 +1,6 @@
 package org.erp.role;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -16,7 +17,9 @@ import javax.persistence.ConstructorResult;
 import javax.persistence.ColumnResult;
 
 import org.erp.roleobject.RoleObject;
+import org.erp.roleobject.RoleObjectDTO;
 import org.erp.userrole.UserRole;
+import org.erp.userrole.UserRoleKey;
 
 @Entity
 @Table(name="t_role")
@@ -97,6 +100,12 @@ public class Role {
 		this.description=description;
 	}
 	
+	public Role(RoleDTO role) {
+		this.id=role.getId();
+		this.name=role.getName();
+	
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -130,6 +139,39 @@ public class Role {
 
 	public void setRoleObjects(Set<RoleObject> roleObjects) {
 		this.roleObjects = roleObjects;
+	}
+	
+	public void addRoleObject(RoleObject ro) {
+		if(roleObjects==null) {
+			roleObjects=new HashSet<RoleObject>();
+		}
+		roleObjects.add(ro);
+	}
+	
+	public void handleAssignedObjects(Set<RoleObjectDTO> dtoRoleObjects) {
+		removeUnassignedObjects(dtoRoleObjects);
+		addAssignedObjects(dtoRoleObjects);
+	}
+	
+	private int addAssignedObjects(Set<RoleObjectDTO> assignedObjects) {
+		int addCount=0;
+		for(RoleObjectDTO dto : assignedObjects) {
+			if(!objectExists(dto.getObject().getId())) {
+				RoleObject roleObject=new RoleObject(dto);
+				
+				roleObjects.add(roleObject);
+				addCount++;
+			}
+		}
+		return addCount;
+	}
+	
+	private boolean objectExists(int objectId) {
+		return false;
+	}
+	
+	private int removeUnassignedObjects(Set<RoleObjectDTO> assignedObjects) {
+		return 0;
 	}
 	
 }

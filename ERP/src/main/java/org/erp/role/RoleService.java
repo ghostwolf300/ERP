@@ -11,5 +11,8 @@ public interface RoleService {
 	public List<RoleDTO> findAllRolesDTO();
 	public RoleDTO findRoleDTO(int roleId);
 	
+	public RoleDTO saveRole(RoleDTO role);
+	public RoleDTO removeRole(RoleDTO role);
+	
 	
 }

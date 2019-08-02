@@ -1,7 +1,12 @@
 package org.erp.role;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
+import org.erp.authobject.AuthObjectDTO;
+import org.erp.roleobject.RoleObject;
+import org.erp.roleobject.RoleObjectDTO;
 import org.erp.userrole.UserRole;
 
 public class RoleDTO implements Serializable{
@@ -14,6 +19,7 @@ public class RoleDTO implements Serializable{
 	private int id;
 	private String name;
 	private String description;
+	private Set<RoleObjectDTO> roleObjects;
 	
 	public RoleDTO() {
 		
@@ -29,12 +35,41 @@ public class RoleDTO implements Serializable{
 		this.id=ur.getId().getRoleId();
 		this.name=ur.getRole().getName();
 		this.description=ur.getRole().getDescription();
+		
+		if(roleObjects==null) {
+			roleObjects=new HashSet<RoleObjectDTO>();
+		}
+		
+		for(RoleObject ro :ur.getRole().getRoleObjects()) {
+			RoleObjectDTO dtoRo=new RoleObjectDTO();
+			dtoRo.setRole(this);
+			dtoRo.setObject(new AuthObjectDTO(ro.getAuthObject()));
+			dtoRo.setReadRights(ro.isReadRights());
+			dtoRo.setUpdateRights(ro.isUpdateRights());
+			dtoRo.setCreateRights(ro.isCreateRights());
+			dtoRo.setDeleteRights(ro.isDeleteRights());
+			roleObjects.add(dtoRo);
+		}
+	
 	}
 	
 	public RoleDTO(Role r) {
 		this.id=r.getId();
 		this.name=r.getName();
 		this.description=r.getDescription();
+		if(roleObjects==null) {
+			roleObjects=new HashSet<RoleObjectDTO>();
+		}
+		for(RoleObject ro :r.getRoleObjects()) {
+			RoleObjectDTO dtoRo=new RoleObjectDTO();
+			dtoRo.setRole(this);
+			dtoRo.setObject(new AuthObjectDTO(ro.getAuthObject()));
+			dtoRo.setReadRights(ro.isReadRights());
+			dtoRo.setUpdateRights(ro.isUpdateRights());
+			dtoRo.setCreateRights(ro.isCreateRights());
+			dtoRo.setDeleteRights(ro.isDeleteRights());
+			roleObjects.add(dtoRo);
+		}
 	}
 	
 	public int getId() {
@@ -54,6 +89,14 @@ public class RoleDTO implements Serializable{
 	}
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Set<RoleObjectDTO> getRoleObjects() {
+		return roleObjects;
+	}
+
+	public void setRoleObjects(Set<RoleObjectDTO> roleObjects) {
+		this.roleObjects = roleObjects;
 	}
 	
 
