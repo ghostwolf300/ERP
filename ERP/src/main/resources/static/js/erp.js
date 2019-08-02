@@ -103,6 +103,24 @@ var DAO=(function(){
 		
 	}
 	
+	function saveRole(role,create,_callback){
+		var url='/role/save?create='+create;
+		data=JSON.stringify(role);
+		$.ajax({
+			url : url,
+			method : "POST",
+			data : data,
+			dataType : "json"
+		}).done(function(r){
+			_callback(STATUS.DONE,r);
+		}).fail(function(){
+			alert("ERROR: Couldn't save user.");
+			_callback(STATUS.FAIL);
+		}).always(function(){
+			
+		});
+	}
+	
 	function getLastMessage(_callback){
 		var url='/messages/getLast';
 		var message;
@@ -158,6 +176,7 @@ var DAO=(function(){
 		STATUS			:STATUS,
 		findUserById	:findUserById,
 		saveUser		:saveUser,
+		saveRole		:saveRole,
 		getLastMessage	:getLastMessage,
 		findRoleObjects	:findRoleObjects
 	}
@@ -944,23 +963,35 @@ var RoleData=(function(){
 	
 	function _save(){
 		console.log(_getAssignedObjects());
+		var role=_getJSON();
+		var create=false;
+		console.log(role);
+		DAO.saveRole(role,create,function(status,r){
+			if(status==DAO.STATUS.DONE){
+				console.log('Role saved');
+				window.location.assign('/role/select');
+			}
+			else if(status==DAO.STATUS.FAIL){
+				console.log('Role save failed!');
+			}
+		});
 	}
 	
 	function _getAssignedObjects(){
 		var rows=$(tables.assignedObjects+' tbody').find('tr');
-		var roleId=1;
 		var roleObjects=[];
 		var ro;
 		Array.from(rows).forEach(function(tr){
-			
-			
+			var role=_getRole();
+			var object=_getAuthObject(tr);
+			//console.log('object id:'+object.id);
 			ro={
-					role			:_getRole(),
-					object			:_getAuthObject(tr),
-					readRights		:true,
-					updateRights	:true,
-					createRights	:true,
-					deleteRights	:true
+					role			:role,
+					object			:object,
+					readRights		:$('#chk-read-rights-'+object.id).prop('checked'),
+					updateRights	:$('#chk-update-rights-'+object.id).prop('checked'),
+					createRights	:$('#chk-create-rights-'+object.id).prop('checked'),
+					deleteRights	:$('#chk-delete-rights-'+object.id).prop('checked')
 			}
 			roleObjects.push(ro);
 		});
@@ -970,8 +1001,9 @@ var RoleData=(function(){
 	
 	function _getRole(){
 		var role={
-				id	:$('#role_id').val(),
-				role:$('#role_name').text()
+				id			:$('#role_id').val(),
+				name		:$('#role_name').text(),
+				description	:''
 		}
 		return role;
 	}
@@ -986,6 +1018,16 @@ var RoleData=(function(){
 				name	:name
 		}
 		return object;
+	}
+	
+	function _getJSON(){
+		var role={
+				id			:$('#role_id').val(),
+				name		:$('#role_name').text(),
+				description	:"",
+				roleObjects	:_getAssignedObjects()
+		}
+		return role;
 	}
 	
 	function removeAssignedObject(objectId){

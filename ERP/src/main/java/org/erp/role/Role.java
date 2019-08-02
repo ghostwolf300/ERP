@@ -16,6 +16,7 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.ConstructorResult;
 import javax.persistence.ColumnResult;
 
+import org.erp.authobject.AuthObjectDTO;
 import org.erp.roleobject.RoleObject;
 import org.erp.roleobject.RoleObjectDTO;
 import org.erp.userrole.UserRole;
@@ -150,16 +151,22 @@ public class Role {
 	
 	public void handleAssignedObjects(Set<RoleObjectDTO> dtoRoleObjects) {
 		removeUnassignedObjects(dtoRoleObjects);
-		addAssignedObjects(dtoRoleObjects);
+		addOrUpdateAssignedObjects(dtoRoleObjects);
 	}
 	
-	private int addAssignedObjects(Set<RoleObjectDTO> assignedObjects) {
+	private int addOrUpdateAssignedObjects(Set<RoleObjectDTO> assignedObjects) {
 		int addCount=0;
-		for(RoleObjectDTO dto : assignedObjects) {
-			if(!objectExists(dto.getObject().getId())) {
-				RoleObject roleObject=new RoleObject(dto);
-				
-				roleObjects.add(roleObject);
+		for(RoleObjectDTO dtoObj : assignedObjects) {
+			RoleObject roleObject=getRoleObject(dtoObj.getObject().getId());
+			if(roleObject!=null) {
+				roleObject.setReadRights(dtoObj.isReadRights());
+				roleObject.setUpdateRights(dtoObj.isUpdateRights());
+				roleObject.setCreateRights(dtoObj.isCreateRights());
+				roleObject.setDeleteRights(dtoObj.isDeleteRights());
+			}
+			else{
+				roleObject=new RoleObject(dtoObj);
+				addRoleObject(roleObject);
 				addCount++;
 			}
 		}
@@ -167,11 +174,66 @@ public class Role {
 	}
 	
 	private boolean objectExists(int objectId) {
-		return false;
+		boolean found=false;
+		if(roleObjects!=null && roleObjects.size()>0) {
+			for(RoleObject ro : roleObjects) {
+				if(ro.getId().getObjectId()==objectId) {
+					found=true;
+				}
+			}
+		}
+		else {
+			found=false;
+		}
+		
+		if(found) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	private RoleObject getRoleObject(int objectId) {
+		RoleObject roleObject=null;
+		for(RoleObject ro : roleObjects) {
+			if(ro.getId().getObjectId()==objectId) {
+				roleObject=ro;
+				break;
+			}
+		}
+		return roleObject;
 	}
 	
 	private int removeUnassignedObjects(Set<RoleObjectDTO> assignedObjects) {
-		return 0;
+		int removeCount=0;
+		Set<RoleObject> unassignedObjects=null;
+		
+		if(roleObjects==null) {
+			return 0;
+		}
+		if(assignedObjects==null || assignedObjects.size()==0) {
+			unassignedObjects=new HashSet<RoleObject>(roleObjects);
+		}
+		else {
+			unassignedObjects=new HashSet<RoleObject>();
+			boolean found=false;
+			for(RoleObject ro : roleObjects) {
+				found=false;
+				for(RoleObjectDTO dtoObj : assignedObjects) {
+					if(ro.getAuthObject().getId()==dtoObj.getObject().getId()) {
+						found=true;
+					}
+				}
+				if(!found) {
+					unassignedObjects.add(ro);
+				}
+			}
+		}
+		removeCount=unassignedObjects.size();
+		roleObjects.removeAll(unassignedObjects);
+		
+		return removeCount;
 	}
 	
 }

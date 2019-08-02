@@ -53,7 +53,7 @@ public class RoleServiceImpl implements RoleService {
 		Role r=roleRepository.findById(role.getId());
 		//do changes
 		r.setDescription(role.getDescription());
-	
+		r.handleAssignedObjects(role.getRoleObjects());
 		roleRepository.mergeRole(r);
 		return role;
 	}
