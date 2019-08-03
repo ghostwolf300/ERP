@@ -5,6 +5,7 @@
 	height: 100px;
 	min-height: 100px;
 	border: 1px solid black;
+	border-radius:20px;
 	background: DeepSkyBlue;
 	text-align: center;
 	margin: auto;
