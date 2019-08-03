@@ -51,10 +51,11 @@ select t_role.id from t_role left join t_user_role on t_role.id=t_user_role.role
 delete from t_user_role where user_id='aku.ankka';
 
 insert into t_auth_object (name) values ('OBJ_USER');
-insert into t_auth_object (name) values ('OBJ_MATERIAL');
-insert into t_auth_object (name) values ('OBJ_BUSINESS_PARTNER');
-insert into t_auth_object (name) values ('OBJ_CUSTOMER');
-insert into t_auth_object (name) values ('OBJ_SUPPLIER');
+
+insert into t_auth_object (name) values ('OBJ_USER_ROLE');
+insert into t_auth_object (name) values ('OBJ_ROLE');
+insert into t_auth_object (name) values ('OBJ_ROLE_AUTH_OBJECT');
+insert into t_auth_object (name) values ('OBJ_AUTH_OBJECT');
 
 insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (10,1,true,true);
 insert into t_role_auth_object(role_id,object_id,read_rights,update_rights) values (10,2,true,true);

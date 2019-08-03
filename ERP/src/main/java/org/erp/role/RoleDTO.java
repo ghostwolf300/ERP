@@ -25,6 +25,13 @@ public class RoleDTO implements Serializable{
 		
 	}
 	
+	public RoleDTO(RoleDTO role) {
+		this.id=role.id;
+		this.name=role.name;
+		this.description=role.description;
+		this.roleObjects=new HashSet<RoleObjectDTO>(role.roleObjects);
+	}
+	
 	public RoleDTO(int id, String name,String description) {
 		this.id=id;
 		this.name=name;
@@ -42,7 +49,7 @@ public class RoleDTO implements Serializable{
 		
 		for(RoleObject ro :ur.getRole().getRoleObjects()) {
 			RoleObjectDTO dtoRo=new RoleObjectDTO();
-			dtoRo.setRole(this);
+			dtoRo.setRole(new RoleDTO(this));
 			dtoRo.setObject(new AuthObjectDTO(ro.getAuthObject()));
 			dtoRo.setReadRights(ro.isReadRights());
 			dtoRo.setUpdateRights(ro.isUpdateRights());
@@ -62,7 +69,7 @@ public class RoleDTO implements Serializable{
 		}
 		for(RoleObject ro :r.getRoleObjects()) {
 			RoleObjectDTO dtoRo=new RoleObjectDTO();
-			dtoRo.setRole(this);
+			dtoRo.setRole(new RoleDTO(this));
 			dtoRo.setObject(new AuthObjectDTO(ro.getAuthObject()));
 			dtoRo.setReadRights(ro.isReadRights());
 			dtoRo.setUpdateRights(ro.isUpdateRights());

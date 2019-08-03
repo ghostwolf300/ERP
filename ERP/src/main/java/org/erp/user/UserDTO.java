@@ -10,6 +10,8 @@ import org.erp.role.Role;
 import org.erp.role.RoleDTO;
 import org.erp.userrole.UserRole;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 public class UserDTO implements Serializable {
 
 	/**
@@ -57,7 +59,7 @@ public class UserDTO implements Serializable {
 		}
 		this.roles=new HashSet<RoleDTO>();
 		for(UserRole ur : user.getUserRoles()) {
-			this.roles.add(new RoleDTO(ur));
+			this.roles.add(new RoleDTO(ur.getRole()));
 		}
 		this.pwChanged=user.getPwChanged();
 		this.createdTs=user.getCreatedTs();
