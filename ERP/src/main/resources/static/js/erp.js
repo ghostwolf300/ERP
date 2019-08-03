@@ -11,6 +11,9 @@ function initPage(){
  	if(view=='HOME'){
  		Home.init();
  	}
+ 	else if(view=='USER_SELECT'){
+ 		UserSelect.init();
+ 	}
  	else if(view=='NEW_USER'){
  		NewUser.init();
  	}
@@ -205,8 +208,8 @@ var Home=(function(){
 	}
 	
  	function _reqUsers(){
- 		console.log('Show users...');
- 		window.location.assign('/user/view_users');
+ 		console.log('Show user select...');
+ 		window.location.assign('/user/select');
  	}
  	
  	function _reqNewUser(){
@@ -538,10 +541,10 @@ var EditUser=(function(){
 			DAO.saveUser(user,create,function(status,usr){
 				if(status==DAO.STATUS.DONE){
 					if(mode=='new'){
-						window.location.assign('/user/new_user?status=user_created');
+						window.location.assign('/user/select?status=user_created');
 					}
 					else{
-						window.location.assign('/user/change_user?status=user_changed');
+						window.location.assign('/user/select?status=user_changed');
 					}
 				}
 				else if(status==DAO.STATUS.FAIL){
@@ -552,12 +555,7 @@ var EditUser=(function(){
 	}
 	
 	function _cancelEdit(){
-		if(mode=='new'){
-			window.location.assign('/user/new_user?status=cancel');
-		}
-		else{
-			window.location.assign('/user/change_user?status=cancel');
-		}
+		window.location.assign('/user/select?status=cancel');
 	}
 	
 	function _validate(){
@@ -1195,6 +1193,105 @@ var Roles=(function(){
 	function _objectSelected(event, ui){
 		console.log('Object selected '+event.target);
 	}
+	
+	return{
+		init	:init
+	}
+	
+})();
+
+var UserSelect=(function(){
+	
+	var controls={
+			display		:'#btn_display',
+			edit		:'#btn_edit',
+			create		:'#btn_create',
+			cancel		:'#btn_cancel',
+			search		:'#btn_search'
+	}
+	
+	var fields={
+			userId		:'#user_id',
+			errorMsg	:'#error_msg'
+	}
+	
+	function init(){
+		console.log("TEST: Initialize UserSelect");
+		_initJQueryUI();
+		_bindEventHandlers();
+		MessageHandler.refreshMessageBox();
+	}
+	
+	function _initJQueryUI(){
+		$(controls.display).button();
+		$(controls.edit).button();
+		$(controls.create).button();
+		$(controls.cancel).button();
+		$(controls.search).button();
+	
+	}
+	
+	function _bindEventHandlers(){
+		$(controls.cancel).click(_cancel);
+		$(controls.display).click(_display);
+		$(controls.edit).click(_edit);
+		$(controls.create).click(_create);
+		$(controls.search).click(_search);
+	}
+	
+	function _cancel(){
+		window.location.assign('/home');
+	}
+	
+	function _display(){
+		console.log('User display');
+	}
+	
+	function _edit(){
+		console.log('User edit');
+		$(fields.errorMsg).text('');
+ 		//test if user id exists
+ 		var userId=$(fields.userId).val();
+ 		DAO.findUserById(userId,function(status,user){
+			if(status==DAO.STATUS.DONE){
+				//user exists
+				console.log(user);
+				_showUserEditor(userId,false);
+			}
+			else if(status==DAO.STATUS.NA){
+				//no user found. display error message.
+				$(fields.errorMsg).text('User '+userId+' not found!');
+			}
+		});	
+	}
+	
+	function _create(){
+		console.log('User create');
+		$(fields.errorMsg).text('');
+ 		//test if user id exists
+ 		var userId=$(fields.userId).val();
+ 		DAO.findUserById(userId,function(status,user){
+			if(status==DAO.STATUS.DONE){
+				//user already exists. display error message
+				console.log(user);
+				$(fields.errorMsg).text('User '+userId+' already exists!');
+			}
+			else if(status==DAO.STATUS.NA){
+				//no user found. can be created.
+				_showUserEditor(userId,true);
+			}
+		});	
+	}
+	
+	function _search(){
+		console.log('User search');
+		//Open search dialog
+	}
+	
+	function _showUserEditor(userId,create){
+ 		console.log('show user editor...');
+ 		window.location.assign('/user/edit/'+userId+'/'+create);
+ 	}
 	
 	return{
 		init	:init

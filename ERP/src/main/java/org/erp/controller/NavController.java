@@ -12,6 +12,7 @@ public class NavController {
 	
 	public static enum Views{
 		HOME,
+		USER_SELECT,
 		NEW_USER,
 		CHANGE_USER,
 		EDIT_USER,

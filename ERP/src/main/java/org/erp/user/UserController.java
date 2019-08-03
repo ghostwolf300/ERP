@@ -105,4 +105,17 @@ public class UserController {
 		return modelAndView;
 	}
 	
+	@RequestMapping("/select") 
+	public ModelAndView selectUser(@RequestParam(value="status",required=false) String status) {
+		ModelAndView modelAndView =new ModelAndView();
+		modelAndView.addObject("viewName","Change user");
+		modelAndView.addObject("viewId", Views.USER_SELECT);
+		modelAndView.setViewName("user_select");
+		System.out.println("UserController.selectUser");
+		if(status!=null && status.equals("cancel")) {
+			messageService.addMessage(new MessageDTO(-1,new Timestamp(System.currentTimeMillis()),MessageDTO.Type.INFO,"User change cancelled"));
+		}
+		return modelAndView;
+	}
+	
 }
