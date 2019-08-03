@@ -1245,6 +1245,22 @@ var UserSelect=(function(){
 	
 	function _display(){
 		console.log('User display');
+		//only display
+		$(fields.errorMsg).text('');
+ 		//test if user id exists
+ 		var userId=$(fields.userId).val();
+ 		DAO.findUserById(userId,function(status,user){
+			if(status==DAO.STATUS.DONE){
+				//user exists
+				console.log(user);
+				_showUserEditor(userId,false);
+			}
+			else if(status==DAO.STATUS.NA){
+				//no user found. display error message.
+				$(fields.errorMsg).text('User '+userId+' not found!');
+			}
+		});	
+		
 	}
 	
 	function _edit(){
