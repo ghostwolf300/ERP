@@ -72,4 +72,10 @@ alter table t_role_auth_object add column delete_rights boolean default false;
 
 select o.id,o.name from t_auth_object o where o.id not in (select object_id from t_role_auth_object where role_id=10);
 
+insert into t_uom(name,iso_code) values('Piece','PC');
+insert into t_uom(name,iso_code) values('Kilogram','KG');
+insert into t_uom(name,iso_code) values('Meter','MR');
 
+insert into t_material_type(short_name,name) values('PRCH','Purchased');
+insert into t_material_type(short_name,name) values('PROD','Produced');
+insert into t_material_type(short_name,name) values('RAW','Raw');
