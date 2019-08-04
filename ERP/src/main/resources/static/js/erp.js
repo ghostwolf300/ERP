@@ -32,6 +32,12 @@ function initPage(){
  	else if(view=='ROLE_DATA'){
  		RoleData.init();
  	}
+ 	else if(view=='MATERIAL_SELECT'){
+ 		MaterialSelect.init();
+ 	}
+ 	else if(view=='MATERIAL_DATA'){
+ 		MaterialData.init();
+ 	}
 }
 
 function globalSetup(){
@@ -175,13 +181,18 @@ var DAO=(function(){
 		});
 	}
 	
+	function findMaterialById(materialId,_callback){
+		
+	}
+	
 	return{
 		STATUS			:STATUS,
 		findUserById	:findUserById,
 		saveUser		:saveUser,
 		saveRole		:saveRole,
 		getLastMessage	:getLastMessage,
-		findRoleObjects	:findRoleObjects
+		findRoleObjects	:findRoleObjects,
+		findMaterialById:findMaterialById
 	}
 	
 })();
@@ -192,7 +203,8 @@ var Home=(function(){
 		users		: '#users',
 		newUser 	: '#new_user',
 		changeUser 	: '#change_user',
-		roles		: '#roles'
+		roles		: '#roles',
+		materials	: '#materials'
 	}
 
  	function init(){
@@ -205,6 +217,7 @@ var Home=(function(){
 		$(tiles.newUser).click(_reqNewUser);
 		$(tiles.changeUser).click(_reqChangeUser);
 		$(tiles.roles).click(_reqRoleSelect);
+		$(tiles.materials).click(_reqMaterialSelect);
 	}
 	
  	function _reqUsers(){
@@ -231,6 +244,11 @@ var Home=(function(){
  	function _reqRoleSelect(){
  		console.log('Role selection');
  		window.location.assign('/role/select');
+ 	}
+ 	
+ 	function _reqMaterialSelect(){
+ 		console.log('Material selection');
+ 		window.location.assign('/material/select');
  	}
  	
 	return{
@@ -1308,6 +1326,102 @@ var UserSelect=(function(){
  		console.log('show user editor...');
  		window.location.assign('/user/edit/'+userId+'/'+create);
  	}
+	
+	return{
+		init	:init
+	}
+	
+})();
+
+var MaterialSelect=(function(){
+	
+	var controls={
+			display		:'#btn_display',
+			edit		:'#btn_edit',
+			create		:'#btn_create',
+			cancel		:'#btn_cancel',
+			search		:'#btn_search'
+	}
+	
+	var fields={
+			userId		:'#material_id',
+			errorMsg	:'#error_msg'
+	}
+	
+	function init(){
+		console.log("TEST: Initialize MaterialSelect");
+		_initJQueryUI();
+		_bindEventHandlers();
+		MessageHandler.refreshMessageBox();
+	}
+	
+	function _initJQueryUI(){
+		$(controls.display).button();
+		$(controls.edit).button();
+		$(controls.create).button();
+		$(controls.cancel).button();
+		$(controls.search).button();
+	
+	}
+	
+	function _bindEventHandlers(){
+		$(controls.cancel).click(_cancel);
+		$(controls.display).click(_display);
+		$(controls.edit).click(_edit);
+		$(controls.create).click(_create);
+		$(controls.search).click(_search);
+	}
+	
+	function _cancel(){
+		window.location.assign('/home');
+	}
+	
+	function _display(){
+		console.log('Material display');
+		//only display
+		$(fields.errorMsg).text('');
+ 		//test if material id exists
+ 		var materialId=$(fields.materialId).val();
+		window.location.assign('/material/display?materialId='+materialId);
+// 		DAO.findMaterialById(materialId,function(status,material){
+//			if(status==DAO.STATUS.DONE){
+//				//material exists
+//				console.log(material);
+//				_showMaterialEditor(materialId,2);
+//			}
+//			else if(status==DAO.STATUS.NA){
+//				//no material found. display error message.
+//				$(fields.errorMsg).text('Material '+materialId+' not found!');
+//			}
+//		});	
+	}
+	
+	function _edit(){
+		console.log('Material edit');
+		$(fields.errorMsg).text('');
+		var materialId=$(fields.materialId).val();
+		window.location.assign('/material/edit?materialId='+materialId);
+	}
+	
+	function _create(){
+		
+	}
+	
+	function _search(){
+		
+	}
+	
+	return{
+		init	:init
+	}
+	
+})();
+
+var MaterialData=(function(){
+	
+	function init(){
+		
+	}
 	
 	return{
 		init	:init

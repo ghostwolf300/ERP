@@ -3,20 +3,20 @@
       xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
-<div class="content_container" id="user_main" layout:fragment="content">
+<div class="content_container" id="material_main" layout:fragment="content">
 	<div>
-		<h2>Users</h2>
+		<h2>Materials</h2>
 	</div>
 	<div>
-		<div id="role_select" class="ui-widget">
-			<label for="user_id">User</label>
-			<input id="user_id" type="text" name="user_id">
+		<div id="material_select" class="ui-widget">
+			<label for="material_id">Material</label>
+			<input id="material_id" type="text" name="material_id">
 			<button id="btn_search" class="ui-button ui-widget ui-corner-all ui-button-icon-only">
 				<span class="ui-icon ui-icon-search"></span>Search
 			</button>
 			<p id="error_msg" class="error_message"></p>
 		</div>
-		<div id="user_controls">
+		<div id="material_controls">
 			<button id="btn_cancel" class="ui-button ui-widget ui-corner-all">
 				<span class="ui-icon  ui-icon-arrowthick-1-w"></span>Cancel
 			</button>

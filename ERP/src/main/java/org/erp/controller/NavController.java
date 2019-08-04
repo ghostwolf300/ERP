@@ -18,7 +18,9 @@ public class NavController {
 		EDIT_USER,
 		ROLES,
 		ROLE_SELECT,
-		ROLE_DATA
+		ROLE_DATA,
+		MATERIAL_SELECT,
+		MATERIAL_DATA
 		};
 	
 	private static final Map<Views,String> VIEW_MAP=createViewMap();
