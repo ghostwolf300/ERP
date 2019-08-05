@@ -76,10 +76,17 @@ select o.id,o.name from t_auth_object o where o.id not in (select object_id from
 insert into t_uom(name,iso_code) values('Piece','PC');
 insert into t_uom(name,iso_code) values('Kilogram','KG');
 insert into t_uom(name,iso_code) values('Meter','MR');
+insert into t_uom(name,iso_code) values('Centimeter','CM');
+insert into t_uom(name,iso_code) values('Millimeter','MM');
 
 insert into t_material_type(short_name,name) values('PRCH','Purchased');
 insert into t_material_type(short_name,name) values('PROD','Produced');
 insert into t_material_type(short_name,name) values('RAW','Raw');
+
+insert into t_material_group(name) values('Discount');
+insert into t_material_group(name) values('Base');
+insert into t_material_group(name) values('Enhanced');
+insert into t_material_group(name) values('Luxury');
 
 insert into t_material(id,legacy_id,name,ean_13,type_id,base_uom_id,created_by,created_ts,changed_by,changed_ts)
 values('T000000010','TEST01','Testituote A','0123456789111',1,1,'ville.susi','2019-08-05 09:00:00','ville.susi','2019-08-05 09:00:00');
@@ -94,6 +101,12 @@ delete from t_material;
 
 alter table t_material change column gross_weight gross_weight double default 0.0;
 alter table t_material change column net_weight net_weight double default 0.0;
+
+update t_material set wt_uom_id=2;
+alter table t_material change column wt_uom_id wt_uom_id int not null default 2;
+
+update t_material set dim_uom_id=5;
+alter table t_material change column dim_uom_id dim_uom_id int not null default 5;
 
 alter table t_material change column length length double default 0.0;
 alter table t_material change column width width double default 0.0;

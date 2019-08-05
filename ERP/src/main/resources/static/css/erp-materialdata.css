@@ -1,0 +1,11 @@
+@charset "ISO-8859-1";
+
+#general_wrapper{
+	display: flex;
+}
+
+#general_wrapper>div{
+	flex:1;
+	
+}
+

@@ -2,7 +2,9 @@ package org.erp.material;
 
 import java.io.Serializable;
 
+import org.erp.materialgroup.MaterialGroupDTO;
 import org.erp.materialtype.MaterialTypeDTO;
+import org.erp.uom.UnitOfMeasureDTO;
 
 public class MaterialDTO implements Serializable {
 
@@ -15,8 +17,16 @@ public class MaterialDTO implements Serializable {
 	private String legacyId;
 	private String name;
 	private String ean13;
+	private UnitOfMeasureDTO baseUom;
 	private MaterialTypeDTO materialType;
-
+	private MaterialGroupDTO materialGroup;
+	private double netWeight;
+	private double grossWeight;
+	private UnitOfMeasureDTO weightUom;
+	private double length;
+	private double width;
+	private double height;
+	private UnitOfMeasureDTO dimUom;
 	
 	
 	public MaterialDTO() {
@@ -32,7 +42,19 @@ public class MaterialDTO implements Serializable {
 		this.legacyId=m.getLegacyId();
 		this.name=m.getName();
 		this.ean13=m.getEan13();
+		this.baseUom=new UnitOfMeasureDTO(m.getBaseUom());
 		this.materialType=new MaterialTypeDTO(m.getMaterialType());
+		if(m.getMaterialGroup()!=null) {
+			this.materialGroup=new MaterialGroupDTO(m.getMaterialGroup());
+		}
+		this.netWeight=m.getNetWeight();
+		this.grossWeight=m.getGrossWeight();
+		this.weightUom=new UnitOfMeasureDTO(m.getWeightUom());
+		this.length=m.getLength();
+		this.width=m.getWidth();
+		this.height=m.getHeight();
+		this.dimUom=new UnitOfMeasureDTO(m.getDimUom());
+	
 	}
 
 	public String getId() {
@@ -81,5 +103,77 @@ public class MaterialDTO implements Serializable {
 
 	public void setMaterialType(MaterialTypeDTO materialType) {
 		this.materialType = materialType;
+	}
+
+	public MaterialGroupDTO getMaterialGroup() {
+		return materialGroup;
+	}
+
+	public void setMaterialGroup(MaterialGroupDTO materialGroup) {
+		this.materialGroup = materialGroup;
+	}
+
+	public UnitOfMeasureDTO getBaseUom() {
+		return baseUom;
+	}
+
+	public void setBaseUom(UnitOfMeasureDTO baseUom) {
+		this.baseUom = baseUom;
+	}
+
+	public double getNetWeight() {
+		return netWeight;
+	}
+
+	public void setNetWeight(double netWeight) {
+		this.netWeight = netWeight;
+	}
+
+	public double getGrossWeight() {
+		return grossWeight;
+	}
+
+	public void setGrossWeight(double grossWeight) {
+		this.grossWeight = grossWeight;
+	}
+
+	public UnitOfMeasureDTO getWeightUom() {
+		return weightUom;
+	}
+
+	public void setWeightUom(UnitOfMeasureDTO weightUom) {
+		this.weightUom = weightUom;
+	}
+
+	public double getLength() {
+		return length;
+	}
+
+	public void setLength(double length) {
+		this.length = length;
+	}
+
+	public double getWidth() {
+		return width;
+	}
+
+	public void setWidth(double width) {
+		this.width = width;
+	}
+
+	public double getHeight() {
+		return height;
+	}
+
+	public void setHeight(double height) {
+		this.height = height;
+	}
+
+	public UnitOfMeasureDTO getDimUom() {
+		return dimUom;
+	}
+
+	public void setDimUom(UnitOfMeasureDTO dimUom) {
+		this.dimUom = dimUom;
 	}
 }

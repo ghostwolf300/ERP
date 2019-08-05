@@ -2,42 +2,143 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="nz.net.ultraq.thymeleaf">
 <div id="material_editor" class="editor" th:fragment="material_editor_1">
 	<h2>General data</h2>
-	<div class="table">
-		<div class="tableBody">
-			<div class="tableRow">
-				<div class="tableCell">
-					<span>Name:</span>
-				</div>
-				<div class="tableCell">
-					<input id="name" name="name" type="text" th:field="${material.name}"/>
+	<div id="general_wrapper">
+		<div id="general_1">
+			<div class="table">
+				<div class="tableBody">
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Name:</span>
+						</div>
+						<div class="tableCell">
+							<input id="name" name="name" type="text" th:field="${material.name}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>EAN 13:</span>
+						</div>
+						<div class="tableCell">
+							<input id="ean13" name="ean13" type="text" th:field="${material.ean13}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Legacy ID:</span>
+						</div>
+						<div class="tableCell">
+							<input id="legacy_id" name="legacy_id" type="text" th:field="${material.legacyId}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Base UOM:</span>
+						</div>
+						<div class="tableCell">
+							<select id="base_uom_id" name="base_uom_id" th:field="*{material.baseUom.id}">
+								<th:block th:each="uom : ${uoms}">
+									<option th:value="${uom.id}" th:text="${uom.isoCode}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Type:</span>
+						</div>
+						<div class="tableCell">
+							<select id="type_id" name="type_id" th:field="*{material.materialType.id}">
+								<th:block th:each="type : ${materialTypes}">
+									<option th:value="${type.id}" th:text="${type.shortName}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Group:</span>
+						</div>
+						<div class="tableCell">
+							<select id="group_id" name="group_id" th:field="*{material.materialGroup.id}">
+								<option value="-1"></option>
+								<th:block th:each="group : ${materialGroups}">
+									<option th:value="${group.id}" th:text="${group.name}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
 				</div>
 			</div>
-			<div class="tableRow">
-				<div class="tableCell">
-					<span>EAN 13:</span>
-				</div>
-				<div class="tableCell">
-					<input id="ean13" name="ean13" type="text" th:field="${material.ean13}"/>
-				</div>
-			</div>
-			<div class="tableRow">
-				<div class="tableCell">
-					<span>Legacy ID:</span>
-				</div>
-				<div class="tableCell">
-					<input id="legacy_id" name="legacy_id" type="text" th:field="${material.legacyId}"/>
-				</div>
-			</div>
-			<div class="tableRow">
-				<div class="tableCell">
-					<span>Type:</span>
-				</div>
-				<div class="tableCell">
-					<select id="type_id" name="type_id" th:field="*{material.materialType.id}">
-						<th:block th:each="type : ${materialTypes}">
-							<option th:value="${type.id}" th:text="${type.shortName}"></option>
-						</th:block>
-					</select>
+		</div>
+		<div id="general_2">
+			<div class="table">
+				<div class="tableBody">
+					<div class="tableRow">
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Gross weight:</span>
+						</div>
+						<div class="tableCell">
+							<input id="gross_weight" name="gross_weight" th:field="${material.grossWeight}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Net weight:</span>
+						</div>
+						<div class="tableCell">
+							<input id="net_weight" name="net_weight" th:field="${material.netWeight}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Weight UOM:</span>
+						</div>
+						<div class="tableCell">
+							<select id="wt_uom_id" name="wt_uom_id" th:field="*{material.weightUom.id}">
+								<th:block th:each="uom : ${uoms}">
+									<option th:value="${uom.id}" th:text="${uom.isoCode}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Length:</span>
+						</div>
+						<div class="tableCell">
+							<input id="length" name="length" th:field="${material.length}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Width:</span>
+						</div>
+						<div class="tableCell">
+							<input id="width" name="width" th:field="${material.width}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Height:</span>
+						</div>
+						<div class="tableCell">
+							<input id="height" name="height" th:field="${material.height}"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<span>Dim UOM:</span>
+						</div>
+						<div class="tableCell">
+							<select id="dim_uom_id" name="dim_uom_id" th:field="*{material.dimUom.id}">
+								<th:block th:each="uom : ${uoms}">
+									<option th:value="${uom.id}" th:text="${uom.isoCode}"></option>
+								</th:block>
+							</select>
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>

@@ -3,8 +3,12 @@ package org.erp.material;
 import java.util.Set;
 
 import org.erp.controller.NavController;
+import org.erp.materialgroup.MaterialGroupDTO;
+import org.erp.materialgroup.MaterialGroupService;
 import org.erp.materialtype.MaterialTypeDTO;
 import org.erp.materialtype.MaterialTypeService;
+import org.erp.uom.UnitOfMeasureDTO;
+import org.erp.uom.UnitOfMeasureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,7 +26,13 @@ public class MaterialController {
 	private MaterialService materialService;
 	
 	@Autowired
+	private UnitOfMeasureService uomService;
+	
+	@Autowired
 	private MaterialTypeService materialTypeService;
+	
+	@Autowired
+	private MaterialGroupService materialGroupService;
 	
 	@PreAuthorize("hasAccess("+AUTH_OBJ_ID+",'display')")
 	@RequestMapping("/select")
@@ -72,6 +82,8 @@ public class MaterialController {
 		}
 		
 		Set<MaterialTypeDTO> materialTypes=materialTypeService.findAllMaterialTypes();
+		Set<MaterialGroupDTO> materialGroups=materialGroupService.findAllMaterialGroups();
+		Set<UnitOfMeasureDTO> uoms=uomService.findAllUnitOfMeasure();
 		
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("viewName", "Material data");
@@ -81,6 +93,8 @@ public class MaterialController {
 		mv.addObject("canEdit", edit);
 		mv.addObject("action", action);
 		mv.addObject("materialTypes",materialTypes);
+		mv.addObject("materialGroups",materialGroups);
+		mv.addObject("uoms", uoms);
 		return mv;
 	}
 	
