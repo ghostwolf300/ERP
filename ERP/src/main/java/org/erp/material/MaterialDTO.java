@@ -18,7 +18,17 @@ public class MaterialDTO implements Serializable {
 	public MaterialDTO() {
 		
 	}
-
+	
+	public MaterialDTO(String id) {
+		this.id=id;
+	}
+	
+	public MaterialDTO(Material m) {
+		this.id=m.getId();
+		this.legacyId=m.getLegacyId();
+		this.name=m.getName();
+		this.ean13=m.getEan13();
+	}
 
 	public String getId() {
 		return id;

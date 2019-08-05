@@ -4,10 +4,40 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/default}">
 <div class="content_container" id="material_data" layout:fragment="content">
-	<div>
+	<div id="material_header">
 		<h2 id="material_id" th:text="${material.id}"></h2>
+		<input id="action_id" th:value="${action}" type="hidden"/>
+		<th:block th:switch="${action}">
+			<span id="action_text" th:case="1">Create</span>
+			<span id="action_text" th:case="2">Change</span>
+			<span id="action_text" th:case="3">Display</span>
+		</th:block>
 	</div>
-	<div>
+	<div id="material_content">
+		<form id="material_form">
+			<div id="tabs">
+				<ul class="tabs">
+					<li><a href = "#tab_general">General</a></li>
+					<li><a href = "#tab_finance">Finance</a></li>
+					<li><a href = "#tab_org">Org. data</a></li>
+					<li><a href = "#tab_info">Info</a></li>
+				</ul>
+				<div id="tab_general">
+					<div th:replace="fragments/material_editor :: material_editor_1"></div>
+				</div>
+				<div id="tab_finance">
+					<div th:replace="fragments/material_editor :: material_editor_2"></div>
+				</div>
+				<div id="tab_org">
+					<div th:replace="fragments/material_editor :: material_editor_3"></div>
+				</div>
+				<div id="tab_info">
+					<div th:replace="fragments/material_editor :: material_editor_4"></div>
+				</div>
+			</div>
+			<div th:replace="fragments/common :: save_or_cancel"></div>
+			<input id="btn_submit" type="submit" style="visibility:hidden;">
+		</form>
 	</div>
 </div>
 </html>

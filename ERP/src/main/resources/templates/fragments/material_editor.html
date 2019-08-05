@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="nz.net.ultraq.thymeleaf">
+<div id="material_editor" class="editor" th:fragment="material_editor_1">
+	<h2>General data</h2>
+	<input id="name" name="name" type="text" th:field="${material.name}"/>
+	<input id="ean13" name="ean13" type="text" th:field="${material.ean13}"/>
+	<input id="legacy_id" name="legacy_id" type="text" th:field="${material.legacyId}"/>
+</div>
+<div id="material_editor" class="editor" th:fragment="material_editor_2">
+	<h2>Financial data</h2>
+</div>
+<div id="material_editor" class="editor" th:fragment="material_editor_3">
+	<h2>Org. data</h2>
+</div>
+<div id="material_editor" class="editor" th:fragment="material_editor_4">
+	<h2>Info</h2>
+</div>
+</html>

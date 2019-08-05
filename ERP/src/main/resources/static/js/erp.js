@@ -182,7 +182,28 @@ var DAO=(function(){
 	}
 	
 	function findMaterialById(materialId,_callback){
+
+		var url='/material/findById?materialId='+materialId;
+		var material;
 		
+		$.getJSON(url,function(m,statusText,jqxhr){
+		}).done(function(m,statusText,jqxhr){
+			if(jqxhr.status==200){
+				material=m;
+				_callback(STATUS.DONE,material);
+			}
+			else if(jqxhr.status==204){
+				_callback(STATUS.NA);
+			}
+			else{
+				_callback(STATUS.UNKNOWN);
+			}
+
+		}).fail(function(jqxhr, textStatus, error){
+			_callback(STATUS.FAIL);
+		}).always(function(){
+
+		});
 	}
 	
 	return{
@@ -1344,8 +1365,8 @@ var MaterialSelect=(function(){
 	}
 	
 	var fields={
-			userId		:'#material_id',
-			errorMsg	:'#error_msg'
+			materialId		:'#material_id',
+			errorMsg		:'#error_msg'
 	}
 	
 	function init(){
@@ -1382,33 +1403,73 @@ var MaterialSelect=(function(){
 		$(fields.errorMsg).text('');
  		//test if material id exists
  		var materialId=$(fields.materialId).val();
-		window.location.assign('/material/display?materialId='+materialId);
-// 		DAO.findMaterialById(materialId,function(status,material){
-//			if(status==DAO.STATUS.DONE){
-//				//material exists
-//				console.log(material);
-//				_showMaterialEditor(materialId,2);
-//			}
-//			else if(status==DAO.STATUS.NA){
-//				//no material found. display error message.
-//				$(fields.errorMsg).text('Material '+materialId+' not found!');
-//			}
-//		});	
+ 		console.log('Material id: '+materialId);
+ 		
+ 		_materialExists(materialId,function(exists){
+ 			if(exists){
+ 				console.log('material found');
+ 				window.location.assign('/material/display?materialId='+materialId);
+ 			}
+ 			else{
+ 				$(fields.errorMsg).text('Material '+materialId+' not found!');
+ 			}
+ 		});
+ 		
 	}
 	
 	function _edit(){
 		console.log('Material edit');
 		$(fields.errorMsg).text('');
-		var materialId=$(fields.materialId).val();
-		window.location.assign('/material/edit?materialId='+materialId);
+ 		//test if material id exists
+ 		var materialId=$(fields.materialId).val();
+ 		console.log('Material id: '+materialId);
+ 		_materialExists(materialId,function(exists){
+ 			if(exists){
+ 				window.location.assign('/material/edit?materialId='+materialId);
+ 			}
+ 			else{
+ 				$(fields.errorMsg).text('Material '+materialId+' not found!');
+ 			}
+ 		});
 	}
 	
 	function _create(){
-		
+		console.log('Material create');
+		$(fields.errorMsg).text('');
+ 		//test if material id exists
+ 		var materialId=$(fields.materialId).val();
+ 		console.log('Material id: '+materialId);
+ 		_materialExists(materialId,function(exists){
+ 			if(exists){
+ 				$(fields.errorMsg).text('Material '+materialId+' already exists!');
+ 			}
+ 			else{
+ 				window.location.assign('/material/create?materialId='+materialId);
+ 			}
+ 		});
+ 		
 	}
 	
 	function _search(){
 		
+	}
+	
+	function _materialExists(materialId,_callback){
+ 		DAO.findMaterialById(materialId,function(status,material){
+			if(status==DAO.STATUS.DONE){
+				//material exists
+				console.log(material);
+				_callback(true)
+			}
+			else if(status==DAO.STATUS.NA){
+				//no material found. display error message.
+				_callback(false)
+			}
+			else{
+				//some other error
+				_callback(false)
+			}
+ 		});	
 	}
 	
 	return{
@@ -1419,8 +1480,45 @@ var MaterialSelect=(function(){
 
 var MaterialData=(function(){
 	
+	var controls={
+			cancel	:'#btn_cancel',
+			save	:'#btn_save'
+	}
+	
+	var form='#material_form';
+	
 	function init(){
+		_initJQueryUI();
+		_initFormValidation();
+		_bindEventHandlers();
+	}
+	
+	function _initJQueryUI(){
+		$('#tabs').tabs();
+	}
+	
+	function _initFormValidation(){
 		
+	}
+	
+	function _bindEventHandlers(){
+		$(form).submit(_noAutoSubmit);
+		$(controls.cancel).click(_cancel);
+		$(controls.save).click(_save);
+	}
+	
+	function _noAutoSubmit(e){
+		e.preventDefault();
+		return false;
+	}
+	
+	function _cancel(){
+		window.location.assign('/material/select');
+	}
+	
+	function _save(){
+		console.log('Saving material');
+		//save data
 	}
 	
 	return{

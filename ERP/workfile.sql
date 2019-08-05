@@ -3,6 +3,7 @@ select * from t_role;
 select * from t_user_role;
 select * from t_auth_object;
 select * from t_role_auth_object;
+select * from t_material;
 
 delete from t_user where id='hannu.hanhi';
 
@@ -79,3 +80,24 @@ insert into t_uom(name,iso_code) values('Meter','MR');
 insert into t_material_type(short_name,name) values('PRCH','Purchased');
 insert into t_material_type(short_name,name) values('PROD','Produced');
 insert into t_material_type(short_name,name) values('RAW','Raw');
+
+insert into t_material(id,legacy_id,name,ean_13,type_id,base_uom_id,created_by,created_ts,changed_by,changed_ts)
+values('T000000010','TEST01','Testituote A','0123456789111',1,1,'ville.susi','2019-08-05 09:00:00','ville.susi','2019-08-05 09:00:00');
+
+insert into t_material(id,legacy_id,name,ean_13,type_id,base_uom_id,created_by,created_ts,changed_by,changed_ts)
+values('T000000020','TEST02','Testituote B','0123456789222',2,1,'ville.susi','2019-08-05 09:00:00','ville.susi','2019-08-05 09:00:00');
+
+insert into t_material(id,legacy_id,name,ean_13,type_id,base_uom_id,created_by,created_ts,changed_by,changed_ts)
+values('T000000030','TEST03','Testituote C','0123456789333',3,1,'ville.susi','2019-08-05 09:00:00','ville.susi','2019-08-05 09:00:00');
+
+delete from t_material;
+
+alter table t_material change column gross_weight gross_weight double default 0.0;
+alter table t_material change column net_weight net_weight double default 0.0;
+
+alter table t_material change column length length double default 0.0;
+alter table t_material change column width width double default 0.0;
+alter table t_material change column height height double default 0.0;
+
+update t_material set gross_weight=0;
+update t_material set net_weight=0,width=0,lenght=0,height=0;

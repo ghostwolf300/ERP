@@ -11,10 +11,11 @@ import javax.persistence.Table;
 
 import org.erp.authobject.AuthObject;
 import org.erp.role.Role;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name="t_role_auth_object")
-public class RoleObject {
+public class RoleObject implements GrantedAuthority {
 	
 	@EmbeddedId
 	private RoleObjectKey id;
@@ -105,6 +106,12 @@ public class RoleObject {
 
 	public void setDeleteRights(boolean deleteRights) {
 		this.deleteRights = deleteRights;
+	}
+
+	@Override
+	public String getAuthority() {
+		String authority=authObject.getId()+";display="+this.readRights+";update="+this.updateRights+";create="+this.createRights+";delete="+this.deleteRights;
+		return authority;
 	}
 	
 }

@@ -4,8 +4,16 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
+
+import org.erp.materialgroup.MaterialGroup;
+import org.erp.materialtype.MaterialType;
+import org.erp.uom.UnitOfMeasure;
 
 @Entity
 @Table(name="t_material")
@@ -23,7 +31,7 @@ public class Material {
 	@Column(name="type_id")
 	private int typeId;
 	@Column(name="group_id")
-	private int groupId;
+	private Integer groupId;
 	@Column(name="parent_id")
 	private String parentId;
 	@Column(name="base_uom_id")
@@ -33,7 +41,7 @@ public class Material {
 	@Column(name="net_weight")
 	private double netWeight;
 	@Column(name="wt_uom_id")
-	private int weightUomId;
+	private Integer weightUomId;
 	@Column(name="length")
 	private double length;
 	@Column(name="width")
@@ -41,7 +49,7 @@ public class Material {
 	@Column(name="height")
 	private double height;
 	@Column(name="dim_uom_id")
-	private int dimUomId;
+	private Integer dimUomId;
 	@Column(name="created_by")
 	private String createdBy;
 	@Column(name="created_ts")
@@ -50,6 +58,42 @@ public class Material {
 	private String changedBy;
 	@Column(name="changed_ts")
 	private Timestamp changedTs;
+	
+	@ManyToOne(
+			fetch=FetchType.LAZY
+	)
+	@MapsId("type_id")
+	@JoinColumn(name="type_id")
+	private MaterialType materialType;
+	
+	@ManyToOne(
+			fetch=FetchType.LAZY
+	)
+	@MapsId("group_id")
+	@JoinColumn(name="group_id")
+	private MaterialGroup materialGroup;
+	
+	@ManyToOne(
+			fetch=FetchType.LAZY
+	)
+	@MapsId("base_uom_id")
+	@JoinColumn(name="base_uom_id")
+	private UnitOfMeasure baseUom;
+	
+	@ManyToOne(
+			fetch=FetchType.LAZY
+	)
+	@MapsId("wt_uom_id")
+	@JoinColumn(name="wt_uom_id")
+	private UnitOfMeasure weightUom;
+	
+	
+	@ManyToOne(
+			fetch=FetchType.LAZY
+	)
+	@MapsId("dim_uom_id")
+	@JoinColumn(name="dim_uom_id")
+	private UnitOfMeasure dimUom;
 	
 	public Material() {
 		
@@ -95,11 +139,11 @@ public class Material {
 		this.typeId = typeId;
 	}
 
-	public int getGroupId() {
+	public Integer getGroupId() {
 		return groupId;
 	}
 
-	public void setGroupId(int groupId) {
+	public void setGroupId(Integer groupId) {
 		this.groupId = groupId;
 	}
 
@@ -135,11 +179,11 @@ public class Material {
 		this.netWeight = netWeight;
 	}
 
-	public int getWeightUomId() {
+	public Integer getWeightUomId() {
 		return weightUomId;
 	}
 
-	public void setWeightUomId(int weightUomId) {
+	public void setWeightUomId(Integer weightUomId) {
 		this.weightUomId = weightUomId;
 	}
 
@@ -167,11 +211,11 @@ public class Material {
 		this.height = height;
 	}
 
-	public int getDimUomId() {
+	public Integer getDimUomId() {
 		return dimUomId;
 	}
 
-	public void setDimUomId(int dimensionUomId) {
+	public void setDimUomId(Integer dimensionUomId) {
 		this.dimUomId = dimensionUomId;
 	}
 
@@ -205,6 +249,46 @@ public class Material {
 
 	public void setChangedTs(Timestamp changedTs) {
 		this.changedTs = changedTs;
+	}
+
+	public MaterialType getMaterialType() {
+		return materialType;
+	}
+
+	public void setMaterialType(MaterialType materialType) {
+		this.materialType = materialType;
+	}
+
+	public MaterialGroup getMaterialGroup() {
+		return materialGroup;
+	}
+
+	public void setMaterialGroup(MaterialGroup materialGroup) {
+		this.materialGroup = materialGroup;
+	}
+
+	public UnitOfMeasure getBaseUom() {
+		return baseUom;
+	}
+
+	public void setBaseUom(UnitOfMeasure baseUom) {
+		this.baseUom = baseUom;
+	}
+
+	public UnitOfMeasure getWeightUom() {
+		return weightUom;
+	}
+
+	public void setWeightUom(UnitOfMeasure weightUom) {
+		this.weightUom = weightUom;
+	}
+
+	public UnitOfMeasure getDimUom() {
+		return dimUom;
+	}
+
+	public void setDimUom(UnitOfMeasure dimUom) {
+		this.dimUom = dimUom;
 	}
 	
 }

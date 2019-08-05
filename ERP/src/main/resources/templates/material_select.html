@@ -16,20 +16,7 @@
 			</button>
 			<p id="error_msg" class="error_message"></p>
 		</div>
-		<div id="material_controls">
-			<button id="btn_cancel" class="ui-button ui-widget ui-corner-all">
-				<span class="ui-icon  ui-icon-arrowthick-1-w"></span>Cancel
-			</button>
-			<button id="btn_display" class="ui-button ui-widget ui-corner-all">
-				<span class="ui-icon ui-icon-search"></span>Display
-			</button>
-			<button id="btn_edit" class="ui-button ui-widget ui-corner-all">
-				<span class="ui-icon ui-icon-pencil"></span>Edit
-			</button>
-			<button id="btn_create" class="ui-button ui-widget ui-corner-all">
-				<span class="ui-icon ui-icon-plus"></span>Create
-			</button>
-		</div>
+		<div th:replace="fragments/common :: crud_select"></div>
 	</div>
 </div>
 

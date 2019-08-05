@@ -3,6 +3,7 @@ package org.erp.auth;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.erp.roleobject.RoleObject;
 import org.erp.user.User;
 import org.erp.user.UserRepository;
 import org.erp.userrole.UserRole;
@@ -41,6 +42,7 @@ public class AuthenticationServiceImpl implements AuthenticationService, UserDet
 			throw new LockedException(username);
 			
 		}
+		//org.springframework.security.core.userdetails.User udUser=new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(), user.isEnabled(),true,true,true,getAuthorities(user));
 		return new org.springframework.security.core.userdetails.User(user.getId(), user.getPassword(), user.isEnabled(),true,true,true,getAuthorities(user));
 	}
 	
@@ -51,10 +53,11 @@ public class AuthenticationServiceImpl implements AuthenticationService, UserDet
 	
 	private List<GrantedAuthority> getAuthorities(User user){
 		List<GrantedAuthority> authorities=new ArrayList<GrantedAuthority>();
-		for(UserRole role : user.getUserRoles()) {
-			authorities.add(new SimpleGrantedAuthority(role.getRole().getName()));
+		for(UserRole ur : user.getUserRoles()) {
+			for(RoleObject ro : ur.getRole().getRoleObjects()) {
+				authorities.add(ro);
+			}
 		}
-		//authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		return authorities;
 	}
 

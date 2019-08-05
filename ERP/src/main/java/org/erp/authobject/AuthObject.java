@@ -14,6 +14,7 @@ import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
 import org.erp.roleobject.RoleObject;
+import org.springframework.security.core.GrantedAuthority;
 
 @Entity
 @Table(name="t_auth_object")
