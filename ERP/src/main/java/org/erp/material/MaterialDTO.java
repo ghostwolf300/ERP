@@ -2,6 +2,8 @@ package org.erp.material;
 
 import java.io.Serializable;
 
+import org.erp.materialtype.MaterialTypeDTO;
+
 public class MaterialDTO implements Serializable {
 
 	/**
@@ -13,6 +15,8 @@ public class MaterialDTO implements Serializable {
 	private String legacyId;
 	private String name;
 	private String ean13;
+	private MaterialTypeDTO materialType;
+
 	
 	
 	public MaterialDTO() {
@@ -28,6 +32,7 @@ public class MaterialDTO implements Serializable {
 		this.legacyId=m.getLegacyId();
 		this.name=m.getName();
 		this.ean13=m.getEan13();
+		this.materialType=new MaterialTypeDTO(m.getMaterialType());
 	}
 
 	public String getId() {
@@ -70,8 +75,11 @@ public class MaterialDTO implements Serializable {
 	}
 
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public MaterialTypeDTO getMaterialType() {
+		return materialType;
 	}
 
+	public void setMaterialType(MaterialTypeDTO materialType) {
+		this.materialType = materialType;
+	}
 }

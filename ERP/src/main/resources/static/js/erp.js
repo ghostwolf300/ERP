@@ -1498,7 +1498,30 @@ var MaterialData=(function(){
 	}
 	
 	function _initFormValidation(){
+		$.validator.setDefaults({
+			ignore:""
+		});
 		
+		$(form).validate({
+			rules:{
+				name:{
+					required:true
+				}
+			},
+			messages:{
+				name:'Name/description is required!'
+			},
+			submitHandler	:function(form){
+				$(controls.save).prop('disabled',false);
+				$(controls.save).focus();
+			},
+			invalidHandler	:function(form,validator){
+				var errors=validator.numberOfInvalids();
+				if(errors){
+					$(controls.save).prop('disabled',true);
+				}
+			}
+		});
 	}
 	
 	function _bindEventHandlers(){

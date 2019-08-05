@@ -1,6 +1,10 @@
 package org.erp.material;
 
+import java.util.Set;
+
 import org.erp.controller.NavController;
+import org.erp.materialtype.MaterialTypeDTO;
+import org.erp.materialtype.MaterialTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -16,6 +20,9 @@ public class MaterialController {
 	
 	@Autowired
 	private MaterialService materialService;
+	
+	@Autowired
+	private MaterialTypeService materialTypeService;
 	
 	@PreAuthorize("hasAccess("+AUTH_OBJ_ID+",'display')")
 	@RequestMapping("/select")
@@ -63,6 +70,9 @@ public class MaterialController {
 			material=new MaterialDTO(materialId);
 			edit=true;
 		}
+		
+		Set<MaterialTypeDTO> materialTypes=materialTypeService.findAllMaterialTypes();
+		
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("viewName", "Material data");
 		mv.addObject("viewId", NavController.Views.MATERIAL_DATA);
@@ -70,6 +80,7 @@ public class MaterialController {
 		mv.addObject("material", material);
 		mv.addObject("canEdit", edit);
 		mv.addObject("action", action);
+		mv.addObject("materialTypes",materialTypes);
 		return mv;
 	}
 	

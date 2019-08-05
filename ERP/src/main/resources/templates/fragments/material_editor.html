@@ -2,9 +2,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="nz.net.ultraq.thymeleaf">
 <div id="material_editor" class="editor" th:fragment="material_editor_1">
 	<h2>General data</h2>
-	<input id="name" name="name" type="text" th:field="${material.name}"/>
-	<input id="ean13" name="ean13" type="text" th:field="${material.ean13}"/>
-	<input id="legacy_id" name="legacy_id" type="text" th:field="${material.legacyId}"/>
+	<div class="table">
+		<div class="tableBody">
+			<div class="tableRow">
+				<div class="tableCell">
+					<span>Name:</span>
+				</div>
+				<div class="tableCell">
+					<input id="name" name="name" type="text" th:field="${material.name}"/>
+				</div>
+			</div>
+			<div class="tableRow">
+				<div class="tableCell">
+					<span>EAN 13:</span>
+				</div>
+				<div class="tableCell">
+					<input id="ean13" name="ean13" type="text" th:field="${material.ean13}"/>
+				</div>
+			</div>
+			<div class="tableRow">
+				<div class="tableCell">
+					<span>Legacy ID:</span>
+				</div>
+				<div class="tableCell">
+					<input id="legacy_id" name="legacy_id" type="text" th:field="${material.legacyId}"/>
+				</div>
+			</div>
+			<div class="tableRow">
+				<div class="tableCell">
+					<span>Type:</span>
+				</div>
+				<div class="tableCell">
+					<select id="type_id" name="type_id" th:field="*{material.materialType.id}">
+						<th:block th:each="type : ${materialTypes}">
+							<option th:value="${type.id}" th:text="${type.shortName}"></option>
+						</th:block>
+					</select>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 <div id="material_editor" class="editor" th:fragment="material_editor_2">
 	<h2>Financial data</h2>

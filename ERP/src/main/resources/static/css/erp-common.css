@@ -31,6 +31,23 @@ div#top_container.content{
 	color: red;
 }
 
+.table{
+	display: table;
+}
+
+.tableBody{
+	display: table-row-group;
+}
+
+.tableRow{
+	display: table-row;
+	height: 40px;
+}
+
+.tableCell{
+	display: table-cell;
+}
+
 /*--------JQuery UI checkbox bug-----------------*/
 label.ui-checkboxradio-label span.ui-icon-check {
  	background-position: -64px -144px;

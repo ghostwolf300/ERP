@@ -7,23 +7,6 @@ div#user_editor_control.editor{
 	margin-top: 10px;
 }
 
-.table{
-	display: table;
-}
-
-.tableBody{
-	display: table-row-group;
-}
-
-.tableRow{
-	display: table-row;
-	height: 40px;
-}
-
-.tableCell{
-	display: table-cell;
-}
-
 .erpDatePicker{
 	width: 100px;	
 }
