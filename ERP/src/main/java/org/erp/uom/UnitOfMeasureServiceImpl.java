@@ -14,7 +14,18 @@ public class UnitOfMeasureServiceImpl implements UnitOfMeasureService {
 	private UnitOfMeasureRepository uomRepository;
 	
 	@Override
-	public Set<UnitOfMeasureDTO> findAllUnitOfMeasure() {
+	public Set<UnitOfMeasureDTO> findUnitsOfMeasureFor(String uomFor) {
+		List<UnitOfMeasure> uoms=uomRepository.findByUomFor(uomFor);
+		Set<UnitOfMeasureDTO> dtoUoms=new HashSet<UnitOfMeasureDTO>();
+		for(UnitOfMeasure uom : uoms) {
+			UnitOfMeasureDTO dtoUom=new UnitOfMeasureDTO(uom);
+			dtoUoms.add(dtoUom);
+		}
+		return dtoUoms;
+	}
+
+	@Override
+	public Set<UnitOfMeasureDTO> findAllUnitsOfMeasure() {
 		List<UnitOfMeasure> uoms=uomRepository.findAll();
 		Set<UnitOfMeasureDTO> dtoUoms=new HashSet<UnitOfMeasureDTO>();
 		for(UnitOfMeasure uom : uoms) {

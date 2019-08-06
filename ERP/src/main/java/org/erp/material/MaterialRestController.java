@@ -3,6 +3,7 @@ package org.erp.material;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,6 +20,21 @@ public class MaterialRestController {
 		MaterialDTO material=materialService.findMaterial(materialId);
 		if(material==null) {
 			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<MaterialDTO>(material,HttpStatus.OK);
+	}
+	
+	@RequestMapping("/save")
+	public ResponseEntity<MaterialDTO> saveMaterial(@RequestParam("create") boolean create,@RequestBody MaterialDTO material){
+		MaterialDTO m=null;
+		if(create) {
+			m=materialService.createMaterial(material);
+		}
+		else {
+			m=materialService.updateMaterial(material);
+		}
+		if(m==null) {
+			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		return new ResponseEntity<MaterialDTO>(material,HttpStatus.OK);
 	}

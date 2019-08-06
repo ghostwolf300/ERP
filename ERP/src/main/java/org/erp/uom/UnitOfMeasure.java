@@ -16,6 +16,8 @@ public class UnitOfMeasure {
 	private String name;
 	@Column(name="iso_code")
 	private String isoCode;
+	@Column(name="uom_for")
+	private String uomFor;
 	
 	public UnitOfMeasure() {
 		
@@ -43,6 +45,14 @@ public class UnitOfMeasure {
 
 	public void setIsoCode(String isoCode) {
 		this.isoCode = isoCode;
+	}
+
+	public String getUomFor() {
+		return uomFor;
+	}
+
+	public void setUomFor(String uomFor) {
+		this.uomFor = uomFor;
 	}
 
 }

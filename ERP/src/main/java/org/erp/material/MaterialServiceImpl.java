@@ -23,4 +23,36 @@ public class MaterialServiceImpl implements MaterialService {
 		return dtoMat;
 	}
 
+	@Override
+	public MaterialDTO updateMaterial(MaterialDTO dtoMaterial) {
+		Optional<Material> opt=materialRepository.findById(dtoMaterial.getId());
+		if(opt.isPresent()) {
+			Material material=opt.get();
+			material.setName(dtoMaterial.getName());
+			material.setEan13(dtoMaterial.getEan13());
+			material.setLegacyId(dtoMaterial.getLegacyId());
+			material.setBaseUomId(dtoMaterial.getBaseUom().getId());
+			material.setTypeId(dtoMaterial.getMaterialType().getId());
+			material.setGroupId(dtoMaterial.getMaterialGroup().getId());
+			material.setGrossWeight(dtoMaterial.getGrossWeight());
+			material.setNetWeight(dtoMaterial.getNetWeight());
+			material.setWeightUomId(dtoMaterial.getWeightUom().getId());
+			material.setLength(dtoMaterial.getLength());
+			material.setWidth(dtoMaterial.getWidth());
+			material.setHeight(dtoMaterial.getHeight());
+			material.setDimUomId(dtoMaterial.getDimUom().getId());
+			material=materialRepository.mergeMaterial(material);
+			return new MaterialDTO(material);
+		}
+		else {
+			return null;
+		}
+	}
+
+	@Override
+	public MaterialDTO createMaterial(MaterialDTO dtoMaterial) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

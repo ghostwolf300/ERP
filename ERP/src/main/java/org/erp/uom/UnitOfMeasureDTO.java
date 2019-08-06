@@ -12,6 +12,7 @@ public class UnitOfMeasureDTO implements Serializable {
 	private int id;
 	private String name;
 	private String isoCode;
+	private String uomFor;
 	
 	public UnitOfMeasureDTO() {
 		
@@ -21,6 +22,7 @@ public class UnitOfMeasureDTO implements Serializable {
 		this.id=uom.getId();
 		this.name=uom.getName();
 		this.isoCode=uom.getIsoCode();
+		this.uomFor=uom.getUomFor();
 	}
 
 	public int getId() {
@@ -45,6 +47,14 @@ public class UnitOfMeasureDTO implements Serializable {
 
 	public void setIsoCode(String isoCode) {
 		this.isoCode = isoCode;
+	}
+
+	public String getUomFor() {
+		return uomFor;
+	}
+
+	public void setUomFor(String uomFor) {
+		this.uomFor = uomFor;
 	}
 
 }

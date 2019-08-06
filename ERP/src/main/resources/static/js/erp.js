@@ -95,7 +95,7 @@ var DAO=(function(){
 	
 	function saveUser(user,create,_callback){
 		var url='/user/edit/save?create='+create;
-		data=JSON.stringify(user);
+		var data=JSON.stringify(user);
 		$.ajax({
 			url : url,
 			method : "POST",
@@ -206,11 +206,30 @@ var DAO=(function(){
 		});
 	}
 	
+	function saveMaterial(material,create,_callback){
+		var data=JSON.stringify(material);
+		var url='/material/save?create='+create;;
+		$.ajax({
+			url : url,
+			method : "POST",
+			data : data,
+			dataType : "json"
+		}).done(function(mat){
+			_callback(STATUS.DONE,mat);
+		}).fail(function(){
+			alert("ERROR: Couldn't save material.");
+			_callback(STATUS.FAIL);
+		}).always(function(){
+			
+		});
+	}
+	
 	return{
 		STATUS			:STATUS,
 		findUserById	:findUserById,
 		saveUser		:saveUser,
 		saveRole		:saveRole,
+		saveMaterial	:saveMaterial,
 		getLastMessage	:getLastMessage,
 		findRoleObjects	:findRoleObjects,
 		findMaterialById:findMaterialById
@@ -1487,10 +1506,37 @@ var MaterialData=(function(){
 	
 	var form='#material_form';
 	
+	var texts={
+			material	:'#material_id'
+	}
+	
+	var fields={
+			action		:'#action_id',
+			name		:'#name',
+			ean13		:'#ean13',
+			legacyId	:'#legacy_id',
+			grossWeight	:'#gross_weight',
+			netWeight	:'#net_weight',
+			length		:'#length',
+			width		:'#width',
+			height		:'#height'
+	}
+	
+	var select={
+			baseUomId	:'#base_uom_id',
+			typeId		:'#type_id',
+			groupId		:'#group_id',
+			weightUomId	:'#wt_uom_id',
+			dimUomId	:'#dim_uom_id'	
+	}
+	
+	var action;
+	
 	function init(){
 		_initJQueryUI();
 		_initFormValidation();
 		_bindEventHandlers();
+		action=$(fields.action).val();
 	}
 	
 	function _initJQueryUI(){
@@ -1541,7 +1587,51 @@ var MaterialData=(function(){
 	
 	function _save(){
 		console.log('Saving material');
-		//save data
+		var material=_getJSON();
+		console.log(material);
+		var create=false;
+		if(action==1){
+			create=true;
+		}
+		DAO.saveMaterial(material,create,function(status,m){
+			if(status==DAO.STATUS.DONE){
+				console.log('Material saved');
+				window.location.assign('/material/select');
+			}
+			else if(status==DAO.STATUS.FAIL){
+				console.log('Material save failed!');
+			}
+		});
+	}
+	
+	function _getJSON(){
+		var material={
+				id			:$(texts.material).text(),
+				name		:$(fields.name).val(),
+				ean13		:$(fields.ean13).val(),
+				legacyId	:$(fields.legacyId).val(),
+				baseUom		:{
+					id	:parseInt($(select.baseUomId).val())
+				},
+				materialType:{
+					id	:parseInt($(select.typeId).val())
+				},
+				materialGroup:{
+					id	:parseInt($(select.groupId).val())
+				},
+				grossWeight	:$(fields.grossWeight).val(),
+				netWeight	:$(fields.netWeight).val(),
+				weightUom	:{
+					id	:parseInt($(select.weightUomId).val())
+				},
+				length		:$(fields.length).val(),
+				width		:$(fields.width).val(),
+				height		:$(fields.height).val(),
+				dimUom		:{
+					id	:parseInt($(select.dimUomId).val())
+				}
+		}
+		return material;
 	}
 	
 	return{

@@ -4,6 +4,7 @@ select * from t_user_role;
 select * from t_auth_object;
 select * from t_role_auth_object;
 select * from t_material;
+select * from t_uom;
 
 delete from t_user where id='hannu.hanhi';
 
@@ -114,3 +115,8 @@ alter table t_material change column height height double default 0.0;
 
 update t_material set gross_weight=0;
 update t_material set net_weight=0,width=0,lenght=0,height=0;
+
+alter table t_uom add column uom_for varchar(4);
+update t_uom set uom_for='QTY' where id=1;
+update t_uom set uom_for='WT' where id=2;
+update t_uom set uom_for='DIM' where id in (3,4,5);

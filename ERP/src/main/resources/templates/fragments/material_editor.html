@@ -97,7 +97,7 @@
 						</div>
 						<div class="tableCell">
 							<select id="wt_uom_id" name="wt_uom_id" th:field="*{material.weightUom.id}">
-								<th:block th:each="uom : ${uoms}">
+								<th:block th:each="uom : ${uomsForWt}">
 									<option th:value="${uom.id}" th:text="${uom.isoCode}"></option>
 								</th:block>
 							</select>
@@ -133,7 +133,7 @@
 						</div>
 						<div class="tableCell">
 							<select id="dim_uom_id" name="dim_uom_id" th:field="*{material.dimUom.id}">
-								<th:block th:each="uom : ${uoms}">
+								<th:block th:each="uom : ${uomsForDim}">
 									<option th:value="${uom.id}" th:text="${uom.isoCode}"></option>
 								</th:block>
 							</select>

@@ -83,7 +83,9 @@ public class MaterialController {
 		
 		Set<MaterialTypeDTO> materialTypes=materialTypeService.findAllMaterialTypes();
 		Set<MaterialGroupDTO> materialGroups=materialGroupService.findAllMaterialGroups();
-		Set<UnitOfMeasureDTO> uoms=uomService.findAllUnitOfMeasure();
+		Set<UnitOfMeasureDTO> uoms=uomService.findAllUnitsOfMeasure();
+		Set<UnitOfMeasureDTO> uomsForWt=uomService.findUnitsOfMeasureFor("WT");
+		Set<UnitOfMeasureDTO> uomsForDim=uomService.findUnitsOfMeasureFor("DIM");
 		
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("viewName", "Material data");
@@ -95,6 +97,8 @@ public class MaterialController {
 		mv.addObject("materialTypes",materialTypes);
 		mv.addObject("materialGroups",materialGroups);
 		mv.addObject("uoms", uoms);
+		mv.addObject("uomsForWt", uomsForWt);
+		mv.addObject("uomsForDim", uomsForDim);
 		return mv;
 	}
 	

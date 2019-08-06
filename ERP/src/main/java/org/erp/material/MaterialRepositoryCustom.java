@@ -1,5 +1,10 @@
 package org.erp.material;
 
-public interface MaterialRepositoryCustom {
+import javax.transaction.Transactional;
 
+public interface MaterialRepositoryCustom {
+	
+	@Transactional
+	public Material mergeMaterial(Material material);
+	
 }

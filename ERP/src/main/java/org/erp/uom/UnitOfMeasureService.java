@@ -4,6 +4,7 @@ import java.util.Set;
 
 public interface UnitOfMeasureService {
 	
-	public Set<UnitOfMeasureDTO> findAllUnitOfMeasure();
-	
+	public Set<UnitOfMeasureDTO> findAllUnitsOfMeasure();
+	public Set<UnitOfMeasureDTO> findUnitsOfMeasureFor(String uomFor);
+
 }
