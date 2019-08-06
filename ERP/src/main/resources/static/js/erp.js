@@ -1595,7 +1595,7 @@ var MaterialData=(function(){
 		}
 		DAO.saveMaterial(material,create,function(status,m){
 			if(status==DAO.STATUS.DONE){
-				console.log('Material saved');
+				console.log('Material saved ok!');
 				window.location.assign('/material/select');
 			}
 			else if(status==DAO.STATUS.FAIL){
