@@ -36,10 +36,11 @@ public class MaterialController {
 	
 	@PreAuthorize("hasAccess("+AUTH_OBJ_ID+",'display')")
 	@RequestMapping("/select")
-	public ModelAndView selectMaterial() {
+	public ModelAndView selectMaterial(@RequestParam(value="materialId",required=false) String materialId) {
 		ModelAndView mv=new ModelAndView();
 		mv.addObject("viewName", "Material Select");
 		mv.addObject("viewId", NavController.Views.MATERIAL_SELECT);
+		mv.addObject("materialId", materialId);
 		mv.setViewName("material_select");
 		return mv;
 	}

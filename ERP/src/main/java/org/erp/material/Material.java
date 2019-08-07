@@ -98,6 +98,22 @@ public class Material {
 	public Material() {
 		
 	}
+	
+	public Material(MaterialDTO material) {
+		this.id=material.getId();
+		this.ean13=material.getEan13();
+		this.legacyId=material.getLegacyId();
+		this.typeId=material.getMaterialType().getId();
+		this.groupId=material.getMaterialGroup().getId();
+		this.baseUomId=material.getBaseUom().getId();
+		this.grossWeight=material.getGrossWeight();
+		this.netWeight=material.getNetWeight();
+		this.weightUomId=material.getWeightUom().getId();
+		this.length=material.getLength();
+		this.width=material.getWidth();
+		this.height=material.getHeight();
+		this.dimUomId=material.getDimUom().getId();
+	}
 
 	public String getId() {
 		return id;

@@ -1582,7 +1582,8 @@ var MaterialData=(function(){
 	}
 	
 	function _cancel(){
-		window.location.assign('/material/select');
+		var materialId=$(texts.material).text();
+		window.location.assign('/material/select?materialId='+materialId);
 	}
 	
 	function _save(){
@@ -1596,7 +1597,7 @@ var MaterialData=(function(){
 		DAO.saveMaterial(material,create,function(status,m){
 			if(status==DAO.STATUS.DONE){
 				console.log('Material saved ok!');
-				window.location.assign('/material/select');
+				window.location.assign('/material/select?materialId='+m.id);
 			}
 			else if(status==DAO.STATUS.FAIL){
 				console.log('Material save failed!');

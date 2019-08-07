@@ -1,8 +1,11 @@
 package org.erp.material;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
+import org.erp.component.IAuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 @Service("materialService")
@@ -10,6 +13,9 @@ public class MaterialServiceImpl implements MaterialService {
 	
 	@Autowired
 	private MaterialRepository materialRepository;
+	
+	@Autowired
+	private IAuthenticationFacade authFacade;
 	
 	@Override
 	public MaterialDTO findMaterial(String id) {
@@ -41,6 +47,14 @@ public class MaterialServiceImpl implements MaterialService {
 			material.setWidth(dtoMaterial.getWidth());
 			material.setHeight(dtoMaterial.getHeight());
 			material.setDimUomId(dtoMaterial.getDimUom().getId());
+			
+			Authentication auth=authFacade.getAuthentication();
+			Timestamp changedTs=new Timestamp(System.currentTimeMillis());
+			String changedBy=auth.getName();
+			
+			material.setChangedTs(changedTs);
+			material.setChangedBy(changedBy);
+			
 			material=materialRepository.mergeMaterial(material);
 			return new MaterialDTO(material);
 		}
@@ -51,8 +65,22 @@ public class MaterialServiceImpl implements MaterialService {
 
 	@Override
 	public MaterialDTO createMaterial(MaterialDTO dtoMaterial) {
-		// TODO Auto-generated method stub
-		return null;
+		Material material=new Material(dtoMaterial);
+		
+		Authentication auth=authFacade.getAuthentication();
+		Timestamp createdTs=new Timestamp(System.currentTimeMillis());
+		String createdBy=auth.getName();
+		Timestamp changedTs=createdTs;
+		String changedBy=createdBy;
+		
+		material.setCreatedTs(createdTs);
+		material.setCreatedBy(createdBy);
+		material.setChangedTs(changedTs);
+		material.setChangedBy(changedBy);
+		
+		material=materialRepository.save(material);
+		MaterialDTO dtoNew=new MaterialDTO(material);
+		return dtoNew;
 	}
 
 }
