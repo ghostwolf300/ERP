@@ -17,6 +17,11 @@ public class MaterialGroup {
 	public MaterialGroup() {
 		
 	}
+	
+	public MaterialGroup(MaterialGroupDTO group) {
+		this.id=group.getId();
+		this.name=group.getName();
+	}
 
 	public int getId() {
 		return id;

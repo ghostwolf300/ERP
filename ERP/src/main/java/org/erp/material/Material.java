@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import org.erp.materialgroup.MaterialGroup;
 import org.erp.materialtype.MaterialType;
+import org.erp.materialtype.MaterialTypeDTO;
 import org.erp.uom.UnitOfMeasure;
 
 @Entity
@@ -101,18 +102,24 @@ public class Material {
 	
 	public Material(MaterialDTO material) {
 		this.id=material.getId();
+		this.name=material.getName();
 		this.ean13=material.getEan13();
 		this.legacyId=material.getLegacyId();
 		this.typeId=material.getMaterialType().getId();
+		this.materialType=new MaterialType(material.getMaterialType());
 		this.groupId=material.getMaterialGroup().getId();
+		this.materialGroup=new MaterialGroup(material.getMaterialGroup());
 		this.baseUomId=material.getBaseUom().getId();
+		this.baseUom=new UnitOfMeasure(material.getBaseUom());
 		this.grossWeight=material.getGrossWeight();
 		this.netWeight=material.getNetWeight();
 		this.weightUomId=material.getWeightUom().getId();
+		this.weightUom=new UnitOfMeasure(material.getWeightUom());
 		this.length=material.getLength();
 		this.width=material.getWidth();
 		this.height=material.getHeight();
 		this.dimUomId=material.getDimUom().getId();
+		this.dimUom=new UnitOfMeasure(material.getDimUom());
 	}
 
 	public String getId() {

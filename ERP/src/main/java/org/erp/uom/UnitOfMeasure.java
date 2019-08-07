@@ -22,6 +22,13 @@ public class UnitOfMeasure {
 	public UnitOfMeasure() {
 		
 	}
+	
+	public UnitOfMeasure(UnitOfMeasureDTO uom) {
+		this.id=uom.getId();
+		this.name=uom.getName();
+		this.isoCode=uom.getIsoCode();
+		this.uomFor=uom.getUomFor();
+	}
 
 	public int getId() {
 		return id;

@@ -20,6 +20,12 @@ public class MaterialType {
 	public MaterialType() {
 		
 	}
+	
+	public MaterialType(MaterialTypeDTO type) {
+		this.id=type.getId();
+		this.name=type.getName();
+		this.shortName=type.getShortName();
+	}
 
 	public int getId() {
 		return id;

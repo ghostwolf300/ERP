@@ -2,6 +2,7 @@ package org.erp.material;
 
 import java.sql.Timestamp;
 import java.util.Optional;
+import java.util.Set;
 
 import org.erp.component.IAuthenticationFacade;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -80,7 +81,20 @@ public class MaterialServiceImpl implements MaterialService {
 		
 		material=materialRepository.save(material);
 		MaterialDTO dtoNew=new MaterialDTO(material);
+		
 		return dtoNew;
+	}
+
+	@Override
+	public Set<MaterialDTO> searchMaterials(String name) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int deleteMaterial(String id) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }
