@@ -86,7 +86,7 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public Set<MaterialDTO> searchMaterials(String name) {
+	public Set<MaterialSearchResultDTO> searchMaterials(String name) {
 		// TODO Auto-generated method stub
 		return null;
 	}
