@@ -3,21 +3,55 @@ package org.erp.material;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.SqlResultSetMapping;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.Table;
 
 import org.erp.materialgroup.MaterialGroup;
 import org.erp.materialtype.MaterialType;
-import org.erp.materialtype.MaterialTypeDTO;
 import org.erp.uom.UnitOfMeasure;
 
 @Entity
 @Table(name="t_material")
+@NamedNativeQuery(
+		name="SearchMaterials",
+		query="SELECT t_material.id AS id,"
+				+ "t_material.name AS name,"
+				+ "t_material.legacy_id AS legacy_id,"
+				+ "t_material.ean_13 AS ean_13,"
+				+ "t_material_type.short_name AS type_name,"
+				+ "t_material_group.name AS group_name "
+				+ "FROM t_material "
+				+ "INNER JOIN t_material_type ON t_material.type_id=t_material_type.id "
+				+ "LEFT JOIN t_material_group ON t_material.group_id=t_material_group.id "
+				+ "WHERE (:id is null or t_material.id like :id) "
+				+ "AND (:name is null or t_material.name like :name) "
+				+ "AND (:legacyId is null or t_material.legacy_id like :legacyId)"
+				+ "ORDER BY t_material.name ASC",
+		resultSetMapping="SearchMaterialsResults"
+)
+@SqlResultSetMapping(
+name="SearchMaterialsResults",
+classes=@ConstructorResult(
+		targetClass=MaterialSearchResultDTO.class, 
+		columns = { 
+				@ColumnResult(name="id"),
+				@ColumnResult(name="name"),
+				@ColumnResult(name="legacy_id"),
+				@ColumnResult(name="ean_13"),
+				@ColumnResult(name="type_name"),
+				@ColumnResult(name="group_name") 
+		}
+	)
+)
 public class Material {
 	
 	@Id

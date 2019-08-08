@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="nz.net.ultraq.thymeleaf">
+<div id="material_search_dialog" class="dialog" title="Search material" th:fragment="material_search_dialog">
+	<div id="search_parameters">
+		<fieldset>
+			<div class="table">
+				<div class="tableBody">
+					<div class="tableRow">
+						<div class="tableCell">
+							<label for="p_id">ID:</label>
+							<input id="p_id" type="text"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<label for="p_name">Name:</label>
+							<input id="p_name" type="text"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<label for="p_legacy_id">Legacy ID:</label>
+							<input id="p_legacy_id" type="text"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div id="do_search">
+		<button id="btn_material_search" class="ui-button ui-widget ui-corner-all">
+			<span class="ui-icon ui-icon-search"></span>Search
+		</button>
+	</div>
+	<div id="search_results">
+		<table id="tbl_results">
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>Name</td>
+					<td>Legacy ID</td>
+					<td>EAN13</td>
+					<td>Type</td>
+					<td>Group</td>
+				</tr>
+			</thead>
+			<tbody id="search_result_list">
+				<tr>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+</html>

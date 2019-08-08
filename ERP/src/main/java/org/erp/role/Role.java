@@ -13,14 +13,10 @@ import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.SqlResultSetMapping;
-import javax.persistence.ConstructorResult;
-import javax.persistence.ColumnResult;
 
-import org.erp.authobject.AuthObjectDTO;
 import org.erp.roleobject.RoleObject;
 import org.erp.roleobject.RoleObjectDTO;
 import org.erp.userrole.UserRole;
-import org.erp.userrole.UserRoleKey;
 
 @Entity
 @Table(name="t_role")

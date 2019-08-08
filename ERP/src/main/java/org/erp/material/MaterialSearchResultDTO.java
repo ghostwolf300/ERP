@@ -19,6 +19,15 @@ public class MaterialSearchResultDTO implements Serializable {
 	public MaterialSearchResultDTO() {
 		
 	}
+	
+	public MaterialSearchResultDTO(String id,String name,String legacyId,String ean13,String typeName,String groupName) {
+		this.id=id;
+		this.name=name;
+		this.legacyId=legacyId;
+		this.ean13=ean13;
+		this.typeName=typeName;
+		this.groupName=groupName;
+	}
 
 	public String getId() {
 		return id;

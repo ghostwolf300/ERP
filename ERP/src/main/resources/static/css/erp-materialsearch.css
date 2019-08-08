@@ -1,0 +1,32 @@
+@charset "ISO-8859-1";
+
+div#search_parameters{
+	
+}
+
+div#do_search {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+}
+
+div#search_results{
+	
+}
+
+table#tbl_results{
+	
+}
+
+table#tbl_results tbody{
+	
+}
+
+table#tbl_results thead tr{
+	
+}
+
+table#tbl_results tbody tr:hover{
+	
+}

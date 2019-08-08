@@ -4,6 +4,8 @@ select * from t_user_role;
 select * from t_auth_object;
 select * from t_role_auth_object;
 select * from t_material;
+select * from t_material_type;
+select * from t_material_group;
 select * from t_uom;
 
 delete from t_user where id='hannu.hanhi';
@@ -120,3 +122,11 @@ alter table t_uom add column uom_for varchar(4);
 update t_uom set uom_for='QTY' where id=1;
 update t_uom set uom_for='WT' where id=2;
 update t_uom set uom_for='DIM' where id in (3,4,5);
+
+SELECT m.id,m.name,m.legacy_id,m.ean_13,t.short_name,g.name FROM t_material m INNER JOIN t_material_type t ON m.type_id=t.id
+LEFT JOIN t_material_group g ON m.group_id=g.id
+ORDER BY m.name ASC
+
+SELECT m.id AS id,m.name AS name,m.legacy_id AS legacy_id,m.ean_13 AS ean_13,t.short_name AS short_name,g.name AS group_name FROM t_material m INNER JOIN t_material_type t ON m.type_id=t.id
+LEFT JOIN t_material_group g ON m.group_id=g.id
+ORDER BY m.name ASC

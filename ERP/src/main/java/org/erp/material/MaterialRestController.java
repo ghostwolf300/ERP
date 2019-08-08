@@ -1,5 +1,7 @@
 package org.erp.material;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +39,16 @@ public class MaterialRestController {
 			return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 		}
 		return new ResponseEntity<MaterialDTO>(material,HttpStatus.OK);
+	}
+	
+	@RequestMapping("/search")
+	public ResponseEntity<List<MaterialSearchResultDTO>> searchMaterials(@RequestBody MaterialSearchParamDTO param){
+		System.out.println("MaterialRestController searchMaterials");
+		List<MaterialSearchResultDTO> searchResults=materialService.searchMaterials(param);
+		if(searchResults==null || searchResults.size()==0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<MaterialSearchResultDTO>>(searchResults,HttpStatus.OK);
 	}
 	
 }

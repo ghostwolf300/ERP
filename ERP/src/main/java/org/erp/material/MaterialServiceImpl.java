@@ -1,6 +1,7 @@
 package org.erp.material;
 
 import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -86,9 +87,9 @@ public class MaterialServiceImpl implements MaterialService {
 	}
 
 	@Override
-	public Set<MaterialSearchResultDTO> searchMaterials(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<MaterialSearchResultDTO> searchMaterials(MaterialSearchParamDTO param) {
+		List<MaterialSearchResultDTO> searchResult=materialRepository.searchMaterials(param);
+		return searchResult;
 	}
 
 	@Override

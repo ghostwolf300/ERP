@@ -112,6 +112,26 @@ var DAO=(function(){
 		
 	}
 	
+	function searchMaterials(param,_callback){
+		var url='/material/search';
+		var data=JSON.stringify(param);
+		var results;
+		
+		$.ajax({
+			url : url,
+			method : "POST",
+			data : data,
+			dataType : "json"
+		}).done(function(rs){
+			_callback(STATUS.DONE,rs);
+		}).fail(function(){
+			_callback(STATUS.FAIL);
+		}).always(function(){
+			
+		});
+		
+	}
+	
 	function saveRole(role,create,_callback){
 		var url='/role/save?create='+create;
 		data=JSON.stringify(role);
@@ -232,7 +252,8 @@ var DAO=(function(){
 		saveMaterial	:saveMaterial,
 		getLastMessage	:getLastMessage,
 		findRoleObjects	:findRoleObjects,
-		findMaterialById:findMaterialById
+		findMaterialById:findMaterialById,
+		searchMaterials	:searchMaterials
 	}
 	
 })();
@@ -1380,13 +1401,15 @@ var MaterialSelect=(function(){
 			edit		:'#btn_edit',
 			create		:'#btn_create',
 			cancel		:'#btn_cancel',
-			search		:'#btn_search'
+			search		:'#btn_open_search'
 	}
 	
 	var fields={
 			materialId		:'#material_id',
 			errorMsg		:'#error_msg'
 	}
+	
+	var searchDialog='#material_search_dialog';
 	
 	function init(){
 		console.log("TEST: Initialize MaterialSelect");
@@ -1401,6 +1424,18 @@ var MaterialSelect=(function(){
 		$(controls.create).button();
 		$(controls.cancel).button();
 		$(controls.search).button();
+		$(searchDialog).dialog({
+			autoOpen: false,
+		    height: 460,
+		    width: 660,
+		    modal: true,
+		    buttons:{
+		    	Cancel		: function(){
+		    		$(searchDialog).dialog('close');
+		    	},
+		    	"Select"	: _selectSearchResult
+		    }
+		});
 	
 	}
 	
@@ -1470,7 +1505,13 @@ var MaterialSelect=(function(){
 	}
 	
 	function _search(){
-		
+		console.log('Search materials');
+		$(searchDialog).dialog('open');
+		MaterialSearch.init();
+	}
+	
+	function _selectSearchResult(){
+		console.log('Select search result');
 	}
 	
 	function _materialExists(materialId,_callback){
@@ -1640,4 +1681,92 @@ var MaterialData=(function(){
 	}
 	
 })();
+
+var MaterialSearch=(function(){
+	
+	var controls={
+			search	:'#btn_material_search'
+	}
+	
+	var fields={
+			id			:'#p_id',
+			name		:'#p_name',
+			legacyId	:'#p_legacy_id'
+	}
+	
+	var resultList='#search_result_list';
+	
+	function init(){
+		console.log('TEST: Initialize MaterialSearch');
+		_initJQueryUI();
+		_bindEventHandlers();
+	}
+	
+	function _initJQueryUI(){
+		
+	}
+	
+	function _bindEventHandlers(){
+		console.log('Binding...');
+		$(controls.search).click(_search);
+	}
+	
+	function _search(){
+		_clearResults();
+		console.log('Do search...');
+		var param=_getParam();
+		console.log(param);
+		
+		DAO.searchMaterials(param,function(status,results){
+			if(status==DAO.STATUS.DONE){
+				//got results
+				console.log(results);
+				_showResults(results);
+			}
+			else if(status==DAO.STATUS.NA){
+				//no results.
+				console.log('No results');
+			}
+			else{
+				//some other error
+			}
+ 		});	
+	}
+	
+	function _clearResults(){
+		$(resultList).empty();
+	}
+	
+	function _showResults(results){
+		results.forEach(function(r){
+			$(resultList).append(_createResultRow(r));
+		});
+	}
+	
+	function _createResultRow(result){
+		var tr='<tr>'
+			+'<td>'+result.id+'</td>'
+			+'<td>'+result.name+'</td>'
+			+'<td>'+result.legacyId+'</td>'
+			+'<td>'+result.ean13+'</td>'
+			+'<td>'+result.type+'</td>'
+			+'<td>'+result.group+'</td>'
+			+'</tr>';
+		return tr;
+	}
+	
+	function _getParam(){
+		var param={
+				id			: ($(fields.id).val().trim()==='' ? null : $(fields.id).val()),
+				name		: ($(fields.name).val().trim()==='' ? null : $(fields.name).val()),
+				legacyId	: ($(fields.legacyId).val().trim()==='' ? null : $(fields.legacyId).val())
+		}
+		return param;
+	}
+	
+	return{
+		init		:init
+	}
+	
+})(); 
  

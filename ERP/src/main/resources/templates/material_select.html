@@ -11,13 +11,14 @@
 		<div id="material_select" class="ui-widget">
 			<label for="material_id">Material</label>
 			<input id="material_id" type="text" name="material_id" th:value="${materialId}">
-			<button id="btn_search" class="ui-button ui-widget ui-corner-all ui-button-icon-only">
+			<button id="btn_open_search" class="ui-button ui-widget ui-corner-all ui-button-icon-only">
 				<span class="ui-icon ui-icon-search"></span>Search
 			</button>
 			<p id="error_msg" class="error_message"></p>
 		</div>
 		<div th:replace="fragments/common :: crud_select"></div>
 	</div>
+	<div th:replace="fragments/search_dialog :: material_search_dialog">
 </div>
-
+</div>
 </html>
