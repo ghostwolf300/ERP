@@ -15,18 +15,23 @@ div#search_results{
 	
 }
 
-table#tbl_results{
+#tbl_results{
 	
 }
 
-table#tbl_results tbody{
+#tbl_results tbody{
 	
 }
 
-table#tbl_results thead tr{
+#tbl_results thead tr{
 	
 }
 
-table#tbl_results tbody tr:hover{
-	
+#tbl_results tbody tr:hover{
+	background:blue;
+}
+
+.selected-material{
+	background:green;
+	border: 1px solid black;
 }

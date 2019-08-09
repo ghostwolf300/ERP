@@ -1507,7 +1507,10 @@ var MaterialSelect=(function(){
 	function _search(){
 		console.log('Search materials');
 		$(searchDialog).dialog('open');
-		MaterialSearch.init();
+		console.log("Search initialized: "+MaterialSearch.isInitialized());
+		if(MaterialSearch.isInitialized()==false){
+			MaterialSearch.init();
+		}
 	}
 	
 	function _selectSearchResult(){
@@ -1683,6 +1686,7 @@ var MaterialData=(function(){
 })();
 
 var MaterialSearch=(function(){
+	var initialized=false;
 	
 	var controls={
 			search	:'#btn_material_search'
@@ -1700,6 +1704,7 @@ var MaterialSearch=(function(){
 		console.log('TEST: Initialize MaterialSearch');
 		_initJQueryUI();
 		_bindEventHandlers();
+		initialized=true;
 	}
 	
 	function _initJQueryUI(){
@@ -1738,9 +1743,22 @@ var MaterialSearch=(function(){
 	}
 	
 	function _showResults(results){
+		var tr;
 		results.forEach(function(r){
 			$(resultList).append(_createResultRow(r));
 		});
+		var rows=$(resultList).find('tr');
+		Array.from(rows).forEach(function(r){
+			console.log('row '+r);
+			$(r).click(_selectResult);
+		});
+		
+	}
+	
+	function _selectResult(event){
+		console.log('row selected '+event.target.parent);
+		var tr=$(event.target).parent()[0];
+		$(tr).addClass('.selected-material');
 	}
 	
 	function _createResultRow(result){
@@ -1749,8 +1767,8 @@ var MaterialSearch=(function(){
 			+'<td>'+result.name+'</td>'
 			+'<td>'+result.legacyId+'</td>'
 			+'<td>'+result.ean13+'</td>'
-			+'<td>'+result.type+'</td>'
-			+'<td>'+result.group+'</td>'
+			+'<td>'+result.typeName+'</td>'
+			+'<td>'+result.groupName+'</td>'
 			+'</tr>';
 		return tr;
 	}
@@ -1764,8 +1782,13 @@ var MaterialSearch=(function(){
 		return param;
 	}
 	
+	function isInitialized(){
+		return initialized;
+	}
+	
 	return{
-		init		:init
+		init			:init,
+		isInitialized	:isInitialized
 	}
 	
 })(); 
