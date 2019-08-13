@@ -2,9 +2,11 @@ package org.erp.user;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 import org.erp.userrole.UserRole;
 
@@ -63,6 +65,19 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
 		u.setChangedBy(changedBy);
 		em.flush();
 		return -1;
+	}
+
+	@Override
+	public List<UserSearchResultDTO> searchUsers(UserSearchParamDTO param) {
+		Query qry=em.createNamedQuery("SearchUsers");
+		param.cleanParameters();
+		qry.setParameter("id", param.getId());
+		qry.setParameter("first_name", param.getFirstName());
+		qry.setParameter("last_name", param.getLastName());
+		qry.setParameter("email", param.getEmail());
+		@SuppressWarnings("unchecked")
+		List<UserSearchResultDTO> searchResults=qry.getResultList();
+		return searchResults;
 	}
 
 	

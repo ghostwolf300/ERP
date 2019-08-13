@@ -1,5 +1,7 @@
 package org.erp.user;
 
+import java.util.List;
+
 public interface UserService {
 	
 	public UserDTO findUser(String userId);
@@ -10,5 +12,6 @@ public interface UserService {
 	public int allowPasswordChangeOnly();
 	public int changeOwnPassword(String password);
 	public int logout();
+	public List<UserSearchResultDTO> searchUsers(UserSearchParamDTO param);
 	
 }

@@ -132,6 +132,25 @@ var DAO=(function(){
 		
 	}
 	
+	function searchUsers(param,_callback){
+		var url='/user/search';
+		var data=JSON.stringify(param);
+		var results;
+		
+		$.ajax({
+			url : url,
+			method : "POST",
+			data : data,
+			dataType : "json"
+		}).done(function(rs){
+			_callback(STATUS.DONE,rs);
+		}).fail(function(){
+			_callback(STATUS.FAIL);
+		}).always(function(){
+			
+		});
+	}
+	
 	function saveRole(role,create,_callback){
 		var url='/role/save?create='+create;
 		data=JSON.stringify(role);
@@ -245,15 +264,16 @@ var DAO=(function(){
 	}
 	
 	return{
-		STATUS			:STATUS,
-		findUserById	:findUserById,
-		saveUser		:saveUser,
-		saveRole		:saveRole,
-		saveMaterial	:saveMaterial,
-		getLastMessage	:getLastMessage,
-		findRoleObjects	:findRoleObjects,
-		findMaterialById:findMaterialById,
-		searchMaterials	:searchMaterials
+		STATUS				:STATUS,
+		findUserById		:findUserById,
+		saveUser			:saveUser,
+		saveRole			:saveRole,
+		saveMaterial		:saveMaterial,
+		getLastMessage		:getLastMessage,
+		findRoleObjects		:findRoleObjects,
+		findMaterialById	:findMaterialById,
+		searchMaterials		:searchMaterials,
+		searchUsers			:searchUsers
 	}
 	
 })();
@@ -1294,6 +1314,8 @@ var UserSelect=(function(){
 			errorMsg	:'#error_msg'
 	}
 	
+	var searchDialog="#user_search_dialog";
+	
 	function init(){
 		console.log("TEST: Initialize UserSelect");
 		_initJQueryUI();
@@ -1307,6 +1329,18 @@ var UserSelect=(function(){
 		$(controls.create).button();
 		$(controls.cancel).button();
 		$(controls.search).button();
+		$(searchDialog).dialog({
+			autoOpen: false,
+		    height: 460,
+		    width: 660,
+		    modal: true,
+		    buttons:{
+		    	Cancel		: function(){
+		    		$(searchDialog).dialog('close');
+		    	},
+		    	"Select"	: _selectSearchResult
+		    }
+		});
 	
 	}
 	
@@ -1379,8 +1413,19 @@ var UserSelect=(function(){
 	}
 	
 	function _search(){
-		console.log('User search');
-		//Open search dialog
+		console.log('Search users');
+		$(searchDialog).dialog('open');
+		console.log("Search initialized: "+UserSearch.isInitialized());
+		if(UserSearch.isInitialized()==false){
+			UserSearch.init();
+		}
+	}
+	
+	function _selectSearchResult(){
+		var id=UserSearch.getSelectedUser();
+		console.log('Select search result '+id);
+		$(fields.userId).val(id);
+		$(searchDialog).dialog('close');
 	}
 	
 	function _showUserEditor(userId,create){
@@ -1514,7 +1559,10 @@ var MaterialSelect=(function(){
 	}
 	
 	function _selectSearchResult(){
-		console.log('Select search result');
+		var id=MaterialSearch.getSelectedMaterial();
+		console.log('Select search result '+id);
+		$(fields.materialId).val(id);
+		$(searchDialog).dialog('close');
 	}
 	
 	function _materialExists(materialId,_callback){
@@ -1756,19 +1804,19 @@ var MaterialSearch=(function(){
 	}
 	
 	function _selectResult(event){
-		console.log('row selected '+event.target.parent);
 		var tr=$(event.target).parent()[0];
-		$(tr).addClass('.selected-material');
+		$(resultList).find('tr').removeClass('selected-material');
+		$(tr).addClass('selected-material');
 	}
 	
 	function _createResultRow(result){
 		var tr='<tr>'
-			+'<td>'+result.id+'</td>'
-			+'<td>'+result.name+'</td>'
-			+'<td>'+result.legacyId+'</td>'
-			+'<td>'+result.ean13+'</td>'
-			+'<td>'+result.typeName+'</td>'
-			+'<td>'+result.groupName+'</td>'
+			+'<td class="id">'+result.id+'</td>'
+			+'<td class="name">'+result.name+'</td>'
+			+'<td class="legacy-id">'+result.legacyId+'</td>'
+			+'<td class="ean13">'+result.ean13+'</td>'
+			+'<td class="type-name">'+result.typeName+'</td>'
+			+'<td class="group-name">'+result.groupName+'</td>'
 			+'</tr>';
 		return tr;
 	}
@@ -1786,10 +1834,131 @@ var MaterialSearch=(function(){
 		return initialized;
 	}
 	
+	function getSelectedMaterial(){
+		var tr=$(resultList).find('tr.selected-material')[0];
+		var td=$(tr).find('td.id')[0];
+		var id=$(td).text();
+		return id;
+	}
+	
 	return{
-		init			:init,
-		isInitialized	:isInitialized
+		init				:init,
+		isInitialized		:isInitialized,
+		getSelectedMaterial	:getSelectedMaterial
 	}
 	
 })(); 
- 
+
+var UserSearch=(function(){
+	
+	var initialized=false;
+	
+	var controls={
+			search		:'#btn_user_search'
+	}
+	
+	var fields={
+			id			:'#p_id',
+			firstName	:'#p_first_name',
+			lastName	:'#p_last_name',
+			email		:'#p_email'
+	}
+	
+	var resultList='#search_result_list';
+	
+	function init(){
+		_initJQueryUI();
+		_bindEventHandlers();
+		initialized=true;
+	}
+	
+	function _initJQueryUI(){
+		
+	}
+	
+	function _bindEventHandlers(){
+		$(controls.search).click(_search);
+	}
+	
+	function _search(){
+		_clearResults();
+		console.log('Do search...');
+		var param=_getParam();
+		console.log(param);
+		
+		DAO.searchUsers(param,function(status,results){
+			if(status==DAO.STATUS.DONE){
+				//got results
+				console.log(results);
+				_showResults(results);
+			}
+			else if(status==DAO.STATUS.NA){
+				//no results.
+				console.log('No results');
+			}
+			else{
+				//some other error
+			}
+ 		});	
+	}
+	
+	function _clearResults(){
+		$(resultList).empty();
+	}
+	
+	function _showResults(results){
+		var tr;
+		results.forEach(function(r){
+			$(resultList).append(_createResultRow(r));
+		});
+		var rows=$(resultList).find('tr');
+		Array.from(rows).forEach(function(r){
+			console.log('row '+r);
+			$(r).click(_selectResult);
+		});
+	}
+	
+	function _createResultRow(result){
+		var tr='<tr>'
+			+'<td class="id">'+result.id+'</td>'
+			+'<td class="first-name">'+result.firstName+'</td>'
+			+'<td class="last-name">'+result.lastName+'</td>'
+			+'<td class="email">'+result.email+'</td>'
+			+'</tr>';
+		return tr;
+	}
+	
+	function _selectResult(event){
+		var tr=$(event.target).parent()[0];
+		$(resultList).find('tr').removeClass('selected-user');
+		$(tr).addClass('selected-user');
+	}
+	
+	function _getParam(){
+		var param={
+				id			: ($(fields.id).val().trim()==='' ? null : $(fields.id).val()),
+				firstName	: ($(fields.firstName).val().trim()==='' ? null : $(fields.firstName).val()),
+				lastName	: ($(fields.lastName).val().trim()==='' ? null : $(fields.lastName).val()),
+				email		: ($(fields.email).val().trim()==='' ? null : $(fields.email).val()),	
+		}
+		return param;
+	}
+	
+	function isInitialized(){
+		return initialized;
+	}
+	
+	function getSelectedUser(){
+		var tr=$(resultList).find('tr.selected-user')[0];
+		var td=$(tr).find('td.id')[0];
+		var id=$(td).text();
+		return id;
+	}
+	
+	return{
+		init			:init,
+		isInitialized	:isInitialized,
+		getSelectedUser	:getSelectedUser
+	}
+	
+})();

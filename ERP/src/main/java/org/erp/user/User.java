@@ -9,12 +9,16 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ColumnResult;
+import javax.persistence.ConstructorResult;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedNativeQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.SqlResultSetMapping;
 import javax.persistence.Table;
 
 import org.erp.role.Role;
@@ -26,6 +30,33 @@ import javax.persistence.JoinColumn;
 
 @Entity
 @Table(name="t_user")
+@NamedNativeQuery(
+		name="SearchUsers",
+		query="SELECT t_user.id AS id,"
+				+ "t_user.first_name AS first_name,"
+				+ "t_user.last_name AS last_name,"
+				+ "t_user.email AS email "
+				+ "FROM t_user "
+				+ "WHERE (:id is null or t_user.id like :id) "
+				+ "AND (:first_name is null or t_user.first_name like :first_name) "
+				+ "AND (:last_name is null or t_user.last_name like :last_name) "
+				+ "AND (:email is null or t_user.email like :email) "
+				+ "ORDER BY t_user.last_name,t_user.first_name",
+		resultSetMapping="SearchUsersResults"
+)
+@SqlResultSetMapping(
+		name="SearchUsersResults",
+		classes=@ConstructorResult(
+				targetClass=org.erp.user.UserSearchResultDTO.class,
+				columns= {
+						@ColumnResult(name="id"),
+						@ColumnResult(name="first_name"),
+						@ColumnResult(name="last_name"),
+						@ColumnResult(name="email")
+				}
+		)
+)
+
 public class User {
 
 	@Id

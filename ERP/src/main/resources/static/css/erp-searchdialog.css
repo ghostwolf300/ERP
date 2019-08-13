@@ -31,7 +31,7 @@ div#search_results{
 	background:blue;
 }
 
-.selected-material{
+.selected-material, .selected-user{
 	background:green;
 	border: 1px solid black;
 }

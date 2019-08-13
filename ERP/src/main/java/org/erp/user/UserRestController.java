@@ -1,7 +1,9 @@
 package org.erp.user;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import org.erp.material.MaterialSearchResultDTO;
 import org.erp.message.MessageDTO;
 import org.erp.message.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/user")
-@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class UserRestController {
 	
 	@Autowired
@@ -64,6 +65,16 @@ public class UserRestController {
 				return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 			}
 		}
+	}
+	
+	@RequestMapping("/search")
+	public ResponseEntity<List<UserSearchResultDTO>> searchUsers(@RequestBody UserSearchParamDTO param){
+		System.out.println("UserRestController searchUser");
+		List<UserSearchResultDTO> searchResults=userService.searchUsers(param);
+		if(searchResults==null || searchResults.size()==0) {
+			return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<UserSearchResultDTO>>(searchResults,HttpStatus.OK);
 	}
 	
 	private void createSuccessMessageNew(UserDTO user) {

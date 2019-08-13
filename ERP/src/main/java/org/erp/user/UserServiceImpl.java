@@ -185,4 +185,10 @@ public class UserServiceImpl implements UserService {
 		return 0;
 	}
 
+	@Override
+	public List<UserSearchResultDTO> searchUsers(UserSearchParamDTO param) {
+		List<UserSearchResultDTO> searchResults=userRepository.searchUsers(param);
+		return searchResults;
+	}
+
 }

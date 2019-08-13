@@ -51,4 +51,59 @@
 		</table>
 	</div>
 </div>
+<div id="user_search_dialog" class="dialog" title="Search user" th:fragment="user_search_dialog">
+	<div id="search_parameters">
+		<fieldset>
+			<div class="table">
+				<div class="tableBody">
+					<div class="tableRow">
+						<div class="tableCell">
+							<label for="p_id">ID:</label>
+							<input id="p_id" type="text"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<label for="p_first_name">First name:</label>
+							<input id="p_first_name" type="text"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<label for="p_last_name">Last name:</label>
+							<input id="p_last_name" type="text"/>
+						</div>
+					</div>
+					<div class="tableRow">
+						<div class="tableCell">
+							<label for="p_email">Email:</label>
+							<input id="p_email" type="text"/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</fieldset>
+	</div>
+	<div id="do_search">
+		<button id="btn_user_search" class="ui-button ui-widget ui-corner-all">
+			<span class="ui-icon ui-icon-search"></span>Search
+		</button>
+	</div>
+	<div id="search_results">
+		<table id="tbl_results">
+			<thead>
+				<tr>
+					<td>ID</td>
+					<td>First name</td>
+					<td>Last name</td>
+					<td>Email</td>
+				</tr>
+			</thead>
+			<tbody id="search_result_list">
+				<tr>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
 </html>
