@@ -130,3 +130,5 @@ ORDER BY m.name ASC
 SELECT m.id AS id,m.name AS name,m.legacy_id AS legacy_id,m.ean_13 AS ean_13,t.short_name AS short_name,g.name AS group_name FROM t_material m INNER JOIN t_material_type t ON m.type_id=t.id
 LEFT JOIN t_material_group g ON m.group_id=g.id
 ORDER BY m.name ASC
+
+show tables;

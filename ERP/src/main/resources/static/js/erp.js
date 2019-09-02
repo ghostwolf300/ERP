@@ -1603,6 +1603,7 @@ var MaterialData=(function(){
 	}
 	
 	var fields={
+			typeId		:'#type_id'
 			action		:'#action_id',
 			name		:'#name',
 			ean13		:'#ean13',
@@ -1707,7 +1708,7 @@ var MaterialData=(function(){
 					id	:parseInt($(select.baseUomId).val())
 				},
 				materialType:{
-					id	:parseInt($(select.typeId).val())
+					id	:(action==1 ? parseInt($(select.typeId).val() : parseInt($fields.typeId).val())
 				},
 				materialGroup:{
 					id	:parseInt($(select.groupId).val())

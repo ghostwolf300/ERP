@@ -186,6 +186,65 @@ create table t_chart_of_accounts(
 	id int not null auto_increment,
 	account varchar(20) not null,
 	acct_text varchar(40),
-	
 );
+
+create table t_storage(
+	id int not null auto_increment,
+	name varchar(40) not null,
+	primary key(id)
+);
+
+create table t_plant(
+	id int not null auto_increment,
+	name varchar(40) not null,
+	primary key(id)
+);
+
+create table t_org_unit(
+	id int not null auto_increment,
+	name varchar(40),
+	parent_id int,
+	primary key(id)
+);
+
+create table t_material_purchasing(
+	material_id varchar(20) not null,
+	purch_org_unit_id int not null,
+	primary key(material_id,purch_org_unit_id),
+	constraint fk_material_purchasing_material_id foreign key(material_id) references t_material(id) on delete cascade,
+	constraint fk_material_purchasing_purch_org_unit_id foreign key(purch_org_unit_id) references t_org_unit(id) on delete cascade
+);
+
+create table t_material_sales(
+	material_id varchar(20) not null,
+	sales_org_unit_id int not null,
+	primary key(material_id,sales_org_unit_id),
+	constraint fk_material_sales_material_id foreign key(material_id) references t_material(id) on delete cascade,
+	constraint fk_material_sales_purch_org_unit_id foreign key(sales_org_unit_id) references t_org_unit(id) on delete cascade
+);
+
+create table t_material_storage(
+	material_id varchar(20) not null,
+	storage_id int not null,
+	primary key(material_id,storage_id),
+	constraint fk_material_storage_material_id foreign key(material_id) references t_material(id) on delete cascade,
+	constraint fk_material_storage_storage_id foreign key(storage_id) references t_storage(id) on delete cascade
+);
+
+create table t_material_manufacturing(
+	material_id varchar(20) not null,
+	plant_id int not null,
+	primary key(material_id,plant_id),
+	constraint fk_material_mf_material_id foreign key(material_id) references t_material(id) on delete cascade,
+	constraint fk_material_mf_plant_id foreign key(plant_id) references t_plant(id) on delete cascade
+);
+
+alter table t_material_type add column purchased boolean;
+alter table t_material_type add column manufactured boolean;
+alter table t_material_type add column sold boolean;
+alter table t_material_type add column stored boolean;
+alter table t_material_type add column valued boolean;
+
+show columns from t_material_type;
+alter table t_material_type add column storage boolean;
 

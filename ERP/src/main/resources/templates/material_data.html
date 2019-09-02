@@ -5,7 +5,23 @@
       layout:decorate="~{layouts/default}">
 <div class="content_container" id="material_data" layout:fragment="content">
 	<div id="material_header">
-		<h2 id="material_id" th:text="${material.id}"></h2>
+		<div>
+			<h2 id="material_id" th:text="${material.id}"></h2>
+		</div>
+		
+		<div th:if="${action} == 1">
+			<label for="type_id">Type:</label>
+			<select id="type_id" name="type_id" th:field="*{material.materialType.id}">
+				<th:block th:each="type : ${materialTypes}">
+					<option th:value="${type.id}" th:text="${type.shortName}"></option>
+				</th:block>
+			</select>
+		</div>
+		<div th:unless="${action} == 1">
+			<input id="type_id" type="hidden" th:text="${material.materialType.id}"/>
+			<label for="type">Material type:</label>
+			<input id="type" name="type" type="text" th:field="${material.materialType.shortName}" disabled/>
+		</div>	
 		<input id="action_id" th:value="${action}" type="hidden"/>
 		<th:block th:switch="${action}">
 			<span id="action_text" th:case="1">Create</span>
