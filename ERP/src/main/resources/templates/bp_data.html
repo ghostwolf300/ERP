@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<div class="content_container" id="bp_data" layout:fragment="content">
+	<div id="bp_header">
+		<div>
+			<h2 id="bp_id" th:text="${bp.id}"></h2>
+		</div>
+	</div>
+	<div id="bp_content">
+	</div>
+</div>
+</html>
