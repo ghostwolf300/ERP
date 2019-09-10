@@ -1992,6 +1992,8 @@ var BPSelect=(function(){
 			errorMsg		:'#error_msg'
 	}
 	
+	var searchDialog='#bp_search_dialog';
+	
 	function init(){
 		console.log('TEST: Initialize BPSelect');
 		_initJQueryUI();

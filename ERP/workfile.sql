@@ -132,5 +132,5 @@ LEFT JOIN t_material_group g ON m.group_id=g.id
 ORDER BY m.name ASC
 
 show columns from t_address;
-
+select * from t_auth_object;
 

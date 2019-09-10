@@ -1,4 +1,4 @@
-package com.erp.bp;
+package org.erp.bp;
 
 import org.erp.controller.NavController;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -11,7 +11,7 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/bp")
 public class BPController {
 	
-	public static final int AUTH_OBJ_ID=2;
+	public static final int AUTH_OBJ_ID=3;
 	
 	@PreAuthorize("hasAccess("+AUTH_OBJ_ID+",'display')")
 	@RequestMapping("/select")
