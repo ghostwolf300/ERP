@@ -10,6 +10,26 @@
 		</div>
 	</div>
 	<div id="bp_content">
+		<form id="bp_form">
+			<div id="tabs">
+				<ul class="tabs">
+					<li><a href = "#tab_general">General</a></li>
+					<li><a href = "#tab_addresses">Addresses</a></li>
+					<li><a href = "#tab_info">Info</a></li>
+				</ul>
+				<div id="tab_general">
+					<div th:replace="fragments/bp_editor :: bp_editor_1"></div>
+				</div>
+				<div id="tab_addresses">
+					<div th:replace="fragments/bp_editor :: bp_editor_2"></div>
+				</div>
+				<div id="tab_info">
+					<div th:replace="fragments/bp_editor :: bp_editor_4"></div>
+				</div>
+			</div>
+			<div th:replace="fragments/common :: save_or_cancel"></div>
+			<input id="btn_submit" type="submit" style="visibility:hidden;">
+		</form>
 	</div>
 </div>
 </html>

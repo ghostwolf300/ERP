@@ -1988,7 +1988,7 @@ var BPSelect=(function(){
 	}
 	
 	var fields={
-			materialId		:'#bp_id',
+			bpId			:'#bp_id',
 			errorMsg		:'#error_msg'
 	}
 	
@@ -2044,6 +2044,18 @@ var BPSelect=(function(){
 	
 	function _create(){
 		console.log('BP Create');
+		$(fields.errorMsg).text('');
+		var bpId=$(fields.bpId).val();
+		console.log('BP ID: '+bpId);
+		_bpExists(bpId,function(exists){
+			if(exists){
+				//bp löytyy jo
+			}
+			else{
+				//voidaan luoda
+			}
+		});
+		
 	}
 	
 	function _search(){
@@ -2052,6 +2064,11 @@ var BPSelect=(function(){
 	
 	function _selectSearchResult(){
 		console.log('Select BP search result...');
+		
+	}
+	
+	function _bpExists(bpId,_callback){
+		//jatka tästä
 	}
 	
 	return{
@@ -2062,8 +2079,49 @@ var BPSelect=(function(){
 
 var BPData=(function(){
 	
+	var action;
+	
+	var controls={
+			cancel	:'#btn_cancel',
+			save	:'#btn_save'
+	}
+	
+	var form='#bp_form';
+	
+	var texts={
+			bp	:'#bp_id'
+	}
+	
 	function init(){
 		console.log('TEST: BPData initialize...')
+		_initJQueryUI();
+		_bindEventHandlers();
+		action=$(fields.action).val();
+	}
+	
+	function _initJQueryUI(){
+		$('#tabs').tabs();
+	}
+	
+	function _bindEventHandlers(){
+		$(form).submit(_noAutoSubmit);
+		$(controls.cancel).click(_cancel);
+		$(controls.save).click(_save);
+	}
+	
+	function _noAutoSubmit(e){
+		e.preventDefault();
+		return false;
+	}
+	
+	function _cancel(){
+		var bp_id=$(texts.bp).text();
+		console.log('cancel');
+		
+	}
+	
+	function _save(){
+		console.log('save BP');
 	}
 	
 	return{

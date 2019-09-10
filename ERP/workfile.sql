@@ -131,5 +131,5 @@ SELECT m.id AS id,m.name AS name,m.legacy_id AS legacy_id,m.ean_13 AS ean_13,t.s
 LEFT JOIN t_material_group g ON m.group_id=g.id
 ORDER BY m.name ASC
 
-show columns from t_address;
+show columns from t_bp_address;
 
