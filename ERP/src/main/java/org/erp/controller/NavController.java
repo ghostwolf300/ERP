@@ -20,7 +20,9 @@ public class NavController {
 		ROLE_SELECT,
 		ROLE_DATA,
 		MATERIAL_SELECT,
-		MATERIAL_DATA
+		MATERIAL_DATA,
+		BP_SELECT,
+		BP_DATA
 		};
 	
 	private static final Map<Views,String> VIEW_MAP=createViewMap();

@@ -38,6 +38,12 @@ function initPage(){
  	else if(view=='MATERIAL_DATA'){
  		MaterialData.init();
  	}
+ 	else if(view=='BP_SELECT'){
+ 		BPSelect.init();
+ 	}
+ 	else if(view=='BP_DATA'){
+ 		BPData.init();
+ 	}
 }
 
 function globalSetup(){
@@ -285,7 +291,8 @@ var Home=(function(){
 		newUser 	: '#new_user',
 		changeUser 	: '#change_user',
 		roles		: '#roles',
-		materials	: '#materials'
+		materials	: '#materials',
+		bps			: '#business_partners'
 	}
 
  	function init(){
@@ -299,6 +306,7 @@ var Home=(function(){
 		$(tiles.changeUser).click(_reqChangeUser);
 		$(tiles.roles).click(_reqRoleSelect);
 		$(tiles.materials).click(_reqMaterialSelect);
+		$(tiles.bps).click(_reqBPSelect);
 	}
 	
  	function _reqUsers(){
@@ -330,6 +338,11 @@ var Home=(function(){
  	function _reqMaterialSelect(){
  		console.log('Material selection');
  		window.location.assign('/material/select');
+ 	}
+ 	
+ 	function _reqBPSelect(){
+ 		console.log('BP selection');
+ 		window.location.assign('/bp/select');
  	}
  	
 	return{
@@ -1603,7 +1616,7 @@ var MaterialData=(function(){
 	}
 	
 	var fields={
-			typeId		:'#type_id'
+			typeId		:'#type_id',
 			action		:'#action_id',
 			name		:'#name',
 			ean13		:'#ean13',
@@ -1708,7 +1721,7 @@ var MaterialData=(function(){
 					id	:parseInt($(select.baseUomId).val())
 				},
 				materialType:{
-					id	:(action==1 ? parseInt($(select.typeId).val() : parseInt($fields.typeId).val())
+					id	:(action==1 ? parseInt($(select.typeId).val()) : parseInt($fields.typeId).val())
 				},
 				materialGroup:{
 					id	:parseInt($(select.groupId).val())
@@ -1963,3 +1976,97 @@ var UserSearch=(function(){
 	}
 	
 })();
+
+var BPSelect=(function(){
+	
+	var controls={
+			display		:'#btn_display',
+			edit		:'#btn_edit',
+			create		:'#btn_create',
+			cancel		:'#btn_cancel',
+			search		:'#btn_open_search'
+	}
+	
+	var fields={
+			materialId		:'#bp_id',
+			errorMsg		:'#error_msg'
+	}
+	
+	function init(){
+		console.log('TEST: Initialize BPSelect');
+		_initJQueryUI();
+		_bindEventHandlers();
+		MessageHandler.refreshMessageBox();
+	}
+	
+	function _initJQueryUI(){
+		$(controls.display).button();
+		$(controls.edit).button();
+		$(controls.create).button();
+		$(controls.cancel).button();
+		$(controls.search).button();
+		$(searchDialog).dialog({
+			autoOpen: false,
+		    height: 460,
+		    width: 660,
+		    modal: true,
+		    buttons:{
+		    	Cancel		: function(){
+		    		$(searchDialog).dialog('close');
+		    	},
+		    	"Select"	: _selectSearchResult
+		    }
+		});
+	
+	}
+	
+	function _bindEventHandlers(){
+		$(controls.cancel).click(_cancel);
+		$(controls.display).click(_display);
+		$(controls.edit).click(_edit);
+		$(controls.create).click(_create);
+		$(controls.search).click(_search);
+	}
+	
+	function _cancel(){
+		window.location.assign('/home');
+	}
+	
+	function _display(){
+		console.log('BP Display');
+	}
+	
+	function _edit(){
+		console.log('BP Edit');
+	}
+	
+	function _create(){
+		console.log('BP Create');
+	}
+	
+	function _search(){
+		console.log('BP Search');
+	}
+	
+	function _selectSearchResult(){
+		console.log('Select BP search result...');
+	}
+	
+	return{
+		init			:init
+	}
+	
+})();
+
+var BPData=(function(){
+	
+	function init(){
+		console.log('TEST: BPData initialize...')
+	}
+	
+	return{
+		init	:init
+	}
+	
+})();
+

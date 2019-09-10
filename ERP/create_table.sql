@@ -136,6 +136,26 @@ create table t_address(
 	constraint fk_address_bp_id foreign key(bp_id) references t_business_partner(id) on delete cascade
 );
 
+alter table t_address drop foreign key fk_address_bp_id;
+alter table t_address drop column bp_id;
+alter table t_address drop column valid_from;
+alter table t_address drop column valid_to;
+
+create table t_bp_address(
+	bp_id varchar(10) not null,
+	address_id int not null,
+	valid_from date not null,
+	valid_to date,
+	primary key(bp_id,address_id),
+	constraint fk_bp_address_bp_id foreign key(bp_id) references t_business_partner(id),
+	constraint fk_bp_address_address_id foreign key(address_id) references t_address(id)
+);
+
+alter table t_bp_address drop foreign key fk_bp_address_bp_id;
+alter table t_bp_address drop foreign key fk_bp_address_address_id;
+alter table t_bp_address add constraint fk_bp_address_bp_id foreign key(bp_id) references t_business_partner(id) on delete cascade;
+alter table t_bp_address add constraint fk_bp_address_address_id foreign key(address_id) references t_address(id) on delete cascade;
+
 create table t_telno(
 	id int not null auto_increment,
 	bp_id varchar(10) not null,
@@ -144,6 +164,25 @@ create table t_telno(
 	primary key(id),
 	constraint fk_telno_bp_id foreign key(bp_id) references t_business_partner(id) on delete cascade
 );
+
+alter table t_telno drop foreign key fk_telno_bp_id;
+alter table t_telno drop column bp_id;
+
+create table t_bp_telno(
+	bp_id varchar(10) not null,
+	telno_id int not null,
+	valid_from date not null,
+	valid_to date,
+	primary key(bp_id,telno_id),
+	constraint fk_bp_telno_bp_id foreign key(bp_id) references t_business_partner(id),
+	constraint fk_bp_telno_telno_id foreign key(telno_id) references t_telno(id)
+);
+
+alter table t_bp_telno drop foreign key fk_bp_telno_bp_id;
+alter table t_bp_telno drop foreign key fk_bp_telno_telno_id;
+
+alter table t_bp_telno add constraint fk_bp_telno_bp_id foreign key(bp_id) references t_business_partner(id) on delete cascade;
+alter table t_bp_telno add constraint fk_bp_telno_telno_id foreign key(telno_id) references t_telno(id) on delete cascade;
 
 create table t_id_number(
 	id int not null auto_increment,
@@ -247,4 +286,25 @@ alter table t_material_type add column valued boolean;
 
 show columns from t_material_type;
 alter table t_material_type add column storage boolean;
+
+
+create table t_storage_address(
+	storage_id int not null,
+	address_id int not null,
+	valid_from date not null,
+	valid_to date,
+	primary key(storage_id,address_id),
+	constraint fk_storage_address_storage_id foreign key(storage_id) references t_storage(id) on delete cascade,
+	constraint fk_storage_address_address_id foreign key(address_id) references t_address(id) on delete cascade
+);
+
+create table t_plant_address(
+	plant_id int not null,
+	address_id int not null,
+	valid_from date not null,
+	valid_to date,
+	primary key(plant_id,address_id),
+	constraint fk_plant_address_plant_id foreign key(plant_id) references t_plant(id) on delete cascade,
+	constraint fk_plant_address_address_id foreign key(address_id) references t_address(id) on delete cascade
+);
 

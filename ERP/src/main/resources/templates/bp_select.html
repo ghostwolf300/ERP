@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default}">
+<div class="content_container" id="bp_main" layout:fragment="content">
+	<div>
+		<h2>Business Partners</h2>
+	</div>
+	<div>
+		<div id="bp_select" class="ui-widget">
+			<label for="bp_id">BP ID:</label>
+			<input id="bp_id" type="text" name="bp_id" th:value="${bpId}">
+			<button id="btn_open_search" class="ui-button ui-widget ui-corner-all ui-button-icon-only">
+				<span class="ui-icon ui-icon-search"></span>Search
+			</button>
+			<p id="error_msg" class="error_message"></p>
+		</div>
+		<div th:replace="fragments/common :: crud_select"></div>
+	</div>
+	<div th:replace="fragments/search_dialog :: bp_search_dialog">
+	</div>
+</div>
+</html>
