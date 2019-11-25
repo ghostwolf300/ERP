@@ -25,7 +25,7 @@ public class RoleObject implements GrantedAuthority {
 	)
 	@MapsId("role_id")
 	@JoinColumn(name="role_id")
-	private Role authRole;
+	private Role role;
 	
 	@ManyToOne(
 			fetch=FetchType.LAZY
@@ -68,10 +68,10 @@ public class RoleObject implements GrantedAuthority {
 		this.id = id;
 	}
 	public Role getAuthRole() {
-		return authRole;
+		return role;
 	}
 	public void setAuthRole(Role role) {
-		this.authRole = role;
+		this.role = role;
 	}
 	public AuthObject getAuthObject() {
 		return authObject;

@@ -308,3 +308,16 @@ create table t_plant_address(
 	constraint fk_plant_address_address_id foreign key(address_id) references t_address(id) on delete cascade
 );
 
+create table t_act_role(
+	id int not null,
+	name varchar(20) not null,
+	primary key(id)
+);
+
+create table t_bp_act_role(
+	bp_id varchar(10) not null,
+	role_id int not null,
+	primary key(bp_id,role_id),
+	constraint fk_bp_act_role_bp_id foreign key(bp_id) references t_business_partner(id) on delete cascade,
+	constraint fk_bp_act_role_role_id foreign key(role_id) references t_act_role(id) on delete cascade
+);

@@ -1,10 +1,17 @@
 package org.erp.bpaddress;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class BPAddressKey {
+public class BPAddressKey implements Serializable {
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	
 	@Column(name="bp_id")
 	private String bpId;

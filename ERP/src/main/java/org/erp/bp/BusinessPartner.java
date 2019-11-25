@@ -11,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.erp.actrole.ActRole;
+import org.erp.bpactrole.BPActRole;
 import org.erp.bpaddress.BPAddress;
 
 @Entity
@@ -49,6 +51,15 @@ public class BusinessPartner {
 			orphanRemoval=true
 	)
 	private Set<BPAddress> addresses;
+	
+	
+	@OneToMany(
+			mappedBy="businessPartner",
+			fetch=FetchType.LAZY,
+			cascade=CascadeType.ALL,
+			orphanRemoval=true
+	)
+	private Set<BPActRole> bpActRoles;
 	
 	
 	public BusinessPartner() {
@@ -149,6 +160,14 @@ public class BusinessPartner {
 
 	public void setChangedTs(Timestamp changedTs) {
 		this.changedTs = changedTs;
+	}
+
+	public Set<BPActRole> getBPActRoles() {
+		return bpActRoles;
+	}
+
+	public void setBPActRoles(Set<BPActRole> bpActRoles) {
+		this.bpActRoles = bpActRoles;
 	}
 
 }
